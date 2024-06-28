@@ -4,8 +4,8 @@
       <div class="hidden md:flex mt-3 me-3">
         <a href="#about" class=" hover:text-accent px-5 py-2 rounded-md text-sm font-medium text-white">About</a>
         <a href="#projects" class="hover:text-accent px-5 py-2 rounded-md text-sm font-medium text-white">Projects</a>
-        <a href="#skills" class="hover:text-accent px-5 py-2 rounded-md text-sm font-medium text-white">Skills</a>
-        <a href="#contact" class="bg-accent text-primary py-2 px-4 rounded-md text-sm font-medium">Contact me</a>
+        <a href="#certifications" class="hover:text-accent px-5 py-2 rounded-md text-sm font-medium text-white">Certifications</a>
+        <a href="#contact" class="bg-accent text-primary py-2 px-4 rounded-md text-sm font-medium transition duration-300 ease-in-out hover:bg-orange-500 hover:text-white hover:scale-105 hover:shadow-lg">Contact me</a>
       </div>
       <div (click)="toggleNavbar()" class="flex items-center md:hidden">
         <button id="toggleMobileMenu" type="button" class="bg-secondary inline-flex items-center justify-center p-2 rounded-md text-white hover:text-accent focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-white focus:ring-accent" aria-controls="mobile-menu" aria-expanded="false">
@@ -21,9 +21,9 @@
   </div>
   <div class="md:hidden" id="mobile-menu">
     <div [ngClass]="{'hidden': !isOpen}" class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
-      <a href="#home" class="text-white hover:text-accent block px-3 py-2 rounded-md text-base font-medium">Home</a>
       <a href="#about" class="text-white hover:text-accent block px-3 py-2 rounded-md text-base font-medium">About</a>
-      <a href="#services" class="text-white hover:text-accent block px-3 py-2 rounded-md text-base font-medium">Services</a>
+      <a href="#project" class="text-white hover:text-accent block px-3 py-2 rounded-md text-base font-medium">Project</a>
+      <a href="#certifications" class="text-white hover:text-accent block px-3 py-2 rounded-md text-base font-medium">Certifications</a>
       <a href="#contact" class="text-white hover:text-accent block px-3 py-2 rounded-md text-base font-medium">Contact</a>
     </div>
   </div>

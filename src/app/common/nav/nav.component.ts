@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule]
 })
+
 export class NavbarComponent {
   public isOpen: boolean = false;
 

@@ -5,4 +5,5 @@ import { Component } from '@angular/core';
   standalone: true,
   templateUrl: './about.component.html',
 })
+
 export class AboutComponent { }

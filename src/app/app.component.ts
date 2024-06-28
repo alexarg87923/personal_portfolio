@@ -3,6 +3,9 @@ import { NavbarComponent } from './common/nav/nav.component';
 import { HeroComponent } from './features/hero/hero.component';
 import { AboutComponent } from './features/about/about.component';
 import { ContactComponent } from './features/contact/contact.component';
+import { ProjectsComponent } from './features/projects/projects.component';
+import { CertificationsComponent } from './features/certifications/certifications.component';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -11,10 +14,10 @@ import { ContactComponent } from './features/contact/contact.component';
     NavbarComponent,
     HeroComponent,
     AboutComponent,
-    ContactComponent
+    ContactComponent,
+    ProjectsComponent,
+    CertificationsComponent
   ]
 })
 
-export class AppComponent {
-  title = 'Portfolio';
-}
+export class AppComponent { }

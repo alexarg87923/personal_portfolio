@@ -5,4 +5,5 @@ import { Component } from '@angular/core';
   templateUrl: './hero.component.html',
   standalone: true
 })
+
 export class HeroComponent { }
