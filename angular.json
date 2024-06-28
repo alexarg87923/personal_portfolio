@@ -26,7 +26,6 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": [
-              "src/favicon.ico",
               "src/assets"
             ],
             "styles": [
@@ -34,10 +33,10 @@
               "src/styles.scss"
             ],
             "scripts": [],
-            "server": "src/main.server.ts",
+            "server": "./server/main.server.ts",
             "prerender": true,
             "ssr": {
-              "entry": "server.ts"
+              "entry": "./server/server.ts"
             }
           },
           "configurations": {
