@@ -1,12 +1,8 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-contact',
   standalone: true,
-  imports: [RouterOutlet],
   templateUrl: './contact.component.html',
 })
-export class AppComponent {
-  title = 'portfolio';
-}
+export class ContactComponent { }
