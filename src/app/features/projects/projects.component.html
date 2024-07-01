@@ -1,3 +1,40 @@
-<section id="hero" class="min-h-screen bg-gradient-to-b from-black to-neutral-800 flex items-center">
+<div class="bg-black text-white py-10">
+  <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold text-center text-white mb-6">My Projects</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+          <!-- *ngFor loop starts here for each project card -->
+          <div *ngFor="let project of projects" class="mt-8">
+            <h2>{{ project.name }}</h2>
+            <p>{{ project.description }}</p>
 
-</section>
+            <!-- Placeholder image -->
+            <img src="path_to_placeholder_image.jpg" alt="Project Image" class="w-full h-auto mb-4">
+
+            <div class="flex flex-wrap gap-2 mt-2">
+              <!-- Sorted and dynamic tags based on project.techStack -->
+              <span *ngFor="let tech of project.techStack" class="border border-orange-500 px-2 py-1 rounded text-white">
+                {{ tech }}
+              </span>
+            </div>
+
+            <div class="flex mt-4">
+              <!-- Conditional rendering if GitHub link is not private -->
+              <a *ngIf="project.githubLink !== 'Private'" href="{{ project.githubLink }}" target="_blank" class="mr-4">
+                <svg class="h-6 w-6 text-orange-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.111.82-.261.82-.577v-2.255c-3.338.725-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.755-1.333-1.755-1.09-.745.083-.729.083-.729 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.305 3.495.997.107-.776.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.932 0-1.31.465-2.38 1.235-3.22-.125-.304-.535-1.527.115-3.18 0 0 1.005-.322 3.295 1.23.955-.266 1.98-.398 3-.405 1.02.007 2.045.139 3 .405 2.29-1.552 3.29-1.23 3.29-1.23.655 1.653.245 2.876.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.82 1.102.82 2.222v3.3c0 .32.215.694.825.576C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/>
+                </svg>
+              </a>
+
+              <!-- Project URL -->
+              <a href="{{ project.projectUrl }}" target="_blank">
+                <svg class="text-orange-500 h-6 w-6" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
+                  <path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-7-.5-14.5T799-507q-5 29-27 48t-52 19h-80q-33 0-56.5-23.5T560-520v-40H400v-80q0-33 23.5-56.5T480-720h40q0-23 12.5-40.5T563-789q-20-5-40.5-8t-42.5-3q-134 0-227 93t-93 227h200q66 0 113 47t47 113v40H400v110q20 5 39.5 7.5T480-160Z"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          <!-- Loop ends, no need to manually repeat the project block -->
+      </div>
+  </div>
+</div>

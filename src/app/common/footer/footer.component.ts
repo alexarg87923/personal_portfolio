@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
   standalone: true
 })
 
-export class NavbarComponent { }
+export class FooterComponent { }
