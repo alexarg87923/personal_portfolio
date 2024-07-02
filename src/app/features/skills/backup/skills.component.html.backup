@@ -1,0 +1,76 @@
+<section id="skills" class="min-h-screen bg-neutral-800 flex flex-col items-center justify-center text-center p-10">
+  <h2 class="text-4xl font-bold text-white mb-8">My Skills</h2>
+  <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+      <!-- Skill 1: HTML -->
+      <div class="tooltip tooltip-primary" data-tip="Used in Portfolio Website Project">
+          <div class="flex flex-col items-center animate-scale-up">
+              <div class="radial-progress bg-primary text-primary-content border-primary border-4" style="--value:90;" role="progressbar">
+                  90%
+              </div>
+              <p class="mt-2 text-white text-lg">HTML</p>
+          </div>
+      </div>
+      <!-- Skill 2: CSS -->
+      <div class="tooltip tooltip-primary" data-tip="Styled eCommerce Site">
+          <div class="flex flex-col items-center animate-scale-up">
+              <div class="radial-progress bg-primary text-primary-content border-primary border-4" style="--value:85;" role="progressbar">
+                  85%
+              </div>
+              <p class="mt-2 text-white text-lg">CSS</p>
+          </div>
+      </div>
+      <!-- Skill 3: JavaScript -->
+      <div class="tooltip tooltip-primary" data-tip="Interactive features in Blog Platform">
+          <div class="flex flex-col items-center animate-scale-up">
+              <div class="radial-progress bg-primary text-primary-content border-primary border-4" style="--value:75;" role="progressbar">
+                  75%
+              </div>
+              <p class="mt-2 text-white text-lg">JavaScript</p>
+          </div>
+      </div>
+      <!-- Skill 4: React -->
+      <div class="tooltip tooltip-primary" data-tip="Single Page Applications for Clients">
+          <div class="flex flex-col items-center animate-scale-up">
+              <div class="radial-progress bg-primary text-primary-content border-primary border-4" style="--value:65;" role="progressbar">
+                  65%
+              </div>
+              <p class="mt-2 text-white text-lg">React</p>
+          </div>
+      </div>
+      <!-- Additional Skills -->
+      <!-- Skill 5: Node.js -->
+      <div class="tooltip tooltip-primary" data-tip="Backend for Web Apps">
+          <div class="flex flex-col items-center animate-scale-up">
+              <div class="radial-progress bg-primary text-primary-content border-primary border-4" style="--value:60;" role="progressbar">
+                  60%
+              </div>
+              <p class="mt-2 text-white text-lg">Node.js</p>
+          </div>
+      </div>
+      <!-- Skill 6: Python -->
+      <div class="tooltip tooltip-primary" data-tip="Data Analysis & Automation Scripts">
+          <div class="flex flex-col items-center animate-scale-up">
+              <div class="radial-progress bg-primary text-primary-content border-primary border-4" style="--value:70;" role="progressbar">
+                  70%
+              </div>
+              <p class="mt-2 text-white text-lg">Python</p>
+          </div>
+      </div>
+  </div>
+  <style>
+    @keyframes scale-up {
+      from {
+          transform: scale(0.75);
+          opacity: 0.5;
+      }
+      to {
+          transform: scale(1);
+          opacity: 1;
+      }
+  }
+  .animate-scale-up {
+      animation: scale-up 0.5s ease-out forwards;
+  }
+
+  </style>
+</section>

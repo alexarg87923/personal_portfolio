@@ -5,7 +5,10 @@ import { HeroComponent } from './features/hero/hero.component';
 import { AboutComponent } from './features/about/about.component';
 import { ContactComponent } from './features/contact/contact.component';
 import { ProjectsComponent } from './features/projects/projects.component';
-import { CertificationsComponent } from './features/certifications/certifications.component';
+import { SkillsComponent } from './features/skills/skills.component';
+import { CommonModule } from '@angular/common';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -13,13 +16,15 @@ import { CertificationsComponent } from './features/certifications/certification
   standalone: true,
   imports: [
     NavbarComponent,
+    FooterComponent,
     HeroComponent,
     AboutComponent,
     ContactComponent,
     ProjectsComponent,
-    CertificationsComponent,
-    FooterComponent
+    SkillsComponent,
+    CommonModule,
+    BrowserAnimationsModule,
+    RouterOutlet
   ]
 })
-
 export class AppComponent { }
