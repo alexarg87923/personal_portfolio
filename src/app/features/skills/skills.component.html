@@ -1,22 +1,41 @@
-<section id="skills" class=" min-h-fit bg-neutral-900 flex flex-col items-center justify-center text-center p-10">
+<section id="skills" class="min-h-fit bg-neutral-900 flex flex-col items-center justify-center text-center p-10">
   <h2 class="text-4xl font-bold text-white mb-8">Skills</h2>
   <div class="mockup-code bg-neutral-800 p-4 text-left max-w-lg w-full">
-      <!-- Skill 1: HTML -->
-      <pre data-prefix="$" class="text-info"><code>npm install html</code></pre>
-      <pre data-prefix=">" class="text-warning"><code>installing...</code></pre>
+    <details class="group">
+      <summary class="flex items-center cursor-pointer">
+        <pre data-prefix="$" class="text-info flex-1"><code>enhance skill html</code></pre>
+        <span class="arrow">▼</span>
+      </summary>
+      <pre data-prefix=">" class="text-warning"><code>expanding knowledge...</code></pre>
       <pre data-prefix=">" class="text-success"><code>[███████████████⠂⠂⠂⠂⠂] 90%</code></pre>
-      <!-- Skill 2: CSS -->
-      <pre data-prefix="$" class="text-info"><code>npm install css</code></pre>
-      <pre data-prefix=">" class="text-warning"><code>installing...</code></pre>
-      <pre data-prefix=">" class="text-success"><code>[████████████▒⠂⠂⠂⠂⠂⠂] 85%</code></pre>
-      <!-- Skill 3: JavaScript -->
-      <pre data-prefix="$" class="text-info"><code>npm install javascript</code></pre>
-      <pre data-prefix=">" class="text-warning"><code>installing...</code></pre>
-      <pre data-prefix=">" class="text-success"><code>[██████████▒⠂⠂⠂⠂⠂⠂⠂⠂] 75%</code></pre>
-      <!-- Additional Skills -->
-      <!-- Skill 4: React -->
-      <pre data-prefix="$" class="text-info"><code>npm install react</code></pre>
-      <pre data-prefix=">" class="text-warning"><code>installing...</code></pre>
-      <pre data-prefix=">" class="text-success"><code>[██████▒⠂⠂⠂⠂⠂⠂⠂⠂⠂⠂] 65%</code></pre>
+      <div class="ml-4 text-white">
+        <p>Developed multiple responsive websites using HTML5, focusing on semantic tags and SEO-friendly structures. Example projects include a personal portfolio and a local business homepage.</p>
+      </div>
+    </details>
   </div>
+  <style>
+    details > summary {
+      list-style: none;
+    }
+    details > summary::-webkit-details-marker {
+      display: none;
+    }
+    .arrow {
+      margin-left: 10px; /* Add some space before the arrow */
+      transition: transform 0.3s; /* Smooth transition for arrow rotation */
+    }
+    details[open] .arrow {
+      transform: rotate(-90deg); /* Rotate arrow when details are open */
+    }
+    pre {
+      display: inline; /* Ensure pre elements inside summary are inline */
+    }
+    summary {
+      display: flex; /* Use flex to align items */
+      align-items: center; /* Center items vertically */
+    }
+    summary:hover {
+      text-decoration: underline; /* Optional: add underline on hover */
+    }
+  </style>
 </section>
