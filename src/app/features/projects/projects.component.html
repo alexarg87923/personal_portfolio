@@ -1,17 +1,17 @@
 <div class="bg-black text-white py-10">
   <div class="container mx-auto px-4">
     <h2 class="text-3xl font-bold text-center text-white mb-6">My Projects</h2>
-    <div class="grid md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
       <!-- *ngFor loop starts here for each project card -->
       <div *ngFor="let project of projects" class="transition duration-300 ease-in-out transform hover:scale-105 flex flex-col h-full">
-        <div class="bg-gray-800 p-5 rounded shadow-lg flex flex-col justify-between h-full">
+        <div class="bg-gray-800 p-5 rounded-lg shadow hover:shadow-xl flex flex-col justify-between h-full">
           <h3 class="text-xl font-semibold mb-2">{{ project.name }}</h3>
           <p>{{ project.description }}</p>
           <!-- Dynamic image -->
-          <img [src]="project.imageUrl || 'path_to_placeholder_image.jpg'" alt="Project Image" class="w-full h-auto mb-4">
+          <img [src]="project.imageUrl || 'path_to_placeholder_image.jpg'" alt="Project Image" class="w-full h-auto mb-4 rounded">
           <div class="flex flex-wrap gap-2 mt-2">
             <!-- Sorted and dynamic tags based on project.techStack -->
-            <span *ngFor="let tech of project.techStack" class="border border-orange-500 px-2 py-1 rounded text-white hover:bg-orange-500 transition duration-300 ease-in-out">
+            <span *ngFor="let tech of project.techStack" class="bg-gray-700 hover:bg-orange-500 border border-orange-500 px-2 py-1 rounded text-white transition duration-300 ease-in-out">
               {{ tech }}
             </span>
           </div>

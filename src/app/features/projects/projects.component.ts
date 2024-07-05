@@ -13,7 +13,7 @@ export class ProjectsComponent {
       githubLink: 'Private',
       projectUrl: 'https://www.shpemdc.com',
       hosted: 'Personal Ubuntu Server',
-      imageUrl: 'https://example.com/path_to_shpe_image.jpg',
+      imageUrl: '/assets/shpemdc.png',
       techStack: ['Bootstrap', 'Flask', 'MySQL', 'Cloudflare', 'HTML', 'CSS', 'JavaScript', 'Python'],
       collaborators: [
         { name: 'Kevin Pino', portfolioUrl: 'https://kevinpino.com' },
@@ -26,7 +26,7 @@ export class ProjectsComponent {
       githubLink: 'Private',
       projectUrl: 'https://www.witmdc.com',
       hosted: 'Personal Ubuntu Server',
-      imageUrl: 'https://example.com/path_to_wit_image.jpg',
+      imageUrl: '/assets/witmdc.png',
       techStack: ['Bootstrap', 'Express', 'JavaScript', 'React', 'Figma', 'Cloudflare', 'CSS', 'HTML', 'SQLite', 'Axios', 'GitHub'],
       collaborators: [
         { name: 'Kevin Pino', portfolioUrl: 'https://kevinpino.com' },
@@ -39,7 +39,7 @@ export class ProjectsComponent {
       githubLink: 'https://github.com/alexarg87923/project_robotics',
       projectUrl: 'https://www.termitomator.com',
       hosted: 'Heroku Cloud & MongoDB Atlas',
-      imageUrl: 'https://example.com/path_to_robotics_event_image.jpg',
+      imageUrl: '/assets/termitomator.png',
       techStack: ['React', 'Google Domains', 'JavaScript', 'HTML', 'CSS', 'Bootstrap', 'Axios', 'GitHub'],
       collaborators: [
         { name: 'Kevin Pino', portfolioUrl: 'https://kevinpino.com' },
@@ -54,7 +54,7 @@ export class ProjectsComponent {
       githubLink: 'Private',
       projectUrl: 'NoURL',
       hosted: 'Offline',
-      imageUrl: 'https://example.com/path_to_chess_engine_image.jpg',
+      imageUrl: '/assets/chess.png',
       techStack: ['C++', 'GLOG', 'SFML', 'GitHub']
     },
     {
@@ -63,7 +63,7 @@ export class ProjectsComponent {
       githubLink: 'Private',
       projectUrl: 'Private',
       hosted: 'Company Windows Server using IIS',
-      imageUrl: 'https://example.com/path_to_xml_validator_image.jpg',
+      imageUrl: '/assets/ukg.png',
       techStack: ['C#', '.NET', 'Docker', 'XUnit Test', 'GitHub'],
       collaborators: [
         { name: 'Adrian Wright', portfolioUrl: null },
