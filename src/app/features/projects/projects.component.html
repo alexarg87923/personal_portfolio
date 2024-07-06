@@ -8,7 +8,15 @@
           <h3 class="text-xl font-semibold mb-2 text-orange-500">{{ project.name }}</h3>
           <p class="text-gray-300 mb-4">{{ project.description }}</p>
           <!-- Dynamic image -->
-          <img [src]="project.imageUrl || 'path_to_placeholder_image.jpg'" alt="Project Image" class="w-full h-auto mb-4 rounded">
+          <img
+          ngOptimizedImage
+          [src]="project.imageUrl"
+          [srcset]="getSrcSet(project)"
+          sizes="(max-width: 600px) 480px, (max-width: 1200px) 800px, 1200px"
+          alt="Project Image"
+          loading="lazy"
+          class="w-full h-auto mb-4 rounded"
+          />
           <div class="flex flex-wrap gap-2 mt-2">
             <!-- Sorted and dynamic tags based on project.techStack -->
             <span *ngFor="let tech of project.techStack" class="bg-gray-800 text-white border border-gray-600 px-2 py-1 rounded text-sm transition duration-300 ease-in-out hover:bg-orange-500 hover:text-gray-900 hover:border-orange-500">

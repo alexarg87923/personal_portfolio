@@ -1,11 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-projects',
   templateUrl: './projects.component.html'
 })
-
-export class ProjectsComponent {
+export class ProjectsComponent implements OnInit {
   projects = [
     {
       name: 'SHPE Website',
@@ -14,6 +13,9 @@ export class ProjectsComponent {
       projectUrl: 'https://www.shpemdc.com',
       hosted: 'Personal Ubuntu Server',
       imageUrl: '/assets/shpemdc.webp',
+      imageSmall: '/assets/shpemdc-s.webp',
+      imageMedium: '/assets/shpemdc-m.webp',
+      imageLarge: '/assets/shpemdc-l.webp',
       techStack: ['Bootstrap', 'Flask', 'MySQL', 'Cloudflare', 'HTML', 'CSS', 'JavaScript', 'Python'],
       collaborators: [
         { name: 'Kevin Pino', portfolioUrl: 'https://kevinpino.com' },
@@ -27,6 +29,9 @@ export class ProjectsComponent {
       projectUrl: 'https://www.witmdc.com',
       hosted: 'Personal Ubuntu Server',
       imageUrl: '/assets/witmdc.webp',
+      imageSmall: '/assets/witmdc-s.webp',
+      imageMedium: '/assets/witmdc-m.webp',
+      imageLarge: '/assets/witmdc-l.webp',
       techStack: ['Bootstrap', 'Express', 'JavaScript', 'React', 'Figma', 'Cloudflare', 'CSS', 'HTML', 'SQLite', 'Axios', 'GitHub'],
       collaborators: [
         { name: 'Kevin Pino', portfolioUrl: 'https://kevinpino.com' },
@@ -40,6 +45,9 @@ export class ProjectsComponent {
       projectUrl: 'https://www.termitomator.com',
       hosted: 'Heroku Cloud & MongoDB Atlas',
       imageUrl: '/assets/termitomator.webp',
+      imageSmall: '/assets/termitomator-s.webp',
+      imageMedium: '/assets/termitomator-m.webp',
+      imageLarge: '/assets/termitomator-l.webp',
       techStack: ['React', 'Google Domains', 'JavaScript', 'HTML', 'CSS', 'Bootstrap', 'Axios', 'GitHub'],
       collaborators: [
         { name: 'Kevin Pino', portfolioUrl: 'https://kevinpino.com' },
@@ -55,6 +63,9 @@ export class ProjectsComponent {
       projectUrl: 'NoURL',
       hosted: 'Offline',
       imageUrl: '/assets/chess.webp',
+      imageSmall: '/assets/chess-s.webp',
+      imageMedium: '/assets/chess-m.webp',
+      imageLarge: '/assets/chess-l.webp',
       techStack: ['C++', 'GLOG', 'SFML', 'GitHub']
     },
     {
@@ -64,6 +75,9 @@ export class ProjectsComponent {
       projectUrl: 'Private',
       hosted: 'Company Windows Server using IIS',
       imageUrl: '/assets/ukg.png',
+      imageSmall: '/assets/ukg-s.webp',
+      imageMedium: '/assets/ukg-m.webp',
+      imageLarge: '/assets/ukg-l.webp',
       techStack: ['C#', '.NET', 'Docker', 'XUnit Test', 'GitHub'],
       collaborators: [
         { name: 'Adrian Wright', portfolioUrl: null },
@@ -75,6 +89,10 @@ export class ProjectsComponent {
 
   ngOnInit() {
     this.sortTechStacks();
+  }
+
+  getSrcSet(project: { imageSmall: any; imageMedium: any; imageLarge: any; }) {
+    return `${project.imageSmall} 480w, ${project.imageMedium} 800w, ${project.imageLarge} 1200w`;
   }
 
   sortTechStacks(): void {

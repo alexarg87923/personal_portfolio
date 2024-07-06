@@ -25,7 +25,8 @@
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/assets"
+              "src/assets",
+              "src/webfonts"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/deeppurple-amber.css",

@@ -3,7 +3,7 @@ import { CommonEngine } from '@angular/ssr';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
-import bootstrap from './src/main.server';
+import bootstrap from '../src/main.server';
 import bodyParser from 'body-parser';
 import { Pool } from 'pg';
 
