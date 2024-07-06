@@ -4,26 +4,45 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import bootstrap from './src/main.server';
+import bodyParser from 'body-parser';
+import { Pool } from 'pg';
 
-// The Express app is exported so that it can be used by serverless Functions.
+require('dotenv').config();
+
 export function app(): express.Express {
   const server = express();
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
   const browserDistFolder = resolve(serverDistFolder, '../browser');
   const indexHtml = join(serverDistFolder, 'index.server.html');
-
   const commonEngine = new CommonEngine();
+  const pool = new Pool({
+    user: 'alexportfolio',
+    host: 'localhost',
+    database: 'portfolio',
+    password: '',
+    port: 5432,
+  });
+
+
+  server.use(bodyParser.json());
+  server.use(bodyParser.urlencoded({ extended: true }));
 
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
 
-  // Example Express Rest API endpoints
-  // server.get('/api/**', (req, res) => { });
-  // Serve static files from /browser
-  server.get('**', express.static(browserDistFolder, {
-    maxAge: '1y',
-    index: 'index.html',
-  }));
+  server.get('/api/contact', async (req, res) => {
+    try {
+      const { name, email, message } = req.body;
+      const query = 'INSERT INTO contact (name, email, message, timestamp) \
+      VALUES ($1, $2, $3, NOW());'
+      const values = [name, email, message]
+      const result = await pool.query(query, values);
+      res.json(result.rows);
+    } catch (err) {
+      console.error(err);
+      res.status(500).send('Server error');
+    }
+  });
 
   // All regular routes use the Angular engine
   server.get('**', (req, res, next) => {

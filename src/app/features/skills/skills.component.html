@@ -1,14 +1,12 @@
-<section id="skills" class="min-h-fit bg-neutral-900 flex flex-col items-center justify-center text-center p-10">
-  <h2 class="text-4xl font-bold text-white mb-8">Skills</h2>
-  <div class="mockup-code bg-neutral-800 p-4 text-left max-w-lg w-full">
-    <!-- Iterate over each skill using Angular's *ngFor directive -->
-    <div *ngFor="let skill of skills" class="mb-4">
-      <pre data-prefix="$" class="text-info"><code>npm install {{ skill.skill.toLowerCase() }}_skills</code></pre>
-      <pre data-prefix=">" class="text-warning"><code>installing...</code></pre>
-      <pre class="flex items-center">
-        <span class="text-success mr-2">[{{ generateProgressBar(skill.proficiency) }}]</span>
-        <span class="text-success">{{ skill.proficiency }}%</span>
-      </pre>
+<div class="flex flex-col items-center w-full p-4 bg-opacity-60">
+  <h2 class="text-2xl text-white font-bold mb-6">My Skills</h2>
+  <div *ngFor="let skill of skills" class="text-white w-full max-w-lg my-3 p-2">
+    <div class="flex items-center space-x-3">
+      <i [class]="skill.icon"></i>
+      <label class="text-lg font-medium">{{ skill.name }}</label>
+    </div>
+    <div class="w-full mt-2 overflow-hidden">
+      <progress class="progress progress-error w-full transition-transform duration-300 transform hover:scale-105" [value]="skill.level" max="100"></progress>
     </div>
   </div>
-</section>
+</div>
