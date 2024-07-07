@@ -11,32 +11,32 @@
         }
       },
       "root": "",
-      "sourceRoot": "src",
+      "sourceRoot": "client/src",
       "prefix": "app",
       "architect": {
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "outputPath": "dist/portfolio",
-            "index": "src/index.html",
-            "browser": "src/main.ts",
+            "index": "client/src/index.html",
+            "browser": "client/src/main.ts",
             "polyfills": [
               "zone.js"
             ],
             "tsConfig": "tsconfig.app.json",
             "assets": [
-              "src/assets",
-              "src/webfonts"
+              "client/src/assets",
+              "client/src/webfonts"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/styles.scss"
+              "client/src/styles.scss"
             ],
             "scripts": [],
-            "server": "src/main.server.ts",
+            "server": "client/src/main.server.ts",
             "prerender": true,
             "ssr": {
-              "entry": "server.ts"
+              "entry": "/server/server.ts"
             }
           },
           "configurations": {
@@ -90,8 +90,8 @@
             ],
             "tsConfig": "tsconfig.spec.json",
             "assets": [
-              "src/favicon.ico",
-              "src/assets"
+              "client/src/favicon.ico",
+              "client/src/assets"
             ],
             "styles": [
               "@angular/material/prebuilt-themes/deeppurple-amber.css"
