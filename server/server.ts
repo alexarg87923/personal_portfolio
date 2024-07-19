@@ -7,12 +7,17 @@ import { CommonEngine } from '@angular/ssr';
 import bootstrap from '../client/src/main.server';
 import ContactRoutes from './routes/ContactRoutes';
 import { environment } from './environments/environment.prod';
+import * as bodyParser from 'body-parser';
 
 export function app(): express.Express {
   const server = express();
-    const browserDistFolder = resolve(dirname(fileURLToPath(import.meta.url)), '../browser');
-    const indexHtml = join(browserDistFolder, 'index.html');
+  const browserDistFolder = resolve(dirname(fileURLToPath(import.meta.url)), '../browser');
+  const indexHtml = join(browserDistFolder, 'index.html');
   const commonEngine = new CommonEngine();
+
+  // Middleware
+  server.use(bodyParser.json());
+  server.use(bodyParser.urlencoded({ extended: true }));
 
   // Serve static files
   server.use(express.static(browserDistFolder));

@@ -10,7 +10,6 @@ export class ContactController {
 
   async addFormInput(req: Request, res: Response): Promise<void> {
     try {
-      console.log(req);
       let result = await this.contactService.addFormInput(req.body);
       if (result === 0) {
         res.status(201).json({ message: 'Form input added successfully' });
@@ -21,5 +20,4 @@ export class ContactController {
       res.status(500).json({ error: 'Internal server error', message: error.message });
     }
   }
-
 }
