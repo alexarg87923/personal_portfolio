@@ -1,7 +1,5 @@
 // src/app/app.module.ts
 import { NgModule } from '@angular/core';
-import { RouterModule } from '@angular/router';
-
 import { NavbarComponent } from './common/nav/nav.component';
 import { FooterComponent } from './common/footer/footer.component';
 import { HeroComponent } from './features/hero/hero.component';
@@ -10,6 +8,8 @@ import { ContactComponent } from './features/contact/contact.component';
 import { ProjectsComponent } from './features/projects/projects.component';
 import { SkillsComponent } from './features/skills/skills.component';
 import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { HttpClientModule, provideHttpClient, withFetch } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -22,7 +22,11 @@ import { CommonModule } from '@angular/common';
     SkillsComponent
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    ReactiveFormsModule,
+  ],
+  providers: [
+    provideHttpClient(withFetch())
   ],
   exports: [
     NavbarComponent,
