@@ -1,12 +1,29 @@
-<div class="flex flex-col items-center w-full p-4 bg-opacity-60 min-h-screen justify-center">
-  <h2 class="text-2xl text-white font-bold mb-6">My Skills</h2>
-  <div *ngFor="let skill of skills" class="text-white w-full max-w-lg my-3 p-2">
-    <div class="flex items-center space-x-3">
-      <i [class]="skill.icon"></i>
-      <label class="text-lg font-medium">{{ skill.name }}</label>
+<style>
+  .high-z-index {
+    z-index: 1000; /* High value to ensure it is above other elements */
+    position: relative; /* Ensure the z-index works */
+  }
+</style>
+
+<div class="flex flex-col items-center w-full p-4 bg-opacity-60 min-h-screen justify-center text-white">
+  <h2 class="text-2xl font-bold mb-6">My Skills</h2>
+  <div class="card w-full lg:w-1/2 bg-transparent border-2 border-orange-500 p-8 rounded-lg shadow-lg">
+    <div class="tabs mb-4 flex justify-center">
+      <button class="tab tab-lifted text-white" [class.tab-active]="activeTab === 'web-development'" (click)="showTab('web-development')">Web Development</button>
+      <button class="tab tab-lifted text-white" [class.tab-active]="activeTab === 'backend-development'" (click)="showTab('backend-development')">Backend Development</button>
+      <button class="tab tab-lifted text-white" [class.tab-active]="activeTab === 'other-skills'" (click)="showTab('other-skills')">Other Skills</button>
     </div>
-    <div class="w-full mt-2 overflow-hidden">
-      <progress class="progress progress-error w-full transition-transform duration-300 transform hover:scale-105" [value]="skill.level" max="100"></progress>
+    <div class="overflow-auto max-h-[400px]">
+      <div *ngIf="activeTab === 'web-development'" class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <div *ngFor="let skill of webDevelopmentSkills" class="bg-transparent rounded-lg p-4 flex flex-col items-center shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:border-orange-600 hover:border-2 w-full sm:w-auto high-z-index">
+          <i [class]="skill.icon" class="text-3xl text-white mb-2"></i>
+          <label class="text-lg font-medium text-white mb-2">{{ skill.name }}</label>
+          <div class="radial-progress" [style]="{ '--value': skill.level, '--size': '4rem', '--thickness': '0.5rem', '--color': 'orange' }">
+            {{ skill.level }}%
+          </div>
+        </div>
+      </div>
+      <!-- Repeat similar blocks for 'backend-development' and 'other-skills' -->
     </div>
   </div>
 </div>
