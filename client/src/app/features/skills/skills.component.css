@@ -1,0 +1,16 @@
+.tabs-lifted > .tab:is(input:checked):before {
+  width: auto !important;
+}
+
+.tabs-lifted > .tab {
+  border-start-start-radius: 0px;
+  border-start-end-radius: 0px;
+}
+
+.tabs-lifted > .tab:is(input:checked) {
+  @apply bg-orange-300;
+}
+
+.tab-content {
+  border-width: 3px;
+}

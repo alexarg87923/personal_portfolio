@@ -4,11 +4,3 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.tab-lifted {
-  @apply px-4 py-2 mx-2 cursor-pointer transition-colors duration-300;
-}
-
-.tab-active {
-  @apply bg-orange-500 text-white;
-}

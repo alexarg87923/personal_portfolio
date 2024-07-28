@@ -2,7 +2,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-skills',
-  templateUrl: './skills.component.html'
+  templateUrl: './skills.component.html',
+  styleUrls: ['./skills.component.css']
 })
 export class SkillsComponent {
   activeTab: string = 'web-development';
@@ -32,8 +33,7 @@ export class SkillsComponent {
     { name: 'MongoDB', level: 50, icon: 'fab fa-envira' }
   ];
 
-
-  showTab(tab: string) {
+  setActiveTab(tab: string) {
     this.activeTab = tab;
   }
 }
