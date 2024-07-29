@@ -10,7 +10,7 @@
     checked="checked" />
     <div role="tabpanel" class="tab-content bg-transparent border-orange-500 p-6">
       <div *ngIf="activeTab === 'web-development'" class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div *ngFor="let skill of webDevelopmentSkills" class="bg-transparent rounded-lg p-4 flex flex-col items-center shadow-lg transform transition ease-in-out duration-300 hover:scale-105 hover:shadow-2xl hover:border-orange-500 hover:border-2 w-full sm:w-auto">
+        <div *ngFor="let skill of webDevelopmentSkills" class="bg-transparent rounded-lg p-4 flex flex-col items-center shadow-lg transition-transform duration-300 border-transparent border-2 hover:scale-105 hover:shadow-2xl hover:border-orange-500 w-full sm:w-auto">
           <i [class]="skill.icon" class="text-3xl text-white mb-2"></i>
           <label class="text-lg font-medium text-white mb-2">{{ skill.name }}</label>
           <div class="radial-progress" [style]="{ '--value': skill.level, '--size': '4rem', '--thickness': '0.5rem', '--color': 'orange' }">
@@ -29,7 +29,7 @@
       aria-label="Backend development" />
     <div role="tabpanel" class="tab-content border-orange-500 bg-transparent p-6">
       <div *ngIf="activeTab === 'backend-development'" class="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <div *ngFor="let skill of backendDevelopmentSkills" class="bg-transparent rounded-lg p-4 flex flex-col items-center shadow-lg transition-transform duration-300 hover:scale-105 hover:shadow-2xl hover:border-orange-500 hover:border-2 w-full sm:w-auto">
+        <div *ngFor="let skill of backendDevelopmentSkills" class="bg-transparent rounded-lg p-4 flex flex-col items-center shadow-lg transition-transform duration-300 border-transparent border-2 hover:scale-105 hover:shadow-2xl hover:border-orange-500 w-full sm:w-auto">
           <i [class]="skill.icon" class="text-3xl text-white mb-2"></i>
           <label class="text-lg font-medium text-white mb-2">{{ skill.name }}</label>
           <div class="radial-progress" [style]="{ '--value': skill.level, '--size': '4rem', '--thickness': '0.5rem', '--color': 'orange' }">
