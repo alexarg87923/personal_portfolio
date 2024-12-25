@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 interface WorkExperience {
   date: string;
@@ -9,7 +10,9 @@ interface WorkExperience {
 
 @Component({
   selector: 'app-experience',
-  templateUrl: './experience.component.html'
+  templateUrl: './experience.component.html',
+  standalone: true,
+  imports: [CommonModule]
 })
 
 export class ExperienceComponent {

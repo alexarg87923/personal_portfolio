@@ -4,5 +4,6 @@ export const environment = {
   DB_NAME: '',
   DB_PASSWORD: '',
   DB_PORT: '',
-  PORT: ''
+  PORT: '',
+  PASSWORD: ''
 };

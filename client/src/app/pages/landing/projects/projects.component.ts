@@ -1,8 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-projects',
-  templateUrl: './projects.component.html'
+  templateUrl: './projects.component.html',
+  imports: [CommonModule],
+  standalone: true
 })
 export class ProjectsComponent implements OnInit {
   projects = [
