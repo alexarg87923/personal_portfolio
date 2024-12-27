@@ -19,7 +19,8 @@
           "options": {
             "allowedCommonJsDependencies": [
                 "pg",
-                "body-parser"
+                "body-parser",
+                "http-proxy-middleware"
             ],
             "outputPath": "dist/portfolio",
             "index": "client/src/index.html",

@@ -1,5 +1,5 @@
-<main class="flex justify-center items-center min-h-screen">
-  <div class="">
+<!-- <main class="flex justify-center items-center min-h-screen">
+  <div>
     <div>
       <h1 class="text-white">Login</h1>
     </div>
@@ -7,6 +7,264 @@
       <input type="text" class="w-full mb-5">
       <input type="password" class="w-full">
       <button class="text-white bg-orange-600 rounded-md w-full p-1 mt-5 hover:bg-orange-700 transition">Enter</button>
+    </div>
+  </div>
+</main> -->
+
+<main id="bg">
+  <style>
+    #bg {
+      position: relative;
+      background-image: url('/assets/original-sizes/admin-bg.jpg');
+      background-repeat: no-repeat;
+      background-size: cover;
+      background-position: center;
+    }
+
+    #bg::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      z-index: 1;
+    }
+
+    #children {
+      position: relative;
+      z-index: 2;
+    }
+  </style>
+
+  <div id="children">
+    <div class="py-56 min-h-60 flex flex-col justify-center items-center mx-auto gap-6 max-w-3xl w-full">
+      <div>
+        <h1 class="text-white text-center max-w-full">Edit About Me Section</h1>
+      </div>
+      <div class="flex flex-col items-center gap-4 w-full">
+        <textarea
+          rows="4"
+          class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+          [(ngModel)]="aboutSection.summary">
+        </textarea>
+        <button class="text-white bg-orange-600 rounded-md hover:bg-orange-700 transition mt-2 w-24 h-10">
+          Save
+        </button>
+      </div>
+    </div>
+
+    <div class="min-h-60 flex flex-col justify-center items-center mx-auto gap-6">
+      <h1 class="text-white">Edit Work Positions</h1>
+
+      <div>
+        <div
+          *ngFor="let experience of experienceSection; let i = index"
+          class="flex flex-col h-full"
+        >
+          <a>
+            <p
+              class="text-white text-xl cursor-pointer link-hover transition duration-300 ease-in-out transform hover:scale-105 "
+              (click)="toggleExperience(i)"
+            >
+              {{ experience.title }}
+            </p>
+          </a>
+
+          <div
+            class="transition-all duration-500 ease-in-out overflow-hidden
+                  p-4 rounded shadow-md"
+            [ngClass]="{
+              'max-h-0 opacity-0 pointer-events-none': activeIndexExperience !== i,
+              'max-h-[9999px] opacity-100 pointer-events-auto': activeIndexExperience === i
+            }"
+          >
+            <label class="block text-sm text-gray-300 mb-2">Title</label>
+            <input
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="experience.title"
+              placeholder="Edit title"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Logo</label>
+            <input
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="experience.logo_path"
+              placeholder="Edit title"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Start Date</label>
+            <input
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="experience.start_date"
+              placeholder="Edit title"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">End Date</label>
+            <input
+              type="text"
+              [disabled]="experience.working_here_right_now"
+              [ngClass]="{
+                'bg-neutral-700 text-neutral-200': !experience.working_here_right_now,
+                'bg-neutral-800 text-neutral-500 cursor-not-allowed': experience.working_here_right_now
+              }"
+              class="block w-full p-4 mb-4 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm"
+              [(ngModel)]="experience.end_date"
+              placeholder="Edit title"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Currently Working Here?</label>
+            <input
+              type="checkbox"
+              class="p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="experience.working_here_right_now"
+              placeholder="Edit title"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Description</label>
+            <textarea
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="experience.description"
+              placeholder="Edit description">
+          </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="pt-56 min-h-60 flex flex-col justify-center items-center mx-auto gap-6">
+      <h1 class="text-white">Edit Projects</h1>
+
+      <div>
+        <div
+          *ngFor="let project of projectsSection; let i = index"
+          class="flex flex-col h-full"
+        >
+          <a>
+            <p
+              class="text-white text-xl cursor-pointer link-hover transition duration-300 ease-in-out transform hover:scale-105 "
+              (click)="toggleProjects(i)"
+            >
+              {{ project.title }}
+            </p>
+          </a>
+
+          <div
+            class="transition-all duration-500 ease-in-out overflow-hidden
+                  p-4 rounded shadow-md"
+            [ngClass]="{
+              'max-h-0 opacity-0 pointer-events-none': activeIndexProjects !== i,
+              'max-h-[9999px] opacity-100 pointer-events-auto': activeIndexProjects === i
+            }"
+          >
+            <label class="block text-sm text-gray-300 mb-2">Title</label>
+            <input
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="project.title"
+              placeholder="Edit title"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Description</label>
+            <textarea
+            rows="4"
+            class="block w-96 p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+            [(ngModel)]="project.description">
+            </textarea>
+
+            <label class="block text-sm text-gray-300 mb-2">Image</label>
+            <input
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="project.project_img_path"
+              placeholder="Edit image path"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Host Status</label>
+            <input
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="project.host_status"
+              placeholder="Edit host status"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Github URL</label>
+            <input
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="project.github_url"
+              placeholder="Edit title"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Web URL</label>
+            <input
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="project.web_url"
+              placeholder="Edit URL"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-56 min-h-60 flex flex-col justify-center items-center mx-auto gap-6">
+      <h1 class="text-white">Edit Skills</h1>
+
+      <div>
+        <div
+          *ngFor="let skill of skillsSection; let i = index"
+          class="flex flex-col h-full"
+        >
+          <a>
+            <p
+              class="text-white text-xl cursor-pointer link-hover transition duration-300 ease-in-out transform hover:scale-105 "
+              (click)="toggleSkills(i)"
+            >
+              {{ skill.skill }}
+            </p>
+          </a>
+
+          <div
+            class="transition-all duration-500 ease-in-out overflow-hidden
+                  p-4 rounded shadow-md"
+            [ngClass]="{
+              'max-h-0 opacity-0 pointer-events-none': activeIndexSkills !== i,
+              'max-h-[9999px] opacity-100 pointer-events-auto': activeIndexSkills === i
+            }"
+          >
+            <label class="block text-sm text-gray-300 mb-2">Title</label>
+            <input
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="skill.skill"
+              placeholder="Edit title"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Logo</label>
+            <input
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="skill.level"
+              placeholder="Edit title"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Start Date</label>
+            <input
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="skill.icon"
+              placeholder="Edit title"
+            />
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </main>

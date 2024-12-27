@@ -28,7 +28,7 @@ export class SkillsComponent {
     { name: 'C++', level: 60, icon: 'fab fa-cuttlefish' },
     { name: 'C#', level: 60, icon: 'fab fa-microsoft' },
     { name: 'Docker', level: 60, icon: 'fab fa-docker' },
-    { name: 'Express', level: 50, icon: 'fab fa-node-js' }
+    { name: 'Express', level: 50, icon: 'fab fa-node-js' },
   ];
 
    otherSkills = [
