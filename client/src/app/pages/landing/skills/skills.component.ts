@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NSkill } from '../../../../../../shared/interfaces/IFormData';
 
 @Component({
   selector: 'app-skills',
@@ -9,6 +10,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule]
 })
 export class SkillsComponent {
+  @Input() skillsData: Array<NSkill> = [];
   activeTab: string = 'web-development';
 
    webDevelopmentSkills = [

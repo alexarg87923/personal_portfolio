@@ -2,13 +2,13 @@
   <div class="container mx-auto px-4">
     <h2 class="text-3xl font-bold text-center text-gray-200 mb-6">My Projects</h2>
     <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-      <div *ngFor="let project of projects" class="transition duration-300 ease-in-out transform hover:scale-105 flex flex-col h-full">
+      <div *ngFor="let project of projectsData" class="transition duration-300 ease-in-out transform hover:scale-105 flex flex-col h-full">
         <div class="bg-gray-900 bg-opacity-80 border border-gray-600 p-5 rounded-lg shadow-lg hover:shadow-xl flex flex-col justify-between h-full">
-          <h3 class="text-xl font-semibold mb-2 text-orange-500">{{ project.name }}</h3>
+          <h3 class="text-xl font-semibold mb-2 text-orange-500">{{ project.title }}</h3>
           <p class="text-gray-300 mb-4">{{ project.description }}</p>
           <img
           ngOptimizedImage
-          [src]="project.imageUrl"
+          [src]="project.project_img_path"
           [srcset]="getSrcSet(project)"
           sizes="(max-width: 600px) 480px, (max-width: 1200px) 800px, 1200px"
           alt="Project Image"
@@ -16,15 +16,15 @@
           class="w-full h-auto mb-4 rounded"
           />
           <div class="flex flex-wrap gap-2 mt-2">
-            <span *ngFor="let tech of project.techStack" class="bg-gray-800 text-white border border-gray-600 px-2 py-1 rounded text-sm transition duration-300 ease-in-out hover:bg-orange-500 hover:text-gray-900 hover:border-orange-500">
-              {{ tech }}
+            <span *ngFor="let skill of project.skills" class="bg-gray-800 text-white border border-gray-600 px-2 py-1 rounded text-sm transition duration-300 ease-in-out hover:bg-orange-500 hover:text-gray-900 hover:border-orange-500">
+              {{ skill.skill }}
             </span>
           </div>
           <!-- Hosting Status -->
           <div class="mt-4 flex items-center gap-2">
             <h4 class="text-lg font-semibold text-orange-500">Hosted on:</h4>
-            <p *ngIf="project.hosted !== 'Offline'; else offlineStatus" class="text-green-400">
-                {{ project.hosted }}
+            <p *ngIf="project.host_status !== 'Offline'; else offlineStatus" class="text-green-400">
+                {{ project.host_status }}
             </p>
             <ng-template #offlineStatus>
                 <p class="text-red-500">Not currently hosted</p>
@@ -35,10 +35,10 @@
             <h4 class="text-lg font-semibold mb-1 text-orange-500">Collaborators:</h4>
             <ul class="list-disc pl-5 mb-2 text-gray-300">
                 <li *ngFor="let collaborator of project.collaborators">
-                    <a *ngIf="collaborator.portfolioUrl" href="{{ collaborator.portfolioUrl }}" target="_blank" class="text-blue-400 hover:text-blue-600 transition duration-300 ease-in-out">
+                    <a *ngIf="collaborator.portfolio_url" href="{{ collaborator.portfolio_url }}" target="_blank" class="text-blue-400 hover:text-blue-600 transition duration-300 ease-in-out">
                         {{ collaborator.name }}
                     </a>
-                    <span *ngIf="!collaborator.portfolioUrl">{{ collaborator.name }}</span>
+                    <span *ngIf="!collaborator.portfolio_url">{{ collaborator.name }}</span>
                 </li>
             </ul>
           </ng-container>
@@ -47,19 +47,19 @@
           </ng-template>
           <!-- Link to GitHub and Project URL -->
           <div class="flex mt-4 items-end justify-between flex-grow">
-            <a *ngIf="project.githubLink !== 'Private'" href="{{ project.githubLink }}" target="_blank" class="mr-4">
+            <a *ngIf="project.github_url !== 'Private'" href="{{ project.github_url }}" target="_blank" class="mr-4">
               <svg class="h-6 w-6 text-gray-400 hover:text-orange-500 transition duration-300 ease-in-out" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.3 3.438 9.8 8.205 11.387.6.111.82-.261.82-.577v-2.255c-3.338.725-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.755-1.333-1.755-1.09-.745.083-.729.083-.729 1.205.085 1.84 1.237 1.84 1.237 1.07 1.834 2.807 1.305 3.495.997.107-.776.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.932 0-1.31.465-2.38 1.235-3.22-.125-.304-.535-1.527.115-3.18 0 0 1.005-.322 3.295 1.23.955-.266 1.98-.398 3-.405 1.02.007 2.045.139 3 .405 2.29-1.552 3.29-1.23 3.29-1.23.655 1.653.245 2.876.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.43.372.82 1.102.82 2.222v3.3c0 .32.215.694.825.576C20.565 21.795 24 17.295 24 12c0-6.63-5.37-12-12-12z"/>
               </svg>
             </a>
-            <span *ngIf="project.githubLink === 'Private'" class="mr-4 text-gray-400">Private Repo</span>
-            <a *ngIf="project.projectUrl && project.projectUrl !== 'Private' && project.projectUrl !== 'NoURL'" href="{{ project.projectUrl }}" target="_blank">
+            <span *ngIf="project.github_url === 'Private'" class="mr-4 text-gray-400">Private Repo</span>
+            <a *ngIf="project.web_url && project.web_url !== 'Private' && project.web_url !== 'NoURL'" href="{{ project.web_url }}" target="_blank">
               <svg class="h-6 w-6 text-gray-400 hover:text-orange-500 transition duration-300 ease-in-out" fill="currentColor" xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px">
                 <path d="M480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-80q134 0 227-93t93-227q0-7-.5-14.5T799-507q-5 29-27 48t-52 19h-80q-33 0-56.5-23.5T560-520v-40H400v-80q0-33 23.5-56.5T480-720h40q0-23 12.5-40.5T563-789q-20-5-40.5-8t-42.5-3q-134 0-227 93t-93 227h200q66 0 113 47t47 113v40H400v110q20 5 39.5 7.5T480-160Z"/>
               </svg>
             </a>
-            <span *ngIf="project.projectUrl === 'Private'" class="text-gray-400">Private URL</span>
-            <span *ngIf="project.projectUrl === 'NoURL' || !project.projectUrl" class="text-gray-400">No URL Available</span>
+            <span *ngIf="project.web_url === 'Private'" class="text-gray-400">Private URL</span>
+            <span *ngIf="project.web_url === 'NoURL' || !project.web_url" class="text-gray-400">No URL Available</span>
           </div>
         </div>
       </div>

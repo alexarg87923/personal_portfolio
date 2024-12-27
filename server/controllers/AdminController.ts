@@ -8,6 +8,37 @@ export class AdminController {
     this.adminService = new AdminService();
   }
 
+  async saveComponentData(req: Request, res: Response): Promise<void> {
+    try {
+      const components = [
+        { key: 'about', saveMethod: this.adminService.saveAboutData.bind(this.adminService) },
+        { key: 'experience', saveMethod: this.adminService.saveExperienceData.bind(this.adminService) },
+        { key: 'project', saveMethod: this.adminService.saveProjectData.bind(this.adminService) },
+        { key: 'skill', saveMethod: this.adminService.saveSkillData.bind(this.adminService) },
+      ];
+
+      for (const component of components) {
+        if (req.body[component.key]?.length > 0) {
+          for (const item of req.body[component.key])
+          {
+            const result = await component.saveMethod(item);
+
+            if (result === 1) {
+              res.status(500).json({ error: `Saving ${component.key} data failed` });
+              return;
+            }
+          }
+        }
+      }
+
+      res.status(200).json({ message: 'Data saved successfully' });
+    } catch (error) {
+      console.error('Error saving data:', error);
+      res.status(500).json({ error: 'An unexpected error occurred' });
+    }
+  }
+
+
   async getComponentData(req: Request, res: Response): Promise<void> {
     try {
       const [about, experience, project, skill] = await Promise.all([
@@ -31,7 +62,7 @@ export class AdminController {
         skill: skill.body,
       });
     } catch (error) {
-      console.error("Error fetching component data:", error);
+      console.error("Error fetching component data: ", error);
       res.status(500).json({ error: 'An unexpected error occurred' });
     }
   }

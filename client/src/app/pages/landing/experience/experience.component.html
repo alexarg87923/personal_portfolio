@@ -1,15 +1,15 @@
 <section id="experience" class="min-h-screen flex items-center justify-center relative text-white">
   <ul class="timeline timeline-snap-icon max-md:timeline-compact timeline-vertical w-full max-w-4xl mx-auto">
-    <li *ngFor="let experience of workExperiences; let i = index" class="mb-10">
+    <li *ngFor="let experience of experienceData; let i = index" class="mb-10">
       <div class="timeline-middle flex justify-center items-center mb-4">
-        <img [src]="experience.logoUrl" alt="Company Logo" class="h-10 w-10 rounded-full border-2 border-gray-500 hover:border-orange-500 hover:scale-110 transition-all duration-300">
+        <img [src]="experience.logo_path" alt="Company Logo" class="h-10 w-10 rounded-full border-2 border-gray-500 hover:border-orange-500 hover:scale-110 transition-all duration-300">
       </div>
       <div [ngClass]="{'timeline-start md:text-left': i % 2 === 0, 'timeline-end md:text-right': i % 2 !== 0}" class="text-center p-4 hover:bg-gray-800 rounded-lg transition-all duration-300">
-        <time class="font-mono italic block text-orange-500">{{ experience.date }}</time>
+        <p class="font-mono italic block text-orange-500">{{ experience.start_date | monthYearFormat }} - {{ experience.working_here_right_now ? 'Present' : experience.end_date | monthYearFormat }}</p>
         <div class="text-lg font-black text-orange-500">{{ experience.title }}</div>
         <p>{{ experience.description }}</p>
       </div>
-      <hr *ngIf="experience !== workExperiences[workExperiences.length - 1]" class="border-t-2 border-orange-500 my-4" />
+      <hr *ngIf="experience !== experienceData[experienceData.length - 1]" class="border-t-2 border-orange-500 my-4" />
     </li>
   </ul>
 </section>

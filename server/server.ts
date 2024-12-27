@@ -10,6 +10,7 @@ import * as bodyParser from 'body-parser';
 
 import ContactRoutes from './routes/ContactRoutes';
 import AdminRoutes from './routes/AdminRoutes';
+import MainRoute from './routes/MainRoute';
 
 import { initialize_database } from './databases/pg';
 
@@ -27,6 +28,7 @@ export function app(): express.Express {
   // API routes
   server.use('/api', ContactRoutes);
   server.use('/api', AdminRoutes);
+  server.use('/api', MainRoute);
 
   if (environment.mode == 'production') {
     // Set view engine and views directory

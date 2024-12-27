@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+ import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
@@ -13,10 +13,9 @@ import { IAbout, IExperience, IProject, ISkill } from '../../../../../shared/int
 })
 
 export class AdminComponent implements OnInit {
-  aboutSection: IAbout;
-  experienceSection: Array<IExperience>;
-  projectsSection: Array<IProject>;
-  skillsSection: Array<ISkill>;
+  fetchedData: IFormData = { about: [ { id: -1, summary: '' } ], experience: [], project: [], skill: [] };
+  original: IFormData = { about: [], experience: [], project: [], skill: [] };
+  changed: ChangedFormData = { about: [], experience: [], project: [], skill: [] };
 
   activeIndexExperience: number | null = null;
   toggleExperience(index: number): void {
@@ -33,22 +32,43 @@ export class AdminComponent implements OnInit {
     this.activeIndexSkills = this.activeIndexSkills === index ? null : index;
   }
 
-  constructor(private http: HttpClient) {
-    this.aboutSection = { id: -1, summary: '' };
-    this.experienceSection = [];
-    this.projectsSection = [];
-    this.skillsSection = [];
+  constructor(private http: HttpClient) {}
+
+  onChange(section: keyof IFormData, index: number, field: string, event: Event): void {
+    const newValue = (event.target as HTMLInputElement).value;
+    const origValue = this.original[section][index][field as keyof (IExperience|IProject|ISkill|IAbout)];
+
+    if (newValue !== String(origValue)) {
+      this.changed[section][index] = {
+        ...this.changed[section][index],
+        [field]: newValue
+      };
+
+      if (!this.changed[section][index]['id']) {
+        const origID = this.original[section][index]['id'];
+        this.changed[section][index]['id'] = origID;
+      }
+
+    } else {
+      if (this.changed[section][index]) {
+        delete this.changed[section][index][field as keyof (IExperience|IProject|ISkill|IAbout)];
+
+        if (Object.keys(this.changed[section]![index]!).length === 1) {
+          this.changed[section]!.splice(index, 1);
+        }
+      }
+    }
+
+    console.log(this.changed);
   }
 
+
   ngOnInit(): void {
-    this.http.get<IFormData>('http://localhost:4000/api/admin')
+    this.http.get<IFormData>('/api/admin')
     .subscribe({
       next: response => {
-        console.log(response);
-        this.aboutSection = response.about[0];
-        this.experienceSection = response.experience;
-        this.projectsSection = response.project;
-        this.skillsSection = response.skill;
+        this.fetchedData = response;
+        this.original = JSON.parse(JSON.stringify(response));
       },
       error: error => {
         console.error('Error doing GET request', error);
@@ -56,6 +76,35 @@ export class AdminComponent implements OnInit {
       }
     })
   }
+
+  onSubmit(): void {
+    if (Object.keys(this.changed).length > 0) {
+      console.log('Saving changes:', this.changed);
+      this.http.post('/api/admin', this.changed)
+        .subscribe({
+          next: response => {
+            console.log('Changes saved successfully:', response);
+            this.original = JSON.parse(JSON.stringify(this.fetchedData));
+            this.changed = { about: [], experience: [], project: [], skill: [] };
+          },
+          error: error => {
+            console.error('Error saving changes:', error);
+            alert('Failed to save changes');
+          }
+        });
+    } else {
+      console.log('No changes to save.');
+      alert('No changes detected.');
+    }
+  }
+
+}
+
+interface ChangedFormData {
+  about: Partial<IAbout>[];
+  experience: Partial<IExperience>[];
+  project: Partial<IProject>[];
+  skill: Partial<ISkill>[];
 }
 
 interface IFormData {
