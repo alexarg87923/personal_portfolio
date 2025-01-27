@@ -1,7 +1,6 @@
 import { Pool } from 'pg';
 import { environment } from '../environments/environment.prod';
-
-const fs = require('node:fs');
+import fs from 'node:fs';
 
 export const pool = new Pool({
   user: environment.DB_USER,
@@ -76,7 +75,7 @@ async function initialize_data(table_name: string){
 
 
 export async function initialize_database(){
-  const tables = ['about', 'experience',  'projects', 'collaborator', 'skills', 'contact', 'project_collaborators', 'project_skills'];
+  const tables = ['about', 'experience',  'projects', 'collaborator', 'skills', 'contact', 'project_collaborators', 'project_skills', 'users'];
   const data = ['about', 'experience', 'projects', 'collaborator', 'skills', 'project_collaborators', 'project_skills'];
 
   for (const table of tables) {

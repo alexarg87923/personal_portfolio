@@ -5,5 +5,8 @@ export const environment = {
   DB_PASSWORD: '',
   DB_PORT: '',
   PORT: '',
-  PASSWORD: ''
+  PASSWORD: '',
+  mode: 'production | development',
+  SALT: 0,
+  REDIS_SECRET: ''
 };

@@ -3,16 +3,48 @@
 import { IAbout, IExperience, IFormData, IProject, ISkill } from '../../shared/interfaces/IFormData';
 import { ILoginCred } from '../../shared/interfaces/ILoginCred';
 import { pool } from '../databases/pg';
-import redis from '../databases/redis';
+import * as bcrypt from 'bcryptjs';
 
 export class AdminService {
-  async login(formData: ILoginCred): Promise<number> {
+  async verifyUser(userID: string): Promise<Number> {
     const client = await pool.connect();
-    return 0;
-  }
+    try {
+      var res = await client.query('SELECT user_id FROM users WHERE user_id = $1', [userID]);
 
-  async logout(): Promise<number> {
-    return 0;
+      if (res.rowCount === 0 || res.rowCount === null) {
+        return 1;
+      }
+
+      return 0;
+    } catch (error) {
+      console.error('Error occurred getting data: ', error);
+      return 1;
+    } finally {
+      client.release();
+    }
+  }
+  async login(formData: ILoginCred): Promise<IFormData<string>> {
+    const client = await pool.connect();
+    try {
+      var res = await client.query('SELECT user_id, hashed_password FROM users WHERE username = $1', [formData.username]);
+
+      if (res.rowCount === 0 || res.rowCount === null) {
+        return {status: 1, body: ['']};
+      }
+
+      const isMatch = await bcrypt.compare(formData.password, res.rows[0].hashed_password);
+
+      if (isMatch) {
+        return {status: 0, body: [res.rows[0].user_id]};
+      } else {
+        return {status: 2, body: ['']};
+      }
+    } catch (error) {
+      console.error('Error occurred getting data: ', error);
+      return {status: 1, body: ['']};
+    } finally {
+      client.release();
+    }
   }
 
   async getAboutData(): Promise<IFormData<IAbout>> {

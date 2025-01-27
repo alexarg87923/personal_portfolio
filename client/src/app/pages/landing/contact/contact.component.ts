@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
@@ -9,7 +9,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   imports: [HttpClientModule, ReactiveFormsModule],
   standalone: true
 })
-export class ContactComponent implements OnInit {
+export class ContactComponent {
   form: FormGroup;
 
   constructor(private fb: FormBuilder, private http: HttpClient) {
@@ -19,8 +19,6 @@ export class ContactComponent implements OnInit {
       message: ['', Validators.required]
     });
   }
-
-  ngOnInit(): void {}
 
   onSubmit(): void {
     if (this.form.valid) {

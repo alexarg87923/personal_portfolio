@@ -20,7 +20,10 @@
             "allowedCommonJsDependencies": [
                 "pg",
                 "body-parser",
-                "http-proxy-middleware"
+                "http-proxy-middleware",
+                "bcryptjs",
+                "redis",
+                "express-session"
             ],
             "outputPath": "dist/portfolio",
             "index": "client/src/index.html",

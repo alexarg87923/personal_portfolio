@@ -1,14 +1,14 @@
- import { Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'
 import { IAbout, IExperience, IProject, ISkill } from '../../../../../shared/interfaces/IFormData';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  imports: [HttpClientModule, ReactiveFormsModule, FormsModule, CommonModule],
+  imports: [HttpClientModule, FormsModule, CommonModule],
   standalone: true
 })
 
@@ -32,7 +32,7 @@ export class AdminComponent implements OnInit {
     this.activeIndexSkills = this.activeIndexSkills === index ? null : index;
   }
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   onChange(section: keyof IFormData, index: number, field: string, event: Event): void {
     const newValue = (event.target as HTMLInputElement).value;
@@ -58,10 +58,7 @@ export class AdminComponent implements OnInit {
         }
       }
     }
-
-    console.log(this.changed);
   }
-
 
   ngOnInit(): void {
     this.http.get<IFormData>('/api/admin')
@@ -72,9 +69,9 @@ export class AdminComponent implements OnInit {
       },
       error: error => {
         console.error('Error doing GET request', error);
-        alert('Failed to do GET request');
+        this.router.navigate(['/500']);
       }
-    })
+    });
   }
 
   onSubmit(): void {

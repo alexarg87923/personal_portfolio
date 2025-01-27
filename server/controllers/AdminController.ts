@@ -8,8 +8,34 @@ export class AdminController {
     this.adminService = new AdminService();
   }
 
+  async sessionHandler(req: Request, res: Response, next: Function): Promise<void> {
+    if (!req.session.user?.user_id) {
+      res.status(401).json({ error: 'Unauthorized' });
+      return;
+    } else {
+      try {
+        // redundant check against DB for security reasons
+        var result = await this.adminService.verifyUser(req.session.user?.user_id);
+
+        if (result == 0) {
+          next();
+          return;
+        } else {
+          res.status(500).send('Invalid response from the database.');
+          return;
+        }
+      } catch (error) {
+        console.error('An unexpected error occurred when veirfying the session:', error);
+        res.status(500).json({ error: 'An unexpected error occurred when veirfying the session' });
+      }
+    }
+    res.status(500).send('Unexpected error.');
+    return;
+  }
+
   async saveComponentData(req: Request, res: Response): Promise<void> {
     try {
+
       const components = [
         { key: 'about', saveMethod: this.adminService.saveAboutData.bind(this.adminService) },
         { key: 'experience', saveMethod: this.adminService.saveExperienceData.bind(this.adminService) },
@@ -41,6 +67,7 @@ export class AdminController {
 
   async getComponentData(req: Request, res: Response): Promise<void> {
     try {
+
       const [about, experience, project, skill] = await Promise.all([
         this.adminService.getAboutData(),
         this.adminService.getExperienceData(),
@@ -70,10 +97,13 @@ export class AdminController {
   async login(req: Request, res: Response): Promise<void> {
     try {
       let result = await this.adminService.login(req.body);
-      if (result === 0) {
-        res.status(201).json({ message: 'success' });
+      if (result.status === 0) {
+        req.session.user = { user_id: result.body[0] };
+        res.status(200).json({ message: 'Success!' });
+      } else if (result.status === 2) {
+        res.status(401).json({ message: 'Invalid Credentials.' });
       } else {
-        res.status(500).json({ error: 'failed' });
+        res.status(500).json({ error: 'Catastrophic error.' });
       }
     } catch (error: any) {
       res.status(500).json({ error: 'Internal server error', message: error.message });
@@ -82,14 +112,23 @@ export class AdminController {
 
   async logout(req: Request, res: Response): Promise<void> {
     try {
-      let result = await this.adminService.logout();
-      if (result === 0) {
-        res.status(201).json({ message: 'success' });
-      } else {
-        res.status(500).json({ error: 'failed' });
-      }
+      res.clearCookie('connect.sid');
+      req.session.destroy((err) => {
+        if (err) {
+          console.log(err);
+          return res.status(500).send('Logout failed');
+        }
+        return res.status(201).json({ message: 'success' });
+      });
     } catch (error: any) {
-      res.status(500).json({ error: 'Internal server error', message: error.message });
+      res.status(500).json({ error: 'Internal server error logging out', message: error.message });
+      return;
     }
+  }
+}
+
+declare module "express-session" {
+  interface SessionData {
+    user: { user_id: string };
   }
 }

@@ -3,11 +3,11 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
 import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine } from '@angular/ssr';
-import httpProxy from 'http-proxy-middleware';
+import session from 'express-session';
 import bootstrap from '../client/src/main.server';
 import { environment } from './environments/environment.prod';
 import * as bodyParser from 'body-parser';
-
+import redisStore from './databases/redis';
 import ContactRoutes from './routes/ContactRoutes';
 import AdminRoutes from './routes/AdminRoutes';
 import MainRoute from './routes/MainRoute';
@@ -24,6 +24,14 @@ export function app(): express.Express {
   // Middleware
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: true }));
+  server.use(
+    session({
+      store: redisStore,
+      resave: false,
+      saveUninitialized: true,
+      secret: environment.REDIS_SECRET,
+    }),
+  );
 
   // API routes
   server.use('/api', ContactRoutes);

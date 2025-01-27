@@ -1,21 +1,8 @@
-<!-- <main class="flex justify-center items-center min-h-screen">
-  <div>
-    <div>
-      <h1 class="text-white">Login</h1>
-    </div>
-    <div>
-      <input type="text" class="w-full mb-5">
-      <input type="password" class="w-full">
-      <button class="text-white bg-orange-600 rounded-md w-full p-1 mt-5 hover:bg-orange-700 transition">Enter</button>
-    </div>
-  </div>
-</main> -->
-
 <main id="bg">
   <style>
     #bg {
       position: relative;
-      background-image: url('/assets/original-sizes/admin-bg.jpg');
+      background-image: url('/assets/original-sizes/admin-bg.webp');
       background-repeat: no-repeat;
       background-size: cover;
       background-position: center;
@@ -40,8 +27,13 @@
 
   <div id="children">
     <form (ngSubmit)="onSubmit()" #myForm="ngForm">
-      <div class="justify-end flex ">
-        <button class="text-white bg-orange-600 rounded-md hover:bg-orange-700 transition me-5 mt-5 w-24 h-10">
+      <div class="justify-end flex">
+        <a href="/admin/logout">
+          <button type="button" class="text-white bg-orange-600 rounded-md hover:bg-orange-700 transition me-5 mt-5 w-24 h-10">
+            Logout
+          </button>
+        </a>
+        <button type="submit" class="text-white bg-orange-600 rounded-md hover:bg-orange-700 transition me-5 mt-5 w-24 h-10">
           Save
         </button>
       </div>
@@ -57,9 +49,6 @@
             class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
             [(ngModel)]="fetchedData.about[0].summary">
           </textarea>
-          <!-- <button class="text-white bg-orange-600 rounded-md hover:bg-orange-700 transition mt-2 w-24 h-10">
-            Save
-          </button> -->
         </div>
       </div>
 
