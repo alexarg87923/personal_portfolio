@@ -14,6 +14,6 @@ export class ContactService {
       return 1;
     } finally {
       pgclient.release();
-    }
-  }
-}
+    };
+  };
+};

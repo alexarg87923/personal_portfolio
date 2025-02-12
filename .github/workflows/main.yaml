@@ -1,0 +1,26 @@
+name: Deploy Changes
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: self-hosted
+    steps:
+      - name: Pull Latest Changes
+        run: |
+          git pull
+
+      - name: Install Dependencies
+        run: |
+          npm install
+
+      - name: Build
+        run: |
+          npm run build
+
+      - name: Start Server
+        run: |
+          npm run serve

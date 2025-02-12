@@ -21,7 +21,7 @@ export class MainController {
       if (responses.some(response => response.status === 1)) {
         res.status(500).json({ error: 'One or more data retrievals failed' });
         return;
-      }
+      };
 
       res.status(200).json({
         about: about.body,
@@ -32,6 +32,6 @@ export class MainController {
     } catch (error) {
       console.error("Error fetching component data: ", error);
       res.status(500).json({ error: 'An unexpected error occurred' });
-    }
-  }
+    };
+  };
 }

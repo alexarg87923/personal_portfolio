@@ -14,6 +14,6 @@
   ],
   "include": [
     "./client/src/**/*.d.ts",
-    "./server/*.ts"
+    "./server/**/*.ts"
   ]
 }

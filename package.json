@@ -3,9 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "start": "concurrently -n \"Back-end,Front-end\" -c \"cyan,green\" \"npm run start:back-end\" \"npm run start:front-end\"",
-    "start:back-end": "node dist/portfolio/server/server.mjs",
+    "start:back-end": "npm run build && node dist/portfolio/server/server.mjs",
     "start:front-end": "ng serve",
-    "production": "ng build --configuration production && node dist/portfolio/server/server.mjs"
+    "build": "ng build --configuration production && cp -r ./init_data_scripts/ ./dist/portfolio/server/init_data_scripts/ && cp -r ./tables/ ./dist/portfolio/server/tables/",
+    "serve": "node ./dist/portfolio/server/server.mjs"
   },
   "private": true,
   "dependencies": {

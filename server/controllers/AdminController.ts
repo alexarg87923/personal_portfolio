@@ -6,7 +6,7 @@ export class AdminController {
 
   constructor() {
     this.adminService = new AdminService();
-  }
+  };
 
   async sessionHandler(req: Request, res: Response, next: Function): Promise<void> {
     if (!req.session.user?.user_id) {
@@ -27,11 +27,11 @@ export class AdminController {
       } catch (error) {
         console.error('An unexpected error occurred when veirfying the session:', error);
         res.status(500).json({ error: 'An unexpected error occurred when veirfying the session' });
-      }
-    }
+      };
+    };
     res.status(500).send('Unexpected error.');
     return;
-  }
+  };
 
   async saveComponentData(req: Request, res: Response): Promise<void> {
     try {
@@ -52,17 +52,17 @@ export class AdminController {
             if (result === 1) {
               res.status(500).json({ error: `Saving ${component.key} data failed` });
               return;
-            }
-          }
-        }
-      }
+            };
+          };
+        };
+      };
 
       res.status(200).json({ message: 'Data saved successfully' });
     } catch (error) {
       console.error('Error saving data:', error);
       res.status(500).json({ error: 'An unexpected error occurred' });
-    }
-  }
+    };
+  };
 
 
   async getComponentData(req: Request, res: Response): Promise<void> {
@@ -80,7 +80,7 @@ export class AdminController {
       if (responses.some(response => response.status === 1)) {
         res.status(500).json({ error: 'One or more data retrievals failed' });
         return;
-      }
+      };
 
       res.status(200).json({
         about: about.body,
@@ -91,8 +91,8 @@ export class AdminController {
     } catch (error) {
       console.error("Error fetching component data: ", error);
       res.status(500).json({ error: 'An unexpected error occurred' });
-    }
-  }
+    };
+  };
 
   async login(req: Request, res: Response): Promise<void> {
     try {
@@ -104,11 +104,11 @@ export class AdminController {
         res.status(401).json({ message: 'Invalid Credentials.' });
       } else {
         res.status(500).json({ error: 'Catastrophic error.' });
-      }
+      };
     } catch (error: any) {
       res.status(500).json({ error: 'Internal server error', message: error.message });
-    }
-  }
+    };
+  };
 
   async logout(req: Request, res: Response): Promise<void> {
     try {
@@ -123,12 +123,12 @@ export class AdminController {
     } catch (error: any) {
       res.status(500).json({ error: 'Internal server error logging out', message: error.message });
       return;
-    }
-  }
-}
+    };
+  };
+};
 
 declare module "express-session" {
   interface SessionData {
     user: { user_id: string };
   }
-}
+};

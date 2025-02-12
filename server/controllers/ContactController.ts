@@ -6,7 +6,7 @@ export class ContactController {
 
   constructor() {
     this.contactService = new ContactService();
-  }
+  };
 
   async addFormInput(req: Request, res: Response): Promise<void> {
     try {
@@ -15,9 +15,9 @@ export class ContactController {
         res.status(201).json({ message: 'Form input added successfully' });
       } else {
         res.status(500).json({ error: 'Failed to save contact form' });
-      }
+      };
     } catch (error: any) {
       res.status(500).json({ error: 'Internal server error', message: error.message });
-    }
-  }
-}
+    };
+  };
+};

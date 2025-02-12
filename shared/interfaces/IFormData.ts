@@ -1,7 +1,7 @@
 export interface IAbout {
   id: number,
   summary: string
-}
+};
 
 export interface IExperience {
   id: number,
@@ -11,7 +11,7 @@ export interface IExperience {
   working_here_right_now: boolean,
   title: string,
   description: string
-}
+};
 
 export interface IProject {
   id: number,
@@ -23,26 +23,26 @@ export interface IProject {
   web_url: string,
   collaborators: Array<ICollaborator>
   skills: Array<ISkill>,
-}
+};
 
 export interface ICollaborator {
   id: number
   name: string
   portfolio_url: string
-}
+};
 
 export interface ISkill {
   id: number,
   skill: string,
   level: number,
   icon: string
-}
+};
 
 
 
 export interface NAbout {
   summary: string
-}
+};
 
 export interface NExperience {
   logo_path: string,
@@ -51,7 +51,7 @@ export interface NExperience {
   working_here_right_now: boolean,
   title: string,
   description: string
-}
+};
 
 export interface NProject {
   title: string,
@@ -62,20 +62,20 @@ export interface NProject {
   web_url: string,
   collaborators: Array<NCollaborator>
   skills: Array<NSkill>,
-}
+};
 
 export interface NCollaborator {
   name: string
   portfolio_url: string
-}
+};
 
 export interface NSkill {
   skill: string,
   level: number,
   icon: string
-}
+};
 
 export interface IFormData<T> {
   status: number,
   body: Array<T>
-}
+};

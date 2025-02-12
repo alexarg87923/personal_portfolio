@@ -13,7 +13,7 @@ export class AdminService {
 
       if (res.rowCount === 0 || res.rowCount === null) {
         return 1;
-      }
+      };
 
       return 0;
     } catch (error) {
@@ -21,8 +21,9 @@ export class AdminService {
       return 1;
     } finally {
       client.release();
-    }
-  }
+    };
+  };
+
   async login(formData: ILoginCred): Promise<IFormData<string>> {
     const client = await pool.connect();
     try {
@@ -30,7 +31,7 @@ export class AdminService {
 
       if (res.rowCount === 0 || res.rowCount === null) {
         return {status: 1, body: ['']};
-      }
+      };
 
       const isMatch = await bcrypt.compare(formData.password, res.rows[0].hashed_password);
 
@@ -38,14 +39,14 @@ export class AdminService {
         return {status: 0, body: [res.rows[0].user_id]};
       } else {
         return {status: 2, body: ['']};
-      }
+      };
     } catch (error) {
       console.error('Error occurred getting data: ', error);
       return {status: 1, body: ['']};
     } finally {
       client.release();
-    }
-  }
+    };
+  };
 
   async getAboutData(): Promise<IFormData<IAbout>> {
     const pgclient = await pool.connect();
@@ -53,7 +54,7 @@ export class AdminService {
       var res = await pgclient.query('SELECT id, summary FROM about WHERE active = true');
       if (res.rowCount === 0 || res.rowCount === null) {
         return {status: 1, body: []};
-      }
+      };
 
       return {status: 0, body: res.rows};
     } catch (error) {
@@ -71,7 +72,7 @@ export class AdminService {
       var res = await pgclient.query('UPDATE about SET summary = $1 WHERE id = $2', [inputData.summary, inputData.id]);
       if (res.rowCount === 0 || res?.rowCount === null) {
         return 1;
-      }
+      };
 
       return 0;
     } catch (error) {
@@ -79,8 +80,8 @@ export class AdminService {
       return 1;
     } finally {
       pgclient.release();
-    }
-  }
+    };
+  };
 
   async getExperienceData(): Promise<IFormData<IExperience>> {
     const pgclient = await pool.connect();
@@ -88,7 +89,7 @@ export class AdminService {
       var res = await pgclient.query('SELECT id, logo_path, start_date, end_date, working_here_right_now, title, description FROM experience WHERE active = true');
       if (res.rowCount === 0) {
         return {status: 1, body: []};
-      }
+      };
 
       return {status: 0, body: res.rows};
     } catch (error) {
@@ -96,31 +97,31 @@ export class AdminService {
       return {status: 1, body: []};
     } finally {
       pgclient.release();
-    }
-  }
+    };
+  };
 
   async saveExperienceData(inputData: IExperience): Promise<number> {
     const pgclient = await pool.connect();
     try {
       if (!inputData || typeof inputData !== 'object') {
         throw new Error('Invalid input data: inputData must be a non-null object.');
-      }
+      };
       const { id, ...fieldsToUpdate } = inputData;
 
       if (id === undefined || id === null) {
         throw new Error('Invalid input data: "id" is required for the WHERE clause.');
-      }
+      };
 
       const colms = Object.keys(fieldsToUpdate);
       if (colms.length === 0) {
         throw new Error('No fields provided to update.');
-      }
+      };
       const setClauses = colms.map((colName: string, idx: number) => `${colName} = $${idx + 1}`);
 
       var res = await pgclient.query(`UPDATE experience SET ${setClauses.join(', ')} WHERE id = $${colms.length + 1}`, [...Object.values(fieldsToUpdate), id ]);
       if (res.rowCount === 0) {
         return 1;
-      }
+      };
 
       return 0;
     } catch (error) {
@@ -128,8 +129,8 @@ export class AdminService {
       return 1;
     } finally {
       pgclient.release();
-    }
-  }
+    };
+  };
 
   async getProjectData(): Promise<IFormData<IProject>> {
     const pgclient = await pool.connect();
@@ -146,7 +147,7 @@ export class AdminService {
 
       if (projectsRows.rowCount === 0) {
         return {status: 1, body: []};
-      }
+      };
 
       return {status: 0, body: projectsRows.rows};
     } catch (error) {
@@ -154,8 +155,8 @@ export class AdminService {
       return {status: 1, body: []};
     } finally {
       pgclient.release();
-    }
-  }
+    };
+  };
 
 
   async saveProjectData(inputData: IProject): Promise<number> {
@@ -163,23 +164,23 @@ export class AdminService {
     try {
       if (!inputData || typeof inputData !== 'object') {
         throw new Error('Invalid input data: inputData must be a non-null object.');
-      }
+      };
       const { id, ...fieldsToUpdate } = inputData;
 
       if (id === undefined || id === null) {
         throw new Error('Invalid input data: "id" is required for the WHERE clause.');
-      }
+      };
 
       const colms = Object.keys(fieldsToUpdate);
       if (colms.length === 0) {
         throw new Error('No fields provided to update.');
-      }
+      };
       const setClauses = colms.map((colName: string, idx: number) => `${colName} = $${idx + 1}`);
 
       var res = await pgclient.query(`UPDATE projects SET ${setClauses.join(', ')} WHERE id = $${colms.length + 1}`, [...Object.values(fieldsToUpdate), id ]);
       if (res.rowCount === 0) {
         return 1;
-      }
+      };
 
       return 0;
     } catch (error) {
@@ -187,8 +188,8 @@ export class AdminService {
       return 1;
     } finally {
       pgclient.release();
-    }
-  }
+    };
+  };
 
   async getSkillData(): Promise<IFormData<ISkill>> {
     const pgclient = await pool.connect();
@@ -196,7 +197,7 @@ export class AdminService {
       var res = await pgclient.query('SELECT id, skill, level, icon FROM skills WHERE active = true');
       if (res.rowCount === 0) {
         return {status: 1, body: []};
-      }
+      };
 
       return {status: 0, body: res.rows};
     } catch (error) {
@@ -204,31 +205,31 @@ export class AdminService {
       return {status: 1, body: []};
     } finally {
       pgclient.release();
-    }
-  }
+    };
+  };
 
   async saveSkillData(inputData: ISkill): Promise<number> {
     const pgclient = await pool.connect();
     try {
       if (!inputData || typeof inputData !== 'object') {
         throw new Error('Invalid input data: inputData must be a non-null object.');
-      }
+      };
       const { id, ...fieldsToUpdate } = inputData;
 
       if (id === undefined || id === null) {
         throw new Error('Invalid input data: "id" is required for the WHERE clause.');
-      }
+      };
 
       const colms = Object.keys(fieldsToUpdate);
       if (colms.length === 0) {
         throw new Error('No fields provided to update.');
-      }
+      };
       const setClauses = colms.map((colName: string, idx: number) => `${colName} = $${idx + 1}`);
 
       var res = await pgclient.query(`UPDATE skills SET ${setClauses.join(', ')} WHERE id = $${colms.length + 1}`, [...Object.values(fieldsToUpdate), id ]);
       if (res.rowCount === 0) {
         return 1;
-      }
+      };
 
       return 0;
     } catch (error) {
@@ -236,7 +237,6 @@ export class AdminService {
       return 1;
     } finally {
       pgclient.release();
-    }
-  }
-
-}
+    };
+  };
+};

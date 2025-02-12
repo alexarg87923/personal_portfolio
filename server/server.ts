@@ -30,7 +30,7 @@ export function app(): express.Express {
       resave: false,
       saveUninitialized: true,
       secret: environment.REDIS_SECRET,
-    }),
+    })
   );
 
   // API routes
@@ -38,7 +38,7 @@ export function app(): express.Express {
   server.use('/api', AdminRoutes);
   server.use('/api', MainRoute);
 
-  if (environment.mode == 'production') {
+  if (environment.MODE === 'production') {
     // Set view engine and views directory
     server.set('view engine', 'html');
     server.set('views', browserDistFolder);
@@ -61,17 +61,17 @@ export function app(): express.Express {
         .then(html => res.send(html))
         .catch(err => next(err));
     });
-  }
+  };
 
   return server;
-}
+};
 
 function run(): void {
   const port = environment.PORT || 4000;
   const server = app();
   server.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port} in ${environment.mode} mode.`);
+    console.log(`Node Express server listening on http://localhost:${port} in ${environment.MODE} mode.`);
   });
-}
+};
 
 run();

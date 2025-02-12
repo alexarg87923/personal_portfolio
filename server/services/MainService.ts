@@ -10,7 +10,7 @@ export class MainService {
       var res = await pgclient.query('SELECT id, summary FROM about WHERE active = true');
       if (res.rowCount === 0 || res.rowCount === null) {
         return {status: 1, body: []};
-      }
+      };
 
       return {status: 0, body: res.rows[0]};
     } catch (error) {
@@ -18,15 +18,16 @@ export class MainService {
       return {status: 1, body: []};
     } finally {
       pgclient.release();
-    }
-  }
+    };
+  };
+
   async getExperienceData(): Promise<IFormData<Array<NExperience>>> {
     const pgclient = await pool.connect();
     try {
       var res = await pgclient.query(`SELECT id, logo_path, to_char(start_date, 'YYYY-MM') AS start_date, to_char(end_date, 'YYYY-MM') AS end_date, working_here_right_now, title, description FROM experience WHERE active = true`);
       if (res.rowCount === 0) {
         return {status: 1, body: []};
-      }
+      };
 
       return {status: 0, body: res.rows};
     } catch (error) {
@@ -34,8 +35,8 @@ export class MainService {
       return {status: 1, body: []};
     } finally {
       pgclient.release();
-    }
-  }
+    };
+  };
 
 
   async getProjectData(): Promise<IFormData<Array<NProject>>> {
@@ -53,7 +54,7 @@ export class MainService {
 
       if (projectsRows.rowCount === 0) {
         return {status: 1, body: []};
-      }
+      };
 
       return {status: 0, body: projectsRows.rows};
     } catch (error) {
@@ -61,9 +62,8 @@ export class MainService {
       return {status: 1, body: []};
     } finally {
       pgclient.release();
-    }
-  }
-
+    };
+  };
 
   async getSkillData(): Promise<IFormData<Array<NSkill>>> {
     const pgclient = await pool.connect();
@@ -71,7 +71,7 @@ export class MainService {
       var res = await pgclient.query('SELECT id, skill, level, icon FROM skills WHERE active = true');
       if (res.rowCount === 0) {
         return {status: 1, body: []};
-      }
+      };
 
       return {status: 0, body: res.rows};
     } catch (error) {
@@ -79,6 +79,6 @@ export class MainService {
       return {status: 1, body: []};
     } finally {
       pgclient.release();
-    }
-  }
-}
+    };
+  };
+};
