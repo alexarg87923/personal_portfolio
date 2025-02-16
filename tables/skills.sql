@@ -1,4 +1,4 @@
-CREATE TABLE skills (
+CREATE TABLE personal_portfolio_schema.skills (
   id SERIAL PRIMARY KEY,
   skill VARCHAR(100),
   level INT,

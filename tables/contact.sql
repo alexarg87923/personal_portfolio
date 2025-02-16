@@ -1,4 +1,4 @@
-CREATE TABLE contact (
+CREATE TABLE personal_portfolio_schema.contact (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100),
   email VARCHAR(100),
