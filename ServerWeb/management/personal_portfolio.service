@@ -1,0 +1,12 @@
+[Unit]
+Description=My personal portfolio
+
+[Service]
+WorkingDirectory=/home/alex/personal_portfolio
+ExecStart=/home/alex/personal_portfolio/management/start.sh
+Restart=always
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

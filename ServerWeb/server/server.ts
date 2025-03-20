@@ -8,18 +8,17 @@ import bootstrap from '../client/src/main.server';
 import { environment } from './environments/environment.prod';
 import * as bodyParser from 'body-parser';
 import redisStore from './databases/redis';
-import ContactRoutes from './routes/ContactRoutes';
-import AdminRoutes from './routes/AdminRoutes';
+
 import MainRoute from './routes/MainRoute';
 
 import { initialize_database } from './databases/pg';
 
-export function app(): express.Express {
+export async function app(): Promise<express.Express> {
   const server = express();
   const browserDistFolder = resolve(dirname(fileURLToPath(import.meta.url)), '../browser');
   const indexHtml = join(browserDistFolder, 'index.html');
   const commonEngine = new CommonEngine();
-  initialize_database();
+  await initialize_database();
 
   // Middleware
   server.use(bodyParser.json());
@@ -34,8 +33,6 @@ export function app(): express.Express {
   );
 
   // API routes
-  server.use('/api', ContactRoutes);
-  server.use('/api', AdminRoutes);
   server.use('/api', MainRoute);
 
   if (environment.MODE === 'production') {
@@ -66,9 +63,9 @@ export function app(): express.Express {
   return server;
 };
 
-function run(): void {
+async function run(): Promise<void> {
   const port = environment.PORT || 4000;
-  const server = app();
+  const server = await app();
   server.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port} in ${environment.MODE} mode.`);
   });

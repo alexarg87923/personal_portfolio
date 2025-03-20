@@ -2,7 +2,7 @@ import { Pool } from 'pg';
 import { environment } from '../environments/environment.prod';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
+import { dirname, resolve } from 'node:path';
 
 export const pool = new Pool({
   user: environment.PSQL_DB_USER,
@@ -13,22 +13,21 @@ export const pool = new Pool({
 });
 
 async function initialize_table(table_name: string) {
-  console.log(`INIT TABLE: ${resolve(dirname(fileURLToPath(import.meta.url)), '../browser')}`);
   const client = await pool.connect();
   try
   {
     console.log(`INIT TABLE: Checking if ${table_name} table exists...`);
     var res = await client.query('SELECT * FROM information_schema.tables');
-    var found = res.rows.find((each) => each.table_name === table_name);
+    var found = await res.rows.find((each) => each.table_name === table_name);
     if (found === undefined)
     {
-      fs.readFile(`./tables/${table_name}.sql`, 'utf8', (e: any, data: string) => {
+      fs.readFile(`./tables/${table_name}.sql`, 'utf8', async (e: any, data: string) => {
         if (e) {
           console.log(`INIT TABLE: Error creating ${table_name}: ` + e.message);
           return;
         };
         console.log(`INIT TABLE: Creating ${table_name} table...`);
-        client.query(data);
+        await client.query(data);
         console.log(`INIT TABLE: ${table_name} table created...`);
       });
     } else {
@@ -46,7 +45,6 @@ async function initialize_table(table_name: string) {
 };
 
 async function initialize_data(table_name: string) {
-  console.log(`INIT DATA: ${__dirname}`);
   const client = await pool.connect();
   try
   {
@@ -54,13 +52,13 @@ async function initialize_data(table_name: string) {
     var res = await client.query(`SELECT COUNT(*) FROM ${table_name}`);
     if ( parseInt(res.rows[0].count) === 0)
     {
-      fs.readFile(`./init_data_scripts/${table_name}.sql`, 'utf8', (e: any, data: string) => {
+      fs.readFile(`./init_data_scripts/${table_name}.sql`, 'utf8', async (e: any, data: string) => {
         if (e) {
           console.log(`INIT DATA: Error inserting data into ${table_name}: ` + e.message);
           return;
         };
         console.log(`INIT DATA: Inserting data into ${table_name}...`);
-        client.query(data);
+        await client.query(data);
         console.log(`INIT DATA: Data inserted into ${table_name}...`);
       });
     } else {
@@ -87,6 +85,6 @@ export async function initialize_database() {
   };
 
   for (const datum of data){
-      await initialize_data(datum);
+    await initialize_data(datum);
   };
 };

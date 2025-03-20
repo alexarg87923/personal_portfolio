@@ -42,9 +42,6 @@ testem.log
 .DS_Store
 Thumbs.db
 
-*.service
-*.sh
-
 connect.*
 *.conf
 *.acl

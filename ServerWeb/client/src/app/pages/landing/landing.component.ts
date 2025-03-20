@@ -30,7 +30,7 @@ export class LandingComponent {
   }
 
   ngOnInit(): void {
-    this.http.get<IFormData>('/api/main')
+    this.http.get<IFormData>('/api/')
     .subscribe({
       next: response => {
         this.fetchedData = response;

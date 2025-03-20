@@ -1,0 +1,17 @@
+name: DBServer
+services:
+  rediscontainer:
+    image: redis:alpine
+    volumes:
+     - ./RedisContainer/redis.conf:/usr/local/etc/redis/redis.conf
+     - ./RedisContainer/users.acl:/data/users.acl
+    entrypoint: ["redis-server", "/usr/local/etc/redis/redis.conf"] 
+    ports:
+      - '6379:6379'
+
+  psqlcontainer:
+    build: 
+      context: ./PostgreSQLContainer
+      dockerfile: Dockerfile
+    ports:
+      - '5432:5432'
