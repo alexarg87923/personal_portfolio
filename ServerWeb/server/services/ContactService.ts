@@ -7,7 +7,7 @@ export class ContactService {
     const pgclient = await pool.connect();
     try {
       console.log(formData);
-      await pgclient.query('INSERT INTO contact (name, email, message) VALUES ($1, $2, $3)', [formData.name, formData.email, formData.message]);
+      await pgclient.query('INSERT INTO personal_portfolio_schema.contact (name, email, message) VALUES ($1, $2, $3)', [formData.name, formData.email, formData.message]);
       return 0;
     } catch (error) {
       console.error('Error occurred while inserting data:', error);

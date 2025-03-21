@@ -21,15 +21,12 @@ async function initialize_table(table_name: string) {
     var found = await res.rows.find((each) => each.table_name === table_name);
     if (found === undefined)
     {
-      fs.readFile(`./tables/${table_name}.sql`, 'utf8', async (e: any, data: string) => {
-        if (e) {
-          console.log(`INIT TABLE: Error creating ${table_name}: ` + e.message);
-          return;
-        };
+      const table_init = fs.readFileSync(`./tables/${table_name}.sql`, 'utf8');
+      if (table_init) {
         console.log(`INIT TABLE: Creating ${table_name} table...`);
-        await client.query(data);
+        await client.query(table_init);
         console.log(`INIT TABLE: ${table_name} table created...`);
-      });
+      }
     } else {
       console.log(`INIT TABLE: ${table_name} exists, skipping...`)
     };
@@ -49,18 +46,13 @@ async function initialize_data(table_name: string) {
   try
   {
     console.log(`INIT DATA: Checking if ${table_name} has data...`);
-    var res = await client.query(`SELECT COUNT(*) FROM ${table_name}`);
-    if ( parseInt(res.rows[0].count) === 0)
+    var res = await client.query(`SELECT COUNT(*) FROM personal_portfolio_schema.${table_name}`);
+    if (parseInt(res.rows[0].count) === 0)
     {
-      fs.readFile(`./init_data_scripts/${table_name}.sql`, 'utf8', async (e: any, data: string) => {
-        if (e) {
-          console.log(`INIT DATA: Error inserting data into ${table_name}: ` + e.message);
-          return;
-        };
-        console.log(`INIT DATA: Inserting data into ${table_name}...`);
-        await client.query(data);
-        console.log(`INIT DATA: Data inserted into ${table_name}...`);
-      });
+      const data = fs.readFileSync(`./init_data_scripts/${table_name}.sql`, 'utf8');
+      console.log(`INIT DATA: Inserting data into ${table_name}...`);
+      await client.query(data);
+      console.log(`INIT DATA: Data inserted into ${table_name}...`);
     } else {
       console.log(`INIT DATA: Data exists in ${table_name}...`)
     };
