@@ -8,9 +8,8 @@ import bootstrap from '../client/src/main.server';
 import { environment } from './environments/environment.prod';
 import * as bodyParser from 'body-parser';
 import redisStore from './databases/redis';
-
+import cors from 'cors';
 import MainRoute from './routes/MainRoute';
-
 import { initialize_database } from './databases/pg';
 
 export async function app(): Promise<express.Express> {
@@ -18,19 +17,48 @@ export async function app(): Promise<express.Express> {
   const browserDistFolder = resolve(dirname(fileURLToPath(import.meta.url)), '../browser');
   const indexHtml = join(browserDistFolder, 'index.html');
   const commonEngine = new CommonEngine();
+
+  var corsOptions;
+  var sessionOptions;
+
+  if (environment.MODE === 'development') {
+    corsOptions = {
+      origin: 'http://localhost:4200',
+      credentials: true,
+      methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+      allowedHeaders: ['Content-Type', 'Authorization', '*']
+    };
+
+      sessionOptions = {
+          store: redisStore,
+          resave: false,
+          saveUninitialized: false,
+          secret: environment.REDIS_SECRET,
+          cookie: { secure: false, maxAge: 60000, httpOnly: false }
+      };
+    console.log('CORS and session set up in development mode');
+    } else {
+      corsOptions = {
+        origin: 'http://localhost',
+      };
+
+      sessionOptions = {
+          store: redisStore,
+          resave: false,
+          saveUninitialized: false,
+          secret: environment.REDIS_SECRET,
+          cookie: { secure: true, maxAge: 60000, httpOnly: true }
+      };
+    console.log('CORS and session in production mode');
+  };
+
   await initialize_database();
 
   // Middleware
   server.use(bodyParser.json());
   server.use(bodyParser.urlencoded({ extended: true }));
-  server.use(
-    session({
-      store: redisStore,
-      resave: false,
-      saveUninitialized: true,
-      secret: environment.REDIS_SECRET,
-    })
-  );
+  server.use(cors(corsOptions));
+  server.use(session(sessionOptions));
 
   // API routes
   server.use('/api', MainRoute);
@@ -45,7 +73,10 @@ export async function app(): Promise<express.Express> {
 
     // All regular routes use the Angular engine
     server.get('**', (req, res, next) => {
+      console.log(req.cookies);
       const { protocol, originalUrl, headers } = req;
+
+
 
       commonEngine
         .render({

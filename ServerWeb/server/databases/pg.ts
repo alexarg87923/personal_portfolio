@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
+import * as bcrypt from 'bcryptjs';
+
 export const pool = new Pool({
   user: environment.PSQL_DB_USER,
   host: 'localhost',
@@ -69,8 +71,8 @@ async function initialize_data(table_name: string) {
 
 
 export async function initialize_database() {
-  const tables = ['about', 'experience',  'projects', 'collaborator', 'skills', 'contact', 'project_collaborators', 'project_skills', 'users'];
-  const data = ['about', 'experience', 'projects', 'collaborator', 'skills', 'project_collaborators', 'project_skills'];
+  const tables = ['about', 'experience',  'projects', 'collaborator', 'skills', 'project_collaborators', 'project_skills', 'users', 'contact'];
+  const data = ['about', 'experience', 'projects', 'collaborator', 'skills', 'project_collaborators', 'project_skills', 'users'];
 
   for (const table of tables) {
     await initialize_table(table);

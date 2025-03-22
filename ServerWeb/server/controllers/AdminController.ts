@@ -9,7 +9,18 @@ export class AdminController {
   };
 
   async sessionHandler(req: Request, res: Response, next: Function): Promise<void> {
-    if (!req.session.user?.user_id) {
+    // console.log("BODY: ", req.body)
+    // console.log("HEADER: ", req.headers)
+    // console.log("METHOD: ", req.method)
+    // console.log("SESSION: ", req.session)
+    // console.log("user_id: ", req.session.user?.user_id)
+    if (!(req.session.user?.user_id)) {
+      // const ua = req.headers['user-agent'];
+      // if (ua && ua.toLowerCase().includes('node')) {
+      //   console.log('Ignoring node request');
+      //   res.sendStatus(204);
+      //   return;
+      // }
       res.status(401).json({ error: 'Unauthorized' });
       return;
     } else {
@@ -35,7 +46,6 @@ export class AdminController {
 
   async saveComponentData(req: Request, res: Response): Promise<void> {
     try {
-
       const components = [
         { key: 'about', saveMethod: this.adminService.saveAboutData.bind(this.adminService) },
         { key: 'experience', saveMethod: this.adminService.saveExperienceData.bind(this.adminService) },
@@ -67,7 +77,6 @@ export class AdminController {
 
   async getComponentData(req: Request, res: Response): Promise<void> {
     try {
-
       const [about, experience, project, skill] = await Promise.all([
         this.adminService.getAboutData(),
         this.adminService.getExperienceData(),

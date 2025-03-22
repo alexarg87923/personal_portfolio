@@ -34,7 +34,6 @@ export class LandingComponent {
     .subscribe({
       next: response => {
         this.fetchedData = response;
-        console.log(response);
       },
       error: error => {
         console.error('Error doing GET request', error);

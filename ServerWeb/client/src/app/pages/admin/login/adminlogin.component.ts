@@ -28,10 +28,8 @@ export class AdminLoginComponent {
         next: (response: HttpResponse<any>) => {
           if (response.status === 200) {
             this.router.navigate(['/admin']);
-            alert(response.body.messaage);
           }
           if (response.status === 401) {
-            alert(response.body.message);
           }
         },
         error: error => {

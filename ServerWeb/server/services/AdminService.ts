@@ -9,7 +9,7 @@ export class AdminService {
   async verifyUser(userID: string): Promise<Number> {
     const client = await pool.connect();
     try {
-      var res = await client.query('SELECT user_id FROM users WHERE user_id = $1', [userID]);
+      var res = await client.query('SELECT user_id FROM personal_portfolio_schema.users WHERE user_id = $1', [userID]);
 
       if (res.rowCount === 0 || res.rowCount === null) {
         return 1;
@@ -27,7 +27,7 @@ export class AdminService {
   async login(formData: ILoginCred): Promise<IFormData<string>> {
     const client = await pool.connect();
     try {
-      var res = await client.query('SELECT user_id, hashed_password FROM users WHERE username = $1', [formData.username]);
+      var res = await client.query('SELECT user_id, hashed_password FROM personal_portfolio_schema.users WHERE username = $1', [formData.username]);
 
       if (res.rowCount === 0 || res.rowCount === null) {
         return {status: 1, body: ['']};
@@ -51,7 +51,7 @@ export class AdminService {
   async getAboutData(): Promise<IFormData<IAbout>> {
     const pgclient = await pool.connect();
     try {
-      var res = await pgclient.query('SELECT id, summary FROM about WHERE active = true');
+      var res = await pgclient.query('SELECT id, summary FROM personal_portfolio_schema.about WHERE active = true');
       if (res.rowCount === 0 || res.rowCount === null) {
         return {status: 1, body: []};
       };
@@ -69,7 +69,7 @@ export class AdminService {
     const pgclient = await pool.connect();
 
     try {
-      var res = await pgclient.query('UPDATE about SET summary = $1 WHERE id = $2', [inputData.summary, inputData.id]);
+      var res = await pgclient.query('UPDATE personal_portfolio_schema.about SET summary = $1 WHERE id = $2', [inputData.summary, inputData.id]);
       if (res.rowCount === 0 || res?.rowCount === null) {
         return 1;
       };
@@ -86,7 +86,7 @@ export class AdminService {
   async getExperienceData(): Promise<IFormData<IExperience>> {
     const pgclient = await pool.connect();
     try {
-      var res = await pgclient.query('SELECT id, logo_path, start_date, end_date, working_here_right_now, title, description FROM experience WHERE active = true');
+      var res = await pgclient.query('SELECT id, logo_path, start_date, end_date, working_here_right_now, title, description FROM personal_portfolio_schema.experience WHERE active = true');
       if (res.rowCount === 0) {
         return {status: 1, body: []};
       };
@@ -118,7 +118,7 @@ export class AdminService {
       };
       const setClauses = colms.map((colName: string, idx: number) => `${colName} = $${idx + 1}`);
 
-      var res = await pgclient.query(`UPDATE experience SET ${setClauses.join(', ')} WHERE id = $${colms.length + 1}`, [...Object.values(fieldsToUpdate), id ]);
+      var res = await pgclient.query(`UPDATE personal_portfolio_schema.experience SET ${setClauses.join(', ')} WHERE id = $${colms.length + 1}`, [...Object.values(fieldsToUpdate), id ]);
       if (res.rowCount === 0) {
         return 1;
       };
@@ -135,13 +135,13 @@ export class AdminService {
   async getProjectData(): Promise<IFormData<IProject>> {
     const pgclient = await pool.connect();
     try {
-      var projectsRows = await pgclient.query('SELECT id, title, description, project_img_path, host_status, github_url, web_url FROM projects WHERE active = true');
+      var projectsRows = await pgclient.query('SELECT id, title, description, project_img_path, host_status, github_url, web_url FROM personal_portfolio_schema.projects WHERE active = true');
 
       projectsRows.rows.forEach(async each => {
-        var collaboratorsRows = await pgclient.query(`SELECT c.id, c.name, c.portfolio_url FROM project_collaborators pc JOIN collaborator AS c ON c.id = pc.collaborator_id WHERE pc.project_id = ${each.id}`);
+        var collaboratorsRows = await pgclient.query(`SELECT c.id, c.name, c.portfolio_url FROM personal_portfolio_schema.project_collaborators pc JOIN personal_portfolio_schema.collaborator AS c ON c.id = pc.collaborator_id WHERE pc.project_id = ${each.id}`);
         each.collaborators = collaboratorsRows.rows;
 
-        var skillsRows = await pgclient.query(`SELECT s.id, s.skill FROM project_skills ps JOIN skills AS s ON s.id = ps.skill_id WHERE ps.project_id = ${each.id};`);
+        var skillsRows = await pgclient.query(`SELECT s.id, s.skill FROM personal_portfolio_schema.project_skills ps JOIN personal_portfolio_schema.skills AS s ON s.id = ps.skill_id WHERE ps.project_id = ${each.id};`);
         each.skills = skillsRows.rows;
       });
 
@@ -177,7 +177,7 @@ export class AdminService {
       };
       const setClauses = colms.map((colName: string, idx: number) => `${colName} = $${idx + 1}`);
 
-      var res = await pgclient.query(`UPDATE projects SET ${setClauses.join(', ')} WHERE id = $${colms.length + 1}`, [...Object.values(fieldsToUpdate), id ]);
+      var res = await pgclient.query(`UPDATE personal_portfolio_schema.projects SET ${setClauses.join(', ')} WHERE id = $${colms.length + 1}`, [...Object.values(fieldsToUpdate), id ]);
       if (res.rowCount === 0) {
         return 1;
       };
@@ -194,7 +194,7 @@ export class AdminService {
   async getSkillData(): Promise<IFormData<ISkill>> {
     const pgclient = await pool.connect();
     try {
-      var res = await pgclient.query('SELECT id, skill, level, icon FROM skills WHERE active = true');
+      var res = await pgclient.query('SELECT id, skill, level, icon FROM personal_portfolio_schema.skills WHERE active = true');
       if (res.rowCount === 0) {
         return {status: 1, body: []};
       };
@@ -226,7 +226,7 @@ export class AdminService {
       };
       const setClauses = colms.map((colName: string, idx: number) => `${colName} = $${idx + 1}`);
 
-      var res = await pgclient.query(`UPDATE skills SET ${setClauses.join(', ')} WHERE id = $${colms.length + 1}`, [...Object.values(fieldsToUpdate), id ]);
+      var res = await pgclient.query(`UPDATE personal_portfolio_schema.skills SET ${setClauses.join(', ')} WHERE id = $${colms.length + 1}`, [...Object.values(fieldsToUpdate), id ]);
       if (res.rowCount === 0) {
         return 1;
       };

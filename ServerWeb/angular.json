@@ -18,6 +18,7 @@
           "builder": "@angular-devkit/build-angular:application",
           "options": {
             "allowedCommonJsDependencies": [
+                "cors",
                 "pg",
                 "body-parser",
                 "http-proxy-middleware",

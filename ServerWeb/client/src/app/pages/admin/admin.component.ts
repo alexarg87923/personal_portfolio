@@ -61,14 +61,17 @@ export class AdminComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.http.get<IFormData>('/api/admin')
+    this.http.get<IFormData>('/api/admin', { withCredentials: true})
     .subscribe({
       next: response => {
-        this.fetchedData = response;
-        this.original = JSON.parse(JSON.stringify(response));
+        if (response !== null && !!response) {
+          this.fetchedData = response;
+          this.original = JSON.parse(JSON.stringify(response));
+
+        };
       },
       error: error => {
-        console.error('Error doing GET request', error);
+        console.error('Error doing GET request', error.message);
         this.router.navigate(['/500']);
       }
     });
@@ -77,7 +80,7 @@ export class AdminComponent implements OnInit {
   onSubmit(): void {
     if (Object.keys(this.changed).length > 0) {
       console.log('Saving changes:', this.changed);
-      this.http.post('/api/admin', this.changed)
+      this.http.post('/api/admin', this.changed, { withCredentials: true })
         .subscribe({
           next: response => {
             console.log('Changes saved successfully:', response);
@@ -94,7 +97,6 @@ export class AdminComponent implements OnInit {
       alert('No changes detected.');
     }
   }
-
 }
 
 interface ChangedFormData {
