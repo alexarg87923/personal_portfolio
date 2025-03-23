@@ -1,0 +1,29 @@
+<div id="about" class="min-h-screen flex items-center justify-center p-10 text-white">
+  <div class="w-full max-w-4xl mx-auto">
+    <div class="flex flex-wrap justify-between items-center text-center">
+      <div class="w-full md:w-1/2 px-4">
+        <img
+          ngOptimizedImage
+          src="/assets/original-sizes/alex.webp"
+          srcset="assets/small-sizes/alex-s.webp 480w, assets/medium-sizes/alex-m.webp 800w, assets/large-sizes/alex-l.webp 1200w"
+          sizes="(max-width: 600px) 480px, (max-width: 1200px) 800px, 1200px"
+          alt="Aex's portrait"
+          loading="lazy"
+          class="rounded-lg shadow-lg mx-auto hover:scale-105 transition-transform duration-300 border-4 border-orange-500"
+        />
+      </div>
+      <div class="w-full md:w-1/2 mt-6 md:mt-0 px-4">
+        <h2 class="text-4xl font-bold mb-4 hover:text-orange-500 transition-colors duration-300">Who am I?</h2>
+        <p class="text-lg leading-relaxed">
+          {{ aboutData.summary }}
+        </p>
+        <a href="https://www.linkedin.com/in/arguellesalex/" class="mt-4 inline-flex items-center bg-orange-500 hover:bg-transparent hover:border-orange-500 border-transparent border-2 text-white font-bold py-2 px-4 rounded-md transition-colors duration-300">
+          <svg class="w-6 h-6 mr-2" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M19 0h-14c-2.8 0-5 2.2-5 5v14c0 2.8 2.2 5 5 5h14c2.8 0 5-2.2 5-5v-14c0-2.8-2.2-5-5-5zm-11 19h-3v-10h3v10zm-1.5-11.5c-1 0-1.5-0.7-1.5-1.5s0.6-1.5 1.5-1.5 1.5 0.7 1.5 1.5-0.6 1.5-1.5 1.5zm13.5 11.5h-3v-5.5c0-1.4-1.1-2.5-2.5-2.5s-2.5 1.1-2.5 2.5v5.5h-3v-10h3v1.5c0.9-1.1 2.6-1.8 4.1-1.5 2.4 0.4 4.4 2.4 4.9 4.8v5.2z"/>
+          </svg>
+          Let's Connect!
+      </a>
+      </div>
+    </div>
+  </div>
+</div>
