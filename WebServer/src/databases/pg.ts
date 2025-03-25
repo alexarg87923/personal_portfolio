@@ -1,5 +1,5 @@
 import { Pool } from 'pg';
-import { environment } from '../environments/environment.prod';
+import { environment } from '../environments/environment';
 import fs from 'node:fs';
 
 export const pool = new Pool({

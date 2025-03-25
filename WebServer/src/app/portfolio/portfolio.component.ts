@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
-import { NavbarComponent } from '..//nav/nav.component';
+import { HttpClient } from '@angular/common/http';
+import { NavbarComponent } from '../nav/nav.component';
 import { FooterComponent } from '../footer/footer.component';
 import { HeroComponent } from './hero/hero.component';
 import { ExperienceComponent } from './experience/experience.component';
@@ -9,15 +9,18 @@ import { ContactComponent } from './contact/contact.component';
 import { ProjectsComponent } from './projects/projects.component';
 import { SkillsComponent } from './skills/skills.component';
 import { IAbout, IExperience, IProject, ISkill } from '../../shared/interfaces/IFormData';
+import { environment } from '../environment';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './landing.component.html',
+  templateUrl: './portfolio.component.html',
   standalone: true,
-  imports: [NavbarComponent, FooterComponent, HeroComponent, ExperienceComponent, AboutComponent, ContactComponent, ProjectsComponent, SkillsComponent, HttpClientModule]
+  imports: [NavbarComponent, FooterComponent, HeroComponent, 
+    ExperienceComponent, AboutComponent, ContactComponent, 
+    ProjectsComponent, SkillsComponent]
 })
 
-export class LandingComponent {
+export class PortfolioComponent {
   fetchedData: IFormData;
 
   constructor(private http: HttpClient) {
@@ -30,15 +33,27 @@ export class LandingComponent {
   }
 
   ngOnInit(): void {
-    this.http.get<IFormData>('/api/')
-    .subscribe({
-      next: response => {
-        this.fetchedData = response;
-      },
-      error: error => {
-        console.error('Error doing GET request', error);
-      }
-    })
+    if (environment.MODE === 'development') {
+      this.http.get<IFormData>('/data/portfolio.json')
+      .subscribe({
+        next: response => {
+          this.fetchedData = response;
+        },
+        error: error => {
+          console.error('Error doing GET request', error);
+        }
+      });
+    } else {
+      this.http.get<IFormData>('/api/')
+      .subscribe({
+        next: response => {
+          this.fetchedData = response;
+        },
+        error: error => {
+          console.error('Error doing GET request', error);
+        }
+      });
+    }
   }
 }
 

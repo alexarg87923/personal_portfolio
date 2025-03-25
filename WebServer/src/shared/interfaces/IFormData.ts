@@ -37,6 +37,13 @@ export interface ISkill extends IComponent {
   icon: string
 };
 
+export interface IPortfolio {
+  about: Array<IAbout>,
+  experience: Array<IExperience>,
+  project: Array<IProject>,
+  skill: Array<ISkill>
+};
+
 export interface IFormData<T> {
   status: number,
   body: Array<T>

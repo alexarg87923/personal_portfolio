@@ -6,6 +6,7 @@ import { MonthYearFormatPipe } from './month-year-format.pipe';
 @Component({
   selector: 'app-experience',
   templateUrl: './experience.component.html',
+  styleUrls: ['./experience.component.css'],
   standalone: true,
   imports: [CommonModule, MonthYearFormatPipe]
 })

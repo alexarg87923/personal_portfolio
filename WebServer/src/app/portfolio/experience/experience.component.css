@@ -1,0 +1,5 @@
+@reference "tailwindcss";
+
+.timeline > li > hr {
+    @apply bg-gray-500;
+}

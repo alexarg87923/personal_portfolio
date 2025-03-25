@@ -5,7 +5,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { CommonEngine, isMainModule } from '@angular/ssr/node';
 import session from 'express-session';
 import bootstrap from './main.server';
-import { environment } from './environments/environment.prod';
+import { environment } from './environments/environment';
 import redisStore from './databases/redis';
 import cors from 'cors';
 import MainRoute from './routes/MainRoute';

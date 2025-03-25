@@ -1,4 +1,4 @@
-import { LandingComponent } from './landing/landing.component';
+import { PortfolioComponent } from './portfolio/portfolio.component';
 import { AdminComponent } from './admin/admin.component';
 import { AdminLoginComponent } from './admin/login/adminlogin.component';
 import { PageNotFoundComponent } from './errors/404/404.component';
@@ -7,7 +7,7 @@ import { Routes } from '@angular/router';
 import { AdminLogoutComponent } from './admin/logout/logout.component';
 
 export const routes: Routes = [
-  { path: '', component: LandingComponent },
+  { path: '', component: PortfolioComponent },
   { path: 'admin', component: AdminComponent },
   { path: 'admin/login', component: AdminLoginComponent },
   { path: 'admin/logout', component: AdminLogoutComponent },

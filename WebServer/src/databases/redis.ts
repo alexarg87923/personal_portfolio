@@ -1,6 +1,6 @@
 import { createClient } from 'redis';
 import { RedisStore } from 'connect-redis';
-import { environment } from '../environments/environment.prod';
+import { environment } from '../environments/environment';
 
 let redisClient = createClient({
   url: `redis://${environment.REDIS_DB_USER}:${environment.REDIS_DB_PASSWORD}@${environment.DB_HOST}:${environment.REDIS_DB_PORT}`
