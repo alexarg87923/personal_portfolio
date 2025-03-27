@@ -32,9 +32,7 @@ export interface ICollaborator extends IComponent {
 };
 
 export interface ISkill extends IComponent {
-  skill: string,
-  level: number,
-  icon: string
+  skill: string
 };
 
 export interface IPortfolio {
@@ -46,5 +44,5 @@ export interface IPortfolio {
 
 export interface IFormData<T> {
   status: number,
-  body: Array<T>
+  body?: Array<T>
 };

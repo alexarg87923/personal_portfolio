@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'
 import { IAbout, IExperience, IProject, ISkill } from '../../shared/interfaces/IFormData';
@@ -8,7 +8,7 @@ import { Router } from '@angular/router';
 @Component({
   selector: 'app-admin',
   templateUrl: './admin.component.html',
-  imports: [HttpClientModule, FormsModule, CommonModule],
+  imports: [FormsModule, CommonModule],
   standalone: true
 })
 

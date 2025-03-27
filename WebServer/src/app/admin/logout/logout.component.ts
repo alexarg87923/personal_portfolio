@@ -1,12 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { HttpClient, HttpClientModule, HttpResponse } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './logout.component.html',
-  standalone: true,
-  imports: [HttpClientModule]
+  standalone: true
 })
 export class AdminLogoutComponent implements OnInit {
 

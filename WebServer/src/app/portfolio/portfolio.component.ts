@@ -7,7 +7,6 @@ import { ExperienceComponent } from './experience/experience.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { ProjectsComponent } from './projects/projects.component';
-import { SkillsComponent } from './skills/skills.component';
 import { IAbout, IExperience, IProject, ISkill } from '../../shared/interfaces/IFormData';
 import { environment } from '../environment';
 
@@ -17,7 +16,7 @@ import { environment } from '../environment';
   standalone: true,
   imports: [NavbarComponent, FooterComponent, HeroComponent, 
     ExperienceComponent, AboutComponent, ContactComponent, 
-    ProjectsComponent, SkillsComponent]
+    ProjectsComponent]
 })
 
 export class PortfolioComponent {

@@ -107,7 +107,9 @@ export class AdminController {
     try {
       let result = await this.adminService.login(req.body);
       if (result.status === 0) {
-        req.session.user = { user_id: result.body[0] };
+        if (result.body) {
+          req.session.user = { user_id: result.body[0] };
+        };
         res.status(200).json({ message: 'Success!' });
       } else if (result.status === 2) {
         res.status(401).json({ message: 'Invalid Credentials.' });

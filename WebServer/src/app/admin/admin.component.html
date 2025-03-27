@@ -269,26 +269,6 @@
                 (input)="onChange('skill', i, 'skill', $event)"
                 name="skillsSkill{{i}}"
               />
-
-              <label class="block text-sm text-gray-300 mb-2">Level</label>
-              <input
-                type="number"
-                class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
-                [(ngModel)]="skill.level"
-                placeholder="Edit level"
-                name="skillLevel{{i}}"
-                (input)="onChange('skill', i, 'level', $event)"
-              />
-
-              <label class="block text-sm text-gray-300 mb-2">Icon</label>
-              <input
-                type="text"
-                class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
-                [(ngModel)]="skill.icon"
-                name="skillIcon{{i}}"
-                (input)="onChange('skill', i, 'icon', $event)"
-                placeholder="Edit icon"
-              />
             </div>
           </div>
         </div>

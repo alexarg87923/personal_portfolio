@@ -28,21 +28,20 @@ export class AdminService {
     const client = await pool.connect();
     try {
       var res = await client.query('SELECT user_id, hashed_password FROM personal_portfolio_schema.users WHERE username = $1', [formData.username]);
-
       if (res.rowCount === 0 || res.rowCount === null) {
-        return {status: 1, body: ['']};
+        return {status: 1};
       };
-
+      
       const isMatch = await bcrypt.compare(formData.password, res.rows[0].hashed_password);
-
+      
       if (isMatch) {
         return {status: 0, body: [res.rows[0].user_id]};
       } else {
-        return {status: 2, body: ['']};
+        return {status: 2};
       };
     } catch (error) {
       console.error('Error occurred getting data: ', error);
-      return {status: 1, body: ['']};
+      return {status: 1};
     } finally {
       client.release();
     };
@@ -53,13 +52,13 @@ export class AdminService {
     try {
       var res = await pgclient.query('SELECT id, summary FROM personal_portfolio_schema.about WHERE active = true');
       if (res.rowCount === 0 || res.rowCount === null) {
-        return {status: 1, body: []};
+        return {status: 1};
       };
 
       return {status: 0, body: res.rows};
     } catch (error) {
       console.error('Error occurred getting data: ', error);
-      return {status: 1, body: []};
+      return {status: 1};
     } finally {
       pgclient.release();
     }
@@ -88,13 +87,13 @@ export class AdminService {
     try {
       var res = await pgclient.query('SELECT id, logo_path, start_date, end_date, working_here_right_now, title, description FROM personal_portfolio_schema.experience WHERE active = true');
       if (res.rowCount === 0) {
-        return {status: 1, body: []};
+        return {status: 1};
       };
 
       return {status: 0, body: res.rows};
     } catch (error) {
       console.error('Error occurred getting data: ', error);
-      return {status: 1, body: []};
+      return {status: 1};
     } finally {
       pgclient.release();
     };
@@ -146,13 +145,13 @@ export class AdminService {
       });
 
       if (projectsRows.rowCount === 0) {
-        return {status: 1, body: []};
+        return {status: 1};
       };
 
       return {status: 0, body: projectsRows.rows};
     } catch (error) {
       console.error('Error occurred getting data: ', error);
-      return {status: 1, body: []};
+      return {status: 1};
     } finally {
       pgclient.release();
     };
@@ -194,15 +193,15 @@ export class AdminService {
   async getSkillData(): Promise<IFormData<ISkill>> {
     const pgclient = await pool.connect();
     try {
-      var res = await pgclient.query('SELECT id, skill, level, icon FROM personal_portfolio_schema.skills WHERE active = true');
+      var res = await pgclient.query('SELECT id, skill FROM personal_portfolio_schema.skills');
       if (res.rowCount === 0) {
-        return {status: 1, body: []};
+        return {status: 1};
       };
 
       return {status: 0, body: res.rows};
     } catch (error) {
       console.error('Error occurred getting data: ', error);
-      return {status: 1, body: []};
+      return {status: 1};
     } finally {
       pgclient.release();
     };
