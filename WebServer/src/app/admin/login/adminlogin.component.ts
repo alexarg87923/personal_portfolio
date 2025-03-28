@@ -26,11 +26,13 @@ export class AdminLoginComponent {
       this.http.post('/api/admin/login', this.form.value, { observe: 'response' })
       .subscribe({
         next: (response: HttpResponse<any>) => {
+          console.log(response);
           if (response.status === 200) {
-            this.router.navigate(['/admin']);
-          }
+            // this.router.navigate(['/admin']);
+          };
           if (response.status === 401) {
-          }
+            // this.router.navigate(['/401']);
+          };
         },
         error: error => {
           console.log('Error doing POST request', error);

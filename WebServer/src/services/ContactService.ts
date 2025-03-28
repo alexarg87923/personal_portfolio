@@ -9,10 +9,10 @@ export class ContactService {
     try {
       console.log(formData);
       await pgclient.query('INSERT INTO personal_portfolio_schema.contact (name, email, message) VALUES ($1, $2, $3)', [formData.name, formData.email, formData.message]);
-      return { status: 0};
+      return {status: 0};
     } catch (error) {
       console.error('Error occurred while inserting data:', error);
-      return { status: 1};
+      return {status: 1};
     } finally {
       pgclient.release();
     };

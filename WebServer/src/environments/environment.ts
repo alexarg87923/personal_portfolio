@@ -5,7 +5,7 @@ export const environment = {
   PSQL_DB_PASSWORD: 'pass',
   PSQL_DB_PORT: '5432',
   PORT: '4000',
-  MODE: 'production',
+  MODE: 'development',
   SALT: 15,
   REDIS_SECRET: '2oJ7VPcJl52PNC6156Q6RI81q2k329',
   REDIS_DB_USER: 'alexportfolio',

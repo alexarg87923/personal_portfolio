@@ -31,9 +31,9 @@ export class AdminService {
       if (res.rowCount === 0 || res.rowCount === null) {
         return {status: 1};
       };
-      
+
       const isMatch = await bcrypt.compare(formData.password, res.rows[0].hashed_password);
-      
+
       if (isMatch) {
         return {status: 0, body: [res.rows[0].user_id]};
       } else {

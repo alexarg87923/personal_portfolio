@@ -109,10 +109,12 @@ export class AdminController {
       if (result.status === 0) {
         if (result.body) {
           req.session.user = { user_id: result.body[0] };
+          res.status(200).json({ message: 'Success!' });
         };
-        res.status(200).json({ message: 'Success!' });
+      } else if (result.status === 1) {
+        res.status(500).json({ error: 'Error checking credentials.' });
       } else if (result.status === 2) {
-        res.status(401).json({ message: 'Invalid Credentials.' });
+        res.status(401).json({ error: 'Invalid Credentials.' });
       } else {
         res.status(500).json({ error: 'Catastrophic error.' });
       };

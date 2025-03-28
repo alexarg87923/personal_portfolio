@@ -1,2 +1,2 @@
-user alexportfolio on >pass ~portfolio:* +get +set +del +expire
+user alexportfolio on >pass ~portfolio:* +@all
 user default off
