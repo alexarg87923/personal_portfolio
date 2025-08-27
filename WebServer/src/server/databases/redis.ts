@@ -3,7 +3,7 @@ import { RedisStore } from 'connect-redis';
 import { environment } from '../environments/environment';
 
 let redisClient = createClient({
-  url: `redis://${environment.REDIS_DB_USER}:${environment.REDIS_DB_PASSWORD}@${environment.DB_HOST}:${environment.REDIS_DB_PORT}`
+  url: `redis://${environment.REDIS_DB_USER}:${environment.REDIS_DB_PASSWORD}@${environment.REDIS_DB_HOST}:${environment.REDIS_DB_PORT}`
 });
 redisClient.on('error', (err) => console.error('Redis Client Error: ', err));
 redisClient.connect().catch(() => {

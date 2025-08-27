@@ -4,7 +4,7 @@ import fs from 'node:fs';
 
 export const pool = new pg.Pool({
   user: environment.PSQL_DB_USER,
-  host: 'localhost',
+  host: environment.PSQL_DB_HOST,
   database: environment.PSQL_DB_NAME,
   password: environment.PSQL_DB_PASSWORD,
   port: parseInt(environment.PSQL_DB_PORT || '5432'),
