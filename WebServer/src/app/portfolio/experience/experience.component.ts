@@ -1,6 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, type OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IExperience } from '../../../shared/interfaces/IFormData';
+import { type IExperience } from '../../../shared/interfaces/IFormData';
 import { MonthYearFormatPipe } from './month-year-format.pipe';
 
 @Component({

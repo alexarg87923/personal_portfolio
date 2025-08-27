@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { type Request, type Response } from 'express';
 import { AdminService } from '../services/AdminService';
 
 export class AdminController {

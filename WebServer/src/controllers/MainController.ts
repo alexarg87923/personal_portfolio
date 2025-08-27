@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { type Request, type Response } from 'express';
 import { MainService } from '../services/MainService';
 
 export class MainController {

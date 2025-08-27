@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { IAbout } from '../../../shared/interfaces/IFormData';
+import { type IAbout } from '../../../shared/interfaces/IFormData';
 @Component({
   selector: 'app-about',
   templateUrl: './about.component.html',

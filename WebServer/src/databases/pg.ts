@@ -1,8 +1,8 @@
-import { Pool } from 'pg';
+import pg from 'pg';
 import { environment } from '../environments/environment';
 import fs from 'node:fs';
 
-export const pool = new Pool({
+export const pool = new pg.Pool({
   user: environment.PSQL_DB_USER,
   host: 'localhost',
   database: environment.PSQL_DB_NAME,

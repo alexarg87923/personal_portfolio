@@ -1,6 +1,6 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, type OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { IProject } from '../../../shared/interfaces/IFormData';
+import { type IProject } from '../../../shared/interfaces/IFormData';
 
 @Component({
   selector: 'app-projects',

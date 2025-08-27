@@ -7,7 +7,7 @@ import { ExperienceComponent } from './experience/experience.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { ProjectsComponent } from './projects/projects.component';
-import { IAbout, IExperience, IProject, ISkill } from '../../shared/interfaces/IFormData';
+import { type IAbout, type IExperience, type IProject, type ISkill } from '../../shared/interfaces/IFormData';
 import { environment } from '../environment';
 
 @Component({

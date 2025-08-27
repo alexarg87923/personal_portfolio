@@ -4,15 +4,13 @@ WORKDIR /app
 COPY package.json package-lock.json ./
 RUN npm install
 
-COPY ./server ./server
-COPY ./client ./client
 COPY ./init_data_scripts ./init_data_scripts
+COPY ./public ./public
+COPY ./src ./src
 COPY ./tables ./tables
-COPY ./shared ./shared
+COPY ./.postcssrc.json .
 COPY ./angular.json .
 COPY ./package.json .
-COPY ./postcss.config.js .
-COPY ./tailwind.config.js .
 COPY ./tsconfig.app.json .
 COPY ./tsconfig.json .
 

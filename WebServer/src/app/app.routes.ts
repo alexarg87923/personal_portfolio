@@ -4,7 +4,7 @@ import { AdminLoginComponent } from './admin/login/adminlogin.component';
 import { PageNotFoundComponent } from './errors/404/404.component';
 import { UnauthorizedAccessComponent } from './errors/401/401.component';
 import { UnexpectedServerErrorComponent } from './errors/500/500.component';
-import { Routes } from '@angular/router';
+import { type Routes } from '@angular/router';
 import { AdminLogoutComponent } from './admin/logout/logout.component';
 
 export const routes: Routes = [

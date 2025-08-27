@@ -1,5 +1,5 @@
 
-import { IFormData, IAbout, IExperience, IProject, ISkill } from '../shared/interfaces/IFormData';
+import { type IFormData, type IAbout, type IExperience, type IProject, type ISkill } from '../shared/interfaces/IFormData';
 import { pool } from '../databases/pg';
 
 export class MainService {

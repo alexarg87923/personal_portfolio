@@ -2,17 +2,23 @@
   "name": "personal-portfolio",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr": "node dist/personal_portfolio/server/server.mjs"
+    "run:dev:client": "ng serve",
+    "run:prod": "node ./dist/node/server.mjs",
+    "run:dev": "node ./dist/node/server.mjs",
+    "build:prod:server": "ng run portfolio:server:production",
+    "build:prod:client": "ng build --configuration production",
+    "build:prod:node": "esbuild src/server.ts --bundle --platform=node --format=esm --target=node20 --outfile=dist/node/server.mjs --minify --tree-shaking=true --packages=external",
+    "start:prod": "npm run build:prod:client && npm run build:prod:server && npm run build:prod:node && npm run run:prod",
+    "build:dev:server": "ng run portfolio:server:development",
+    "build:dev:client": "ng build --configuration development",
+    "build:dev:node": "esbuild src/server.ts --bundle --platform=node --format=esm --target=node20 --sourcemap --outfile=dist/node/server.mjs --minify --tree-shaking=true --packages=external",
+    "start:dev": "npm run build:dev:client && npm run build:dev:server && npm run build:dev:node && npm run run:dev",
+    "watch": "ng build --watch --configuration development"
   },
   "private": true,
   "dependencies": {
     "@angular/common": "^19.2.0",
-    "@angular/compiler": "^19.2.0",
+    "@angular/compiler": "^19.2.14",
     "@angular/core": "^19.2.0",
     "@angular/forms": "^19.2.0",
     "@angular/platform-browser": "^19.2.0",
@@ -24,10 +30,12 @@
     "autoprefixer": "^10.4.21",
     "bcryptjs": "^3.0.2",
     "connect-redis": "^8.0.2",
+    "cors": "^2.8.5",
     "daisyui": "^5.0.9",
     "express": "^4.18.2",
     "express-session": "^1.18.1",
     "pg": "^8.14.1",
+    "pg-format": "^1.0.4",
     "postcss": "^8.5.3",
     "redis": "^4.7.0",
     "rxjs": "~7.8.0",
@@ -45,6 +53,8 @@
     "@types/express-session": "^1.18.1",
     "@types/node": "^18.18.0",
     "@types/pg": "^8.11.11",
+    "@types/pg-format": "^1.0.5",
+    "esbuild": "^0.25.9",
     "typescript": "~5.7.2"
   }
 }

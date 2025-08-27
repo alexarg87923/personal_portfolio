@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, type OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'
-import { IAbout, IExperience, IProject, ISkill } from '../../shared/interfaces/IFormData';
+import { type IAbout, type IExperience, type IProject, type ISkill } from '../../shared/interfaces/IFormData';
 import { Router } from '@angular/router';
 
 @Component({

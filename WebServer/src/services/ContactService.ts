@@ -1,6 +1,6 @@
 
-import { IContact } from '../shared/interfaces/IContact';
-import { IFormData } from '../shared/interfaces/IFormData';
+import { type IContact } from '../shared/interfaces/IContact';
+import { type IFormData } from '../shared/interfaces/IFormData';
 import { pool } from '../databases/pg';
 
 export class ContactService {

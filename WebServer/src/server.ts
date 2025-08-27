@@ -1,22 +1,23 @@
 import express from 'express';
 import { fileURLToPath } from 'node:url';
-import { dirname, join, resolve } from 'node:path';
-import { APP_BASE_HREF } from '@angular/common';
-import { CommonEngine, isMainModule } from '@angular/ssr/node';
+import { dirname, join } from 'node:path';
 import session from 'express-session';
-import bootstrap from './main.server';
 import { environment } from './environments/environment';
 import redisStore from './databases/redis';
 import cors from 'cors';
 import MainRoute from './routes/MainRoute';
 import { initialize_database } from './databases/pg';
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = dirname(__filename);
+
+const DIST_DIR         = join(__dirname, '..');                       // e.g., dist/
+const APP_DIST         = join(DIST_DIR, 'portfolio');                 // dist/portfolio
+const BROWSER_DIST     = join(APP_DIST, 'browser');                   // dist/portfolio/browser
+const SSR_BUNDLE_PATH  = join(APP_DIST, 'server', 'main.js'); // built from main.server.ts
+
 export async function app(): Promise<express.Express> {
   const server = express();
-  const serverDistFolder = dirname(fileURLToPath(import.meta.url));
-  const browserDistFolder = resolve(serverDistFolder, '../browser');
-  const indexHtml = join(browserDistFolder, 'index.html');
-  const commonEngine = new CommonEngine();
 
   var corsOptions;
   var sessionOptions;
@@ -64,28 +65,33 @@ export async function app(): Promise<express.Express> {
   server.use('/api', MainRoute);
 
   if (environment.MODE === 'production') {
+    await import('@angular/compiler');
+    const { CommonEngine } = await import('@angular/ssr/node');
+    const { default: bootstrap } = await import(SSR_BUNDLE_PATH);
+
+    const commonEngine = new CommonEngine();
+
     // Set view engine and views directory
     server.set('view engine', 'html');
-    server.set('views', browserDistFolder);
+    server.set('views', BROWSER_DIST);
 
     // Serve static files
-    server.use(express.static(browserDistFolder, {
+    server.use(express.static(BROWSER_DIST, {
       maxAge: '1y',
       index: 'index.html'
     }));
 
     // All regular routes use the Angular engine
-    server.get('**', (req, res, next) => {
+    server.get('**', async (req, res, next) => {
       console.log(req.cookies);
       const { protocol, originalUrl, headers } = req;
 
       commonEngine
         .render({
           bootstrap,
-          documentFilePath: indexHtml,
+          documentFilePath: join(BROWSER_DIST, 'index.html'),
           url: `${protocol}://${headers.host}${originalUrl}`,
-          publicPath: browserDistFolder,
-          providers: [{ provide: APP_BASE_HREF, useValue: '/' }],
+          publicPath: BROWSER_DIST,
         })
         .then(html => res.send(html))
         .catch(err => next(err));
@@ -96,13 +102,11 @@ export async function app(): Promise<express.Express> {
 };
 
 async function run(): Promise<void> {
-  if (isMainModule(import.meta.url)) {
-    const port = environment.PORT || 4000;
-    const server = await app();
-    server.listen(port, () => {
-      console.log(`Node Express server listening on http://localhost:${port} in ${environment.MODE} mode.`);
-    });
-  };
+  const port = environment.PORT || 4000;
+  const server = await app();
+  server.listen(port, () => {
+    console.log(`Node Express server listening on http://localhost:${port} in ${environment.MODE} mode.`);
+  });
 };
 
 run();
