@@ -1,4 +1,4 @@
-name: DBServer
+name: portfolio
 services:
   rediscontainer:
     image: redis:alpine
@@ -8,10 +8,17 @@ services:
     entrypoint: ["redis-server", "/usr/local/etc/redis/redis.conf"] 
     ports:
       - '6379:6379'
-  
+
   psqlcontainer:
     build: 
       context: ./PostgreSQLContainer
       dockerfile: Dockerfile
     ports:
       - '5432:5432'
+
+  webcontainer:
+    build:
+      context: ./WebServer
+      dockerfile: Dockerfile
+    ports:
+     - '4000:4000'

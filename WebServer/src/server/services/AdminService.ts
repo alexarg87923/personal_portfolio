@@ -1,7 +1,7 @@
 
 
-import { type IAbout, type IExperience, type IProject, type ISkill, type IFormData } from '../shared/interfaces/IFormData';
-import { type ILoginCred } from '../shared/interfaces/ILoginCred';
+import { type IAbout, type IExperience, type IProject, type ISkill, type IFormData } from '../../shared/interfaces/IFormData';
+import { type ILoginCred } from '../../shared/interfaces/ILoginCred';
 import { pool } from '../databases/pg';
 import * as bcrypt from 'bcryptjs';
 import format from 'pg-format';

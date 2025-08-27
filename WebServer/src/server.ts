@@ -2,11 +2,12 @@ import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import session from 'express-session';
-import { environment } from './environments/environment';
-import redisStore from './databases/redis';
 import cors from 'cors';
-import MainRoute from './routes/MainRoute';
-import { initialize_database } from './databases/pg';
+
+import { environment } from './server/environments/environment';
+import { initialize_database } from './server/databases/pg';
+import redisStore from './server/databases/redis';
+import MainRoute from './server/routes/MainRoute';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = dirname(__filename);
