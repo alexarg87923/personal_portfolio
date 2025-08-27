@@ -1,6 +1,6 @@
 interface IComponent {
   id?: number;
-}
+};
 
 export interface IAbout extends IComponent {
   summary: string

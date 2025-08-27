@@ -8,6 +8,12 @@ services:
     entrypoint: ["redis-server", "/usr/local/etc/redis/redis.conf"] 
     ports:
       - '6379:6379'
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping", "-"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
 
   psqlcontainer:
     build: 
@@ -15,6 +21,12 @@ services:
       dockerfile: Dockerfile
     ports:
       - '5432:5432'
+    healthcheck:
+      test: ["CMD", "pg_isready", "-h", "localhost", "-p", "5432"]
+      interval: 5s
+      timeout: 3s
+      retries: 5
+      start_period: 30s
 
   webcontainer:
     build:
@@ -23,5 +35,7 @@ services:
     ports:
      - '4000:4000'
     depends_on:
-      - psqlcontainer
-      - rediscontainer
+      psqlcontainer:
+        condition: service_healthy
+      rediscontainer:
+        condition: service_healthy

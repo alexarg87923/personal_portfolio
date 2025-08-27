@@ -27,10 +27,7 @@
                 "output": "/"
               }
             ],
-            "styles": [
-              "@angular/material/prebuilt-themes/deeppurple-amber.css",
-              "src/app/styles.css"
-            ],
+            "styles": [],
             "scripts": []
           },
           "configurations": {
