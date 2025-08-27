@@ -14,12 +14,14 @@ COPY ./package.json .
 COPY ./tsconfig.app.json .
 COPY ./tsconfig.json .
 
-RUN npm run build
+RUN npm run build:prod:client
+RUN npm run build:prod:server
+RUN npm run build:prod:node
 
 FROM node:lts-alpine
 WORKDIR /app
 
 COPY --from=builder /app/dist ./dist
 
-CMD ["node", "dist/portfolio/server/server.mjs"]
+CMD ["node", "dist/node/server.mjs"]
 EXPOSE 4000
