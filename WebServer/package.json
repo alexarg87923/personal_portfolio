@@ -4,16 +4,15 @@
   "scripts": {
     "run:dev:client": "ng serve",
     "run:prod": "node ./dist/node/server.mjs",
-    "run:dev": "node ./dist/node/server.mjs",
+    "run:dev": "nodemon dist/node/server.mjs --watch dist/node/server.mjs",
     "build:prod:server": "ng run portfolio:build-ssr:production",
     "build:prod:client": "ng run portfolio:build-client:production",
     "build:prod:node": "esbuild src/server.ts --bundle --platform=node --format=esm --target=node20 --outfile=dist/node/server.mjs --minify --tree-shaking=true --packages=external",
     "start:prod": "npm run build:prod:client && npm run build:prod:server && npm run build:prod:node && npm run run:prod",
-    "build:dev:server": "ng run portfolio:build-ssr:development",
-    "build:dev:client": "ng run portfolio:build-client:development",
-    "build:dev:node": "esbuild src/server.ts --bundle --platform=node --format=esm --target=node20 --sourcemap --outfile=dist/node/server.mjs --minify --tree-shaking=true --packages=external",
-    "start:dev": "npm run build:dev:client && npm run build:dev:server && npm run build:dev:node && npm run run:dev",
-    "watch": "ng build --watch --configuration development"
+    "build:dev:server": "ng run portfolio:build-ssr:development --watch",
+    "build:dev:client": "ng run portfolio:build-client:development --watch",
+    "build:dev:node": "esbuild src/server.ts --watch --bundle --platform=node --format=esm --target=node20 --sourcemap --outfile=dist/node/server.mjs --packages=external",
+    "start:dev": "concurrently --kill-others --prefix-colors \"cyan,magenta,yellow,green\" --prefix \"[{name}]\" --names \"CLIENT,SSR,NODE,SERVER\" \"npm run build:dev:client -- --watch\" \"npm run build:dev:server -- --watch\" \"npm run build:dev:node -- --watch\" \"npm run run:dev\""
   },
   "private": true,
   "dependencies": {
@@ -48,8 +47,10 @@
     "@types/node": "^18.18.0",
     "@types/pg": "^8.11.11",
     "@types/pg-format": "^1.0.5",
+    "concurrently": "^9.2.1",
     "daisyui": "^5.0.52",
     "esbuild": "^0.25.9",
+    "nodemon": "^3.1.10",
     "postcss": "^8.5.6",
     "tailwindcss": "^4.1.12",
     "tslib": "^2.3.0",

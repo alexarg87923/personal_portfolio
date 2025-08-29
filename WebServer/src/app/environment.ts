@@ -1,3 +1,3 @@
 export const environment = {
-    MODE: "development"
+    MODE: "production"
 }

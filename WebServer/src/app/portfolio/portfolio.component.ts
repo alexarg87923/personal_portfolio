@@ -11,7 +11,7 @@ import { type IAbout, type IExperience, type IProject, type ISkill } from '../..
 import { environment } from '../environment';
 
 @Component({
-  selector: 'app-root',
+  selector: 'app-portfolio',
   templateUrl: './portfolio.component.html',
   standalone: true,
   imports: [NavbarComponent, FooterComponent, HeroComponent, 

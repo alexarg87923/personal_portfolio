@@ -15,7 +15,7 @@ const __dirname  = dirname(__filename);
 const DIST_DIR         = join(__dirname, '..');                       // e.g., dist/
 const APP_DIST         = join(DIST_DIR, 'portfolio');                 // dist/portfolio
 const BROWSER_DIST     = join(APP_DIST, 'browser');                   // dist/portfolio/browser
-const SSR_BUNDLE_PATH  = join(APP_DIST, 'ssr-bundle', 'main.js');         // built from main.server.ts
+const SSR_BUNDLE_PATH  = join(APP_DIST, 'ssr-bundle', 'main.js');     // built from main.server.ts
 
 export async function app(): Promise<express.Express> {
   const server = express();
@@ -84,7 +84,7 @@ export async function app(): Promise<express.Express> {
 
     // All regular routes use the Angular engine
     server.get('**', async (req, res, next) => {
-      console.log(req.cookies);
+      console.log('Cookies: ' + req.cookies);
       const { protocol, originalUrl, headers } = req;
 
       commonEngine

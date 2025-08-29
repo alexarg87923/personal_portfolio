@@ -4,8 +4,10 @@ import { RouterOutlet } from '@angular/router';
 @Component({
   selector: 'app-root',
   imports: [RouterOutlet],
-  templateUrl: './app.component.html'
+  templateUrl: './app.component.html',
+  standalone: true
 })
+
 export class AppComponent {
   title = 'personal_portfolio';
 }
