@@ -7,7 +7,6 @@ import { RouterOutlet } from '@angular/router';
   templateUrl: './app.component.html',
   standalone: true
 })
-
 export class AppComponent {
   title = 'personal_portfolio';
 }

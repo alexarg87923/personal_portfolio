@@ -2,17 +2,16 @@ import { Component, type OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common'
-import { type IAbout, type IExperience, type IProject, type ISkill } from '../../shared/interfaces/IFormData';
+import { type IAbout, type IExperience, type IProject, type ISkill } from '../../../shared/interfaces/IFormData';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-admin',
-  templateUrl: './admin.component.html',
+  selector: 'admin-dashboard',
+  templateUrl: './admin-dashboard.component.html',
   imports: [FormsModule, CommonModule],
   standalone: true
 })
-
-export class AdminComponent implements OnInit {
+export class AdminDashboardComponent implements OnInit {
   fetchedData: IFormData = { about: [ { id: -1, summary: '' } ], experience: [], project: [], skill: [] };
   original: IFormData = { about: [], experience: [], project: [], skill: [] };
   changed: ChangedFormData = { about: [], experience: [], project: [], skill: [] };

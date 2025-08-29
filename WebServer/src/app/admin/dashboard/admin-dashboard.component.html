@@ -1,0 +1,250 @@
+<div>
+  <form (ngSubmit)="onSubmit()" #myForm="ngForm">
+    <div class="justify-end flex">
+      <a href="/admin/logout">
+        <button type="button" class="text-white bg-orange-600 rounded-md hover:bg-orange-700 transition me-5 mt-5 w-24 h-10">
+          Logout
+        </button>
+      </a>
+      <button type="submit" class="text-white bg-orange-600 rounded-md hover:bg-orange-700 transition me-5 mt-5 w-24 h-10">
+        Save
+      </button>
+    </div>
+    <div class="py-56 min-h-60 flex flex-col justify-center items-center mx-auto gap-6 max-w-3xl w-full">
+      <div>
+        <h1 class="text-white text-center max-w-full">Edit About Me Section</h1>
+      </div>
+      <div class="flex flex-col items-center gap-4 w-full">
+        <textarea
+          name="aboutSummary"
+          rows="4"
+          (input)="onChange('about', 0, 'summary', $event)"
+          class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+          [(ngModel)]="fetchedData.about[0].summary">
+        </textarea>
+      </div>
+    </div>
+
+    <div class="min-h-60 flex flex-col justify-center items-center mx-auto gap-6">
+      <h1 class="text-white">Edit Work Positions</h1>
+
+      <div>
+        <div
+          *ngFor="let experience of fetchedData.experience; let i = index"
+          class="flex flex-col h-full"
+        >
+          <a>
+            <p
+              class="text-white text-xl cursor-pointer link-hover transition duration-300 ease-in-out transform hover:scale-105 "
+              (click)="toggleExperience(i)"
+            >
+              {{ experience.title }}
+            </p>
+          </a>
+
+          <div
+            class="transition-all duration-500 ease-in-out overflow-hidden
+                  p-4 rounded shadow-md"
+            [ngClass]="{
+              'max-h-0 opacity-0 pointer-events-none': activeIndexExperience !== i,
+              'max-h-[9999px] opacity-100 pointer-events-auto': activeIndexExperience === i
+            }"
+          >
+            <label class="block text-sm text-gray-300 mb-2">Title</label>
+            <input
+              name="experienceTitle{{i}}"
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="experience.title"
+              (input)="onChange('experience', i, 'title', $event)"
+              placeholder="Edit title"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Logo</label>
+            <input
+              type="text"
+              name="experienceLogoPath{{i}}"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="experience.logo_path"
+              (input)="onChange('experience', i, 'logo_path', $event)"
+              placeholder="Edit logo path"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Start Date</label>
+            <input
+              type="text"
+              name="experienceStartDate{{i}}"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="experience.start_date"
+              (input)="onChange('experience', i, 'start_date', $event)"
+              placeholder="Edit start date"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">End Date</label>
+            <input
+              type="text"
+              [disabled]="experience.working_here_right_now"
+              [ngClass]="{
+                'bg-neutral-700 text-neutral-200': !experience.working_here_right_now,
+                'bg-neutral-800 text-neutral-500 cursor-not-allowed': experience.working_here_right_now
+              }"
+              class="block w-full p-4 mb-4 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm"
+              [(ngModel)]="experience.end_date"
+              name="experienceEndDate{{i}}"
+              (input)="onChange('experience', i, 'end_date', $event)"
+              placeholder="Edit end date"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Currently Working Here?</label>
+            <input
+              type="checkbox"
+              name="experienceActiveWorking{{i}}"
+              class="p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="experience.working_here_right_now"
+              (input)="onChange('experience', i, 'working_here_right_now', $event)"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Description</label>
+            <textarea
+              type="text"
+              name="experienceDescription{{i}}"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="experience.description"
+              (input)="onChange('experience', i, 'description', $event)"
+              placeholder="Edit description">
+          </textarea>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+    <div class="pt-56 min-h-60 flex flex-col justify-center items-center mx-auto gap-6">
+      <h1 class="text-white">Edit Projects</h1>
+
+      <div>
+        <div
+          *ngFor="let project of fetchedData.project; let i = index"
+          class="flex flex-col h-full"
+        >
+          <a>
+            <p
+              class="text-white text-xl cursor-pointer link-hover transition duration-300 ease-in-out transform hover:scale-105 "
+              (click)="toggleProjects(i)"
+            >
+              {{ project.title }}
+            </p>
+          </a>
+
+          <div
+            class="transition-all duration-500 ease-in-out overflow-hidden
+                  p-4 rounded shadow-md"
+            [ngClass]="{
+              'max-h-0 opacity-0 pointer-events-none': activeIndexProjects !== i,
+              'max-h-[9999px] opacity-100 pointer-events-auto': activeIndexProjects === i
+            }"
+          >
+            <label class="block text-sm text-gray-300 mb-2">Title</label>
+            <input
+              type="text"
+              name="projectTitle{{i}}"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="project.title"
+              (input)="onChange('project', i, 'title', $event)"
+              placeholder="Edit title"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Description</label>
+            <textarea
+            name="projectDescription{{i}}"
+            rows="4"
+            class="block w-96 p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+            [(ngModel)]="project.description"
+            (input)="onChange('project', i, 'description', $event)"
+            >
+            </textarea>
+
+            <label class="block text-sm text-gray-300 mb-2">Image</label>
+            <input
+              type="text"
+              name="projectImagePath{{i}}"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="project.project_img_path"
+              (input)="onChange('project', i, 'project_img_path', $event)"
+              placeholder="Edit image path"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Host Status</label>
+            <input
+              type="text"
+              name="projectHostStatus{{i}}"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="project.host_status"
+              (input)="onChange('project', i, 'host_status', $event)"
+              placeholder="Edit host status"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Github URL</label>
+            <input
+              type="text"
+              name="projectGithubUrl{{i}}"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="project.github_url"
+              (input)="onChange('project', i, 'github_url', $event)"
+              placeholder="Edit GitHub URL"
+            />
+
+            <label class="block text-sm text-gray-300 mb-2">Web URL</label>
+            <input
+              type="text"
+              name="projectWebUrl{{i}}"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="project.web_url"
+              (input)="onChange('project', i, 'web_url', $event)"
+              placeholder="Edit URL"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="pt-56 min-h-60 flex flex-col justify-center items-center mx-auto gap-6">
+      <h1 class="text-white">Edit Skills</h1>
+
+      <div>
+        <div
+          *ngFor="let skill of fetchedData.skill; let i = index"
+          class="flex flex-col h-full"
+        >
+          <a>
+            <p
+              class="text-white text-xl cursor-pointer link-hover transition duration-300 ease-in-out transform hover:scale-105 "
+              (click)="toggleSkills(i)"
+            >
+              {{ skill.skill }}
+            </p>
+          </a>
+
+          <div
+            class="transition-all duration-500 ease-in-out overflow-hidden
+                  p-4 rounded shadow-md"
+            [ngClass]="{
+              'max-h-0 opacity-0 pointer-events-none': activeIndexSkills !== i,
+              'max-h-[9999px] opacity-100 pointer-events-auto': activeIndexSkills === i
+            }"
+          >
+            <label class="block text-sm text-gray-300 mb-2">Title</label>
+            <input
+              type="text"
+              class="block w-full p-4 mb-4 bg-neutral-700 border-0 focus:border-0 focus:outline-none focus:ring-1 focus:ring-orange-600 rounded-md placeholder:text-neutral-400 placeholder:text-sm text-neutral-200"
+              [(ngModel)]="skill.skill"
+              placeholder="Edit skill"
+              (input)="onChange('skill', i, 'skill', $event)"
+              name="skillsSkill{{i}}"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

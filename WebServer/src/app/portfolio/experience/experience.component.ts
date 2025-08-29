@@ -10,7 +10,6 @@ import { MonthYearFormatPipe } from './month-year-format.pipe';
   standalone: true,
   imports: [CommonModule, MonthYearFormatPipe]
 })
-
 export class ExperienceComponent implements OnInit {
   @Input() experienceData: Array<IExperience> = [];
 

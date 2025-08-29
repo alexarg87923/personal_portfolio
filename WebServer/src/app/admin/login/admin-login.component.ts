@@ -5,12 +5,11 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-admin-login',
-  templateUrl: './adminlogin.component.html',
+  selector: 'admin-login',
+  templateUrl: './admin-login.component.html',
   imports: [ReactiveFormsModule],
   standalone: true
 })
-
 export class AdminLoginComponent {
   form: FormGroup;
 

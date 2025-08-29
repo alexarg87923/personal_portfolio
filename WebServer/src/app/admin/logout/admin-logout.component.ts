@@ -3,11 +3,10 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Router } from '@angular/router';
 
 @Component({
-  selector: 'app-admin-logout',
-  templateUrl: './logout.component.html',
+  selector: 'admin-logout',
+  templateUrl: './admin-logout.component.html',
   standalone: true
 })
-
 export class AdminLogoutComponent implements OnInit {
 
   constructor(private http: HttpClient, private router: Router) {}

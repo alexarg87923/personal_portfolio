@@ -6,7 +6,6 @@ import { type IAbout } from '../../../shared/interfaces/IFormData';
   templateUrl: './about.component.html',
   standalone: true
 })
-
 export class AboutComponent {
   @Input() aboutData: IAbout = { summary: ''};
 }

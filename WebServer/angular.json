@@ -10,76 +10,61 @@
       "sourceRoot": "src",
       "prefix": "app",
       "architect": {
-        "build-client": {
-          "builder": "@angular-devkit/build-angular:application",
-          "options": {
-            "outputPath": "dist/portfolio",
-            "index": "src/app/index.html",
-            "browser": "src/main.ts",
-            "polyfills": ["zone.js"],
-            "tsConfig": "tsconfig.app.json",
-            "assets": [
-              {
-                "glob": "**/*",
-                "input": "public",
-                "output": "/"
-              }
-            ],
-            "styles": ["src/app/styles.css"],
-            "scripts": []
-          },
-          "configurations": {
-            "production": {
-              "budgets": [
-                {
-                  "type": "initial",
-                  "maximumWarning": "500kB",
-                  "maximumError": "1MB"
-                },
-                {
-                  "type": "anyComponentStyle",
-                  "maximumWarning": "4kB",
-                  "maximumError": "8kB"
-                }
-              ],
-              "outputHashing": "all"
-            },
-            "development": {
-              "optimization": false,
-              "extractLicenses": false,
-              "sourceMap": true
-            }
-          },
-          "defaultConfiguration": "production"
-        },
-        "build-ssr": {
-        "builder": "@angular-devkit/build-angular:server",
+      "build": {
+        "builder": "@angular-devkit/build-angular:application",
         "options": {
-          "outputPath": "dist/portfolio/ssr-bundle",
-          "main": "src/main.server.ts",
-          "tsConfig": "tsconfig.server.json"
+          "outputPath": "dist/portfolio",
+          "outputMode": "server",
+          "index": "src/app/index.html",
+          "browser": "src/main.ts",
+          "server": "src/main.server.ts",
+          "ssr": {
+            "entry": "src/server.ts"
+          },
+          "polyfills": ["zone.js"],
+          "tsConfig": "tsconfig.app.json",
+          "assets": [
+            {
+              "glob": "**/*",
+              "input": "public",
+              "output": "/"
+            }
+          ],
+          "styles": ["src/app/styles.css"],
+          "scripts": []
         },
         "configurations": {
           "production": {
-            "outputHashing": "media",
-            "optimization": true,
-            "sourceMap": false
+            "budgets": [
+              {
+                "type": "initial",
+                "maximumWarning": "500kB",
+                "maximumError": "1MB"
+              },
+              {
+                "type": "anyComponentStyle",
+                "maximumWarning": "4kB",
+                "maximumError": "8kB"
+              }
+            ],
+            "outputHashing": "all"
           },
           "development": {
             "optimization": false,
+            "extractLicenses": false,
             "sourceMap": true
           }
         },
         "defaultConfiguration": "production"
-        },
+      },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "portfolio:build-client:production"
+              "buildTarget": "portfolio:build:production"
             },
             "development": {
-              "buildTarget": "portfolio:build-client:development"
+              "buildTarget": "portfolio:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -87,7 +72,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "portfolio:build-client"
+            "buildTarget": "portfolio:build"
           }
         }
       }

@@ -2,17 +2,12 @@
   "name": "personal-portfolio",
   "version": "0.0.0",
   "scripts": {
-    "run:dev:client": "ng serve",
-    "run:prod": "node ./dist/node/server.mjs",
-    "run:dev": "nodemon dist/node/server.mjs --watch dist/node/server.mjs",
-    "build:prod:server": "ng run portfolio:build-ssr:production",
-    "build:prod:client": "ng run portfolio:build-client:production",
-    "build:prod:node": "esbuild src/server.ts --bundle --platform=node --format=esm --target=node20 --outfile=dist/node/server.mjs --minify --tree-shaking=true --packages=external",
-    "start:prod": "npm run build:prod:client && npm run build:prod:server && npm run build:prod:node && npm run run:prod",
-    "build:dev:server": "ng run portfolio:build-ssr:development --watch",
-    "build:dev:client": "ng run portfolio:build-client:development --watch",
-    "build:dev:node": "esbuild src/server.ts --watch --bundle --platform=node --format=esm --target=node20 --sourcemap --outfile=dist/node/server.mjs --packages=external",
-    "start:dev": "concurrently --kill-others --prefix-colors \"cyan,magenta,yellow,green\" --prefix \"[{name}]\" --names \"CLIENT,SSR,NODE,SERVER\" \"npm run build:dev:client -- --watch\" \"npm run build:dev:server -- --watch\" \"npm run build:dev:node -- --watch\" \"npm run run:dev\""
+    "run:prod": "node ./dist/portfolio/server/server.mjs",
+    "run:dev": "npx nodemon dist/portfolio/server/server.mjs --watch dist/portfolio/server/server.mjs",
+    "build:dev:angular": "ng run portfolio:build:development --watch",
+    "build:prod:angular": "ng run portfolio:build:production",
+    "start:dev": "concurrently --kill-others-on-fail --prefix \"[{name}]\" --prefix-colors \"cyan,magenta\" --names \"ANGULAR,SERVER\" \"npm run build:dev:angular\" \"npx wait-on file:dist/portfolio/server/server.mjs && npm run run:dev\"",
+    "start:prod": "npm run build:prod:angular && npm run build:prod:node && npm run run:prod"
   },
   "private": true,
   "dependencies": {
@@ -25,7 +20,6 @@
     "express": "^4.18.2",
     "express-session": "^1.18.1",
     "pg": "^8.14.1",
-    "pg-format": "^1.0.4",
     "redis": "^4.7.0",
     "rxjs": "~7.8.0"
   },
@@ -46,7 +40,6 @@
     "@types/express-session": "^1.18.1",
     "@types/node": "^18.18.0",
     "@types/pg": "^8.11.11",
-    "@types/pg-format": "^1.0.5",
     "concurrently": "^9.2.1",
     "daisyui": "^5.0.52",
     "esbuild": "^0.25.9",
@@ -55,6 +48,7 @@
     "tailwindcss": "^4.1.12",
     "tslib": "^2.3.0",
     "typescript": "~5.7.2",
+    "wait-on": "^8.0.4",
     "zone.js": "^0.15.0"
   }
 }

@@ -7,19 +7,24 @@ import { ExperienceComponent } from './experience/experience.component';
 import { AboutComponent } from './about/about.component';
 import { ContactComponent } from './contact/contact.component';
 import { ProjectsComponent } from './projects/projects.component';
-import { type IAbout, type IExperience, type IProject, type ISkill } from '../../shared/interfaces/IFormData';
+import { 
+  type IAbout,
+  type IExperience,
+  type IProject,
+  type ISkill
+} from '../../shared/interfaces/IFormData';
 import { environment } from '../environment';
 
 @Component({
   selector: 'app-portfolio',
   templateUrl: './portfolio.component.html',
-  standalone: true,
+  styleUrls: ['./portfolio.component.css'],
   imports: [NavbarComponent, FooterComponent, HeroComponent, 
     ExperienceComponent, AboutComponent, ContactComponent, 
-    ProjectsComponent]
+    ProjectsComponent],
+  standalone: true
 })
-
-export class PortfolioComponent {
+export class PortfolioDashboardComponent {
   fetchedData: IFormData;
 
   constructor(private http: HttpClient) {

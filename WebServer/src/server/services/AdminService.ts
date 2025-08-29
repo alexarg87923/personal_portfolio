@@ -4,7 +4,10 @@ import { type IAbout, type IExperience, type IProject, type ISkill, type IFormDa
 import { type ILoginCred } from '../../shared/interfaces/ILoginCred';
 import { pool } from '../databases/pg';
 import * as bcrypt from 'bcryptjs';
-import format from 'pg-format';
+
+function escapeIdentifier(str: string) {
+  return '"' + str.replace(/"/g, '""') + '"';
+}
 
 export class AdminService {
   async verifyUser(userID: string): Promise<Number> {
@@ -210,21 +213,26 @@ export class AdminService {
         throw new Error('No fields provided to update.');
       }
 
-      const setClause = colms.map((c, idx) => format('%I = $%s', c, idx + 1)).join(', ');
+      // Build `SET` with a simple loop (no pg-format)
+      let setClause = '';
+      for (let i = 0; i < colms.length; i++) {
+        if (i > 0) setClause += ', ';
+        setClause += `${escapeIdentifier(colms[i])} = $${i + 1}`;
+      }
 
       const values = [...Object.values(fieldsToUpdate), id];
+      const whereIndex = colms.length + 1;
 
-      const query = format(
-        'UPDATE personal_portfolio_schema.projects SET %s WHERE id = $%s RETURNING *',
-        setClause,
-        colms.length + 1
-      );
+      const query =
+        `UPDATE ${escapeIdentifier('personal_portfolio_schema')}.` +
+        `${escapeIdentifier('projects')} ` +
+        `SET ${setClause} WHERE ${escapeIdentifier('id')} = $${whereIndex} RETURNING *`;
 
       const queryResponse = await pgclient.query(query, values);
 
       if (queryResponse.rowCount === 0) {
         return 1;
-      };
+      }
 
       return 0;
     } catch (error) {
@@ -232,7 +240,7 @@ export class AdminService {
       return 1;
     } finally {
       pgclient.release();
-    };
+    }
   };
 
   async getSkillData(): Promise<IFormData<ISkill>> {
@@ -270,25 +278,26 @@ export class AdminService {
         throw new Error('No fields provided to update.');
       }
 
-      const setClause = colms
-        .map((c, idx) => format('%I = $%s', c, idx + 1))
-        .join(', ');
+      // Build `SET` with a simple loop (no pg-format)
+      let setClause = '';
+      for (let i = 0; i < colms.length; i++) {
+        if (i > 0) setClause += ', ';
+        setClause += `${escapeIdentifier(colms[i])} = $${i + 1}`;
+      }
 
       const values = [...Object.values(fieldsToUpdate), id];
+      const whereIndex = colms.length + 1;
 
-      const query = format(
-        'UPDATE %I.%I SET %s WHERE id = $%s RETURNING *',
-        'personal_portfolio_schema',
-        'skills',
-        setClause,
-        colms.length + 1
-      );
+      const query =
+        `UPDATE ${escapeIdentifier('personal_portfolio_schema')}.` +
+        `${escapeIdentifier('skills')} ` +
+        `SET ${setClause} WHERE ${escapeIdentifier('id')} = $${whereIndex} RETURNING *`;
 
       const queryResponse = await pgclient.query(query, values);
 
       if (queryResponse.rowCount === 0) {
         return 1;
-      };
+      }
 
       return 0;
     } catch (error) {
@@ -296,6 +305,6 @@ export class AdminService {
       return 1;
     } finally {
       pgclient.release();
-    };
+    }
   };
-};
+}

@@ -5,5 +5,4 @@ import { Component } from '@angular/core';
   templateUrl: './404.component.html',
   standalone: true
 })
-
 export class PageNotFoundComponent { }
