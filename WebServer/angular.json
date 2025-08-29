@@ -55,7 +55,7 @@
         "build-ssr": {
         "builder": "@angular-devkit/build-angular:server",
         "options": {
-          "outputPath": "dist/portfolio/server",
+          "outputPath": "dist/portfolio/ssr-bundle",
           "main": "src/main.server.ts",
           "tsConfig": "tsconfig.server.json"
         },
