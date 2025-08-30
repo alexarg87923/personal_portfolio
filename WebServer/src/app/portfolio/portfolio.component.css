@@ -1,20 +1,36 @@
-#bg {
-  position: relative;
-  background-image: url('/original-sizes/landing-bg.webp');
-  background-repeat: no-repeat;
+#hero {
+  background-image: image-set(
+    url('/medium-sizes/hero-1920.webp') 1x,
+    url('/large-sizes/hero-3840.webp') 2x
+  );
   background-size: cover;
   background-position: center;
 }
 
-#bg::before {
+#hero::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(0, 0, 0, 0.50);
   z-index: 1;
+}
+
+@media (max-width: 600px) {
+  #hero {
+    background-image: image-set(
+      url('/small-sizes/hero-960.webp') 1x,
+      url('/medium-sizes/hero-1600.webp') 2x
+    );
+  }
+}
+
+@media (max-aspect-ratio: 3/4) {
+  #hero {
+    background-image: url('/small-sizes/hero-1080.webp');
+  }
 }
 
 #children {
