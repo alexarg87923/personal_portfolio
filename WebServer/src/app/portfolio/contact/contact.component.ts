@@ -18,19 +18,20 @@ export class ContactComponent {
       email: ['', [Validators.required, Validators.email]],
       message: ['', Validators.required]
     });
-  }
+  };
 
   onSubmit(): void {
     if (this.form.valid) {
-      this.http.post('/api/contact', this.form.value)
-        .subscribe({
-          next: response => {
-            console.log('Form submitted successfully', response);
-          },
-          error: error => {
-            console.error('Error submitting form', error);
-          }
-        });
+      this.http
+      .post('/api/contact', this.form.value)
+      .subscribe({
+        next: response => {
+          console.log('Form submitted successfully', response);
+        },
+        error: error => {
+          console.error('Error submitting form', error);
+        }
+      });
     }
-  }
-}
+  };
+};

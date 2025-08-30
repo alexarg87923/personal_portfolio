@@ -4,9 +4,7 @@ import { Pipe, type PipeTransform } from '@angular/core';
   name: 'monthYearFormat',
   standalone: true
 })
-
 export class MonthYearFormatPipe implements PipeTransform {
-
   transform(value: string): string {
     if (!value) return '';
 
@@ -32,6 +30,5 @@ export class MonthYearFormatPipe implements PipeTransform {
     const abbreviatedMonth = monthNames[monthIndex];
 
     return `${abbreviatedMonth} ${year}`;
-  }
-
-}
+  };
+};

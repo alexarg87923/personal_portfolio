@@ -18,9 +18,10 @@ export class ExperienceComponent implements OnInit {
       return Date.parse(b.start_date) - Date.parse(a.start_date);
     });
     console.log(this.experienceData);
-  }
+  };
 
   ngOnInit() {
     this.sortExperience();
-  }
-}
+  };
+};
+

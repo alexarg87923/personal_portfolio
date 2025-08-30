@@ -26,7 +26,7 @@
           "assets": [
             {
               "glob": "**/*",
-              "input": "public",
+              "input": "public/shared",
               "output": "/"
             }
           ],
@@ -35,6 +35,10 @@
         },
         "configurations": {
           "production": {
+            "assets": [
+                { "input": "public/shared",     "glob": "**/*", "output": "/" },
+                { "input": "public/production", "glob": "**/*", "output": "/" }
+            ],
             "budgets": [
               {
                 "type": "initial",
@@ -50,6 +54,10 @@
             "outputHashing": "all"
           },
           "development": {
+            "assets": [
+                { "input": "public/shared",      "glob": "**/*", "output": "/" },
+                { "input": "public/development", "glob": "**/*", "output": "/" }
+            ],
             "optimization": false,
             "extractLicenses": false,
             "sourceMap": true

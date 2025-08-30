@@ -7,7 +7,7 @@
     "build:dev:angular": "ng run portfolio:build:development --watch",
     "build:prod:angular": "ng run portfolio:build:production",
     "start:dev": "concurrently --kill-others-on-fail --prefix \"[{name}]\" --prefix-colors \"cyan,magenta\" --names \"ANGULAR,SERVER\" \"npm run build:dev:angular\" \"npx wait-on file:dist/portfolio/server/server.mjs && npm run run:dev\"",
-    "start:prod": "npm run build:prod:angular && npm run build:prod:node && npm run run:prod"
+    "start:prod": "npm run build:prod:angular && npm run run:prod"
   },
   "private": true,
   "dependencies": {
