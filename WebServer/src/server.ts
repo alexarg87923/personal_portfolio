@@ -21,14 +21,17 @@ function createServer() {
   
   // Configure CORS options
   const corsOptions = environment.MODE === 'development' ? {
-    origin: 'http://localhost:4200',
+    origin: 'http://localhost:4000',
     credentials: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Authorization', '*']
   } : {
-    origin: 'http://localhost',
+    origin: 'http://localhost:4000',
+    credentials: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    allowedHeaders: ['Content-Type', 'Authorization', '*']
   };
-
+  
   // Configure session options
   const sessionOptions = {
     store: redisStore,

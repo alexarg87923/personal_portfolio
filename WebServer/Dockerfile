@@ -11,13 +11,9 @@ COPY ./tables ./tables
 COPY ./.postcssrc.json .
 COPY ./angular.json .
 COPY ./tsconfig.app.json .
-COPY ./tsconfig.server.json .
-COPY ./tsconfig.node.json .
 COPY ./tsconfig.json .
 
-RUN npm run build:prod:client
-RUN npm run build:prod:server
-RUN npm run build:prod:node
+RUN npm run build:prod:angular
 
 FROM node:lts-alpine
 WORKDIR /app
@@ -27,7 +23,9 @@ COPY --from=builder /app/package.json /app/package-lock.json ./
 RUN npm ci --only=production
 
 COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/tables ./tables
+COPY --from=builder /app/init_data_scripts ./init_data_scripts
 
-CMD ["node", "dist/node/server.mjs"]
+CMD ["npm", "run", "run:prod"]
 
 EXPOSE 4000

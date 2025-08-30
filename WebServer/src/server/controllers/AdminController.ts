@@ -109,6 +109,12 @@ export class AdminController {
       if (result.status === 0) {
         if (result.body) {
           req.session.user = { user_id: result.body[0] };
+          req.session.save((err2) => {
+            if (err2) {
+              console.log(err2);
+            }
+            console.log('Saved SID:', req.sessionID);
+          });
           res.status(200).json({ message: 'Success!' });
         };
       } else if (result.status === 1) {
@@ -120,6 +126,7 @@ export class AdminController {
       };
     } catch (error: any) {
       res.status(500).json({ error: 'Internal server error', message: error.message });
+      return;
     };
   };
 

@@ -1,39 +1,53 @@
+/* HERO */
 #hero {
-  background-image: image-set(
-    url('/medium-sizes/hero-1920.webp') 1x,
-    url('/large-sizes/hero-3840.webp') 2x
-  );
-  background-size: cover;
-  background-position: center;
+  height: 100dvh;          /* better than vh on mobile */
+  min-height: 100svh;
+  position: relative;
+  display: grid;
+  place-items: center;
+
+  /* Topmost layers first, image last */
+  background-image:
+    linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.45)),              /* global darken */
+    linear-gradient(to bottom, rgba(0,0,0,0) 82%, rgba(0,0,0,.85) 96%, #000),  /* bottom fade */
+    image-set(
+      url('/medium-sizes/hero-1920.webp') 1x,
+      url('/large-sizes/hero-3840.webp') 2x
+    );
+  background-size: 100% 100%, 100% 100%, cover;
+  background-position: center, center, center;
+  background-repeat: no-repeat, no-repeat, no-repeat;
 }
 
-#hero::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.50);
-  z-index: 1;
-}
-
+/* PHONE DPR VARIANT */
 @media (max-width: 600px) {
   #hero {
-    background-image: image-set(
-      url('/small-sizes/hero-960.webp') 1x,
-      url('/medium-sizes/hero-1600.webp') 2x
-    );
+    background-image:
+      linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.45)),
+      linear-gradient(to bottom, rgba(0,0,0,0) 82%, rgba(0,0,0,.85) 96%, #000),
+      image-set(
+        url('/small-sizes/hero-960.webp') 1x,
+        url('/medium-sizes/hero-1600.webp') 2x
+      );
   }
 }
 
+/* PORTRAIT ART DIRECTION (optional, if you have tall crops) */
 @media (max-aspect-ratio: 3/4) {
   #hero {
-    background-image: url('/small-sizes/hero-1080.webp');
+    background-image:
+      linear-gradient(to bottom, rgba(0,0,0,.45), rgba(0,0,0,.45)),
+      linear-gradient(to bottom, rgba(0,0,0,0) 82%, rgba(0,0,0,.85) 96%, #000),
+      image-set(
+        url('/small-sizes/hero-1080x1920.webp') 1x,
+        url('/medium-sizes/hero-1440x2560.webp') 2x
+      );
+    background-position: center 30%, center 30%, center 30%;
   }
 }
 
-#children {
+/* Ensure hero content stays readable on top */
+#hero > * {
   position: relative;
-  z-index: 2;
+  z-index: 1; /* not strictly needed now, but safe */
 }
