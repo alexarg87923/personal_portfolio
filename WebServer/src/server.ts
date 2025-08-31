@@ -1,12 +1,12 @@
-import express from 'express';
+import express, { Express } from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import session from 'express-session';
 import cors from 'cors';
-
+import { RedisStore } from 'connect-redis';
 import { environment } from './server/environments/environment';
 import { initialize_database } from './server/databases/pg';
-import redisStore from './server/databases/redis';
+import { ensureRedisConnected } from './server/databases/redis';
 import MainRoute from './server/routes/MainRoute';
 import { createNodeRequestHandler, isMainModule, AngularNodeAppEngine, writeResponseToNodeResponse } from '@angular/ssr/node';
 
@@ -31,17 +31,6 @@ function createServer() {
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     allowedHeaders: ['Content-Type', 'Authorization', '*']
   };
-  
-  // Configure session options
-  const sessionOptions = {
-    store: redisStore,
-    resave: false,
-    saveUninitialized: false,
-    secret: environment.REDIS_SECRET,
-    cookie: environment.MODE === 'development' 
-      ? { secure: false, maxAge: 60000, httpOnly: false }
-      : { secure: true, maxAge: 60000, httpOnly: true }
-  };
 
   console.log(`CORS and session set up in ${environment.MODE} mode`);
 
@@ -49,7 +38,7 @@ function createServer() {
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
   server.use(cors(corsOptions));
-  server.use(session(sessionOptions));
+  setupSession(server);
 
   // API routes
   server.use('/api', (req, res, next) => {
@@ -92,6 +81,27 @@ function createServer() {
 
   return server;
 }
+
+async function setupSession(server: Express) {
+  const redisClient = await ensureRedisConnected();
+  
+  const redisStore = new RedisStore({
+    client: redisClient,
+    prefix: 'portfolio:',
+  });
+
+  server.use(session({
+    store: redisStore,
+    resave: false,
+    saveUninitialized: false,
+    secret: environment.REDIS_SECRET,
+    cookie: environment.MODE === 'development' 
+      ? { secure: false, maxAge: 60000, httpOnly: false }
+      : { secure: true, maxAge: 60000, httpOnly: true }
+  }));
+
+  console.log('Session middleware configured with Redis store');
+};
 
 // Only run when this file is executed directly
 if (isMainModule(import.meta.url)) {
