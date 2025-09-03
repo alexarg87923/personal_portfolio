@@ -15,7 +15,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const BROWSER_DIST = join(__dirname, '../browser');
 
 // Function to create and configure the server
-function createServer() {
+const serverObj = (async () => {
   const server = express();
   const angularEngine = new AngularNodeAppEngine();
   
@@ -34,11 +34,14 @@ function createServer() {
 
   console.log(`CORS and session set up in ${environment.MODE} mode`);
 
+  // Database
+  await initialize_database();
+
   // Middleware
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
   server.use(cors(corsOptions));
-  setupSession(server);
+  await setupSession(server);
 
   // API routes
   server.use('/api', (req, res, next) => {
@@ -80,7 +83,7 @@ function createServer() {
   });
 
   return server;
-}
+})();
 
 async function setupSession(server: Express) {
   const redisClient = await ensureRedisConnected();
@@ -105,15 +108,17 @@ async function setupSession(server: Express) {
 
 // Only run when this file is executed directly
 if (isMainModule(import.meta.url)) {
-  const server = createServer();
+  const server = await serverObj;
   const port = environment.PORT || 4000;
   
   // Initialize database and start server
-  initialize_database();
   server.listen(port, () => {
     console.log(`Node Express server listening on http://localhost:${port} in ${environment.MODE} mode.`);
   });
 }
 
 // For SSR/build purposes, export a request handler
-export const reqHandler = createNodeRequestHandler(createServer());
+export const reqHandler = (async () => {
+  const app = await serverObj;
+  return createNodeRequestHandler(app);
+})();

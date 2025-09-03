@@ -66,7 +66,6 @@ export class AdminDashboardComponent implements OnInit {
         if (response !== null && !!response) {
           this.fetchedData = response;
           this.original = JSON.parse(JSON.stringify(response));
-
         };
       },
       error: error => {

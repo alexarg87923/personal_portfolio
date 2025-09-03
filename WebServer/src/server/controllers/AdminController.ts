@@ -14,7 +14,7 @@ export class AdminController {
     // console.log("METHOD: ", req.method)
     // console.log("SESSION: ", req.session)
     // console.log("user_id: ", req.session.user?.user_id)
-    if (!(req.session.user?.user_id)) {
+    if (!(req.session?.user?.user_id)) {
       // const ua = req.headers['user-agent'];
       // if (ua && ua.toLowerCase().includes('node')) {
       //   console.log('Ignoring node request');
@@ -26,7 +26,7 @@ export class AdminController {
     } else {
       try {
         // redundant check against DB for security reasons
-        var result = await this.adminService.verifyUser(req.session.user?.user_id);
+        var result = await this.adminService.verifyUser(req.session?.user?.user_id);
 
         if (result == 0) {
           next();
@@ -108,13 +108,15 @@ export class AdminController {
       let result = await this.adminService.login(req.body);
       if (result.status === 0) {
         if (result.body) {
+          console.log("before")
           req.session.user = { user_id: result.body[0] };
-          req.session.save((err2) => {
-            if (err2) {
-              console.log(err2);
-            }
-            console.log('Saved SID:', req.sessionID);
-          });
+          console.log("after session save")
+          // req.session.save((err2) => {
+          //   if (err2) {
+          //     console.log(err2);
+          //   }
+          //   console.log('Saved SID:', req.sessionID);
+          // });
           res.status(200).json({ message: 'Success!' });
         };
       } else if (result.status === 1) {
@@ -126,6 +128,7 @@ export class AdminController {
       };
     } catch (error: any) {
       res.status(500).json({ error: 'Internal server error', message: error.message });
+      console.log(error);
       return;
     };
   };
@@ -142,6 +145,7 @@ export class AdminController {
       });
     } catch (error: any) {
       res.status(500).json({ error: 'Internal server error logging out', message: error.message });
+      console.log(error);
       return;
     };
   };
