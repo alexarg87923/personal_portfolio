@@ -33,15 +33,15 @@ const serverObj = (async () => {
   };
 
   console.log(`CORS and session set up in ${environment.MODE} mode`);
-
-  // Database
-  await initialize_database();
-
+  
   // Middleware
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
   server.use(cors(corsOptions));
   await setupSession(server);
+  
+  // Database
+  await initialize_database();
 
   // API routes
   server.use('/api', (req, res, next) => {
@@ -86,8 +86,12 @@ const serverObj = (async () => {
 })();
 
 async function setupSession(server: Express) {
+  console.log('[REDIS ensure start]', new Date().toISOString());
+
   const redisClient = await ensureRedisConnected();
-  
+
+  console.log('[REDIS ensure done]', new Date().toISOString());
+
   const redisStore = new RedisStore({
     client: redisClient,
     prefix: 'portfolio:',

@@ -15,6 +15,7 @@ export function getRedisClient(): RedisClientType {
 }
 
 export async function ensureRedisConnected(): Promise<RedisClientType> {
+  console.log('[REDIS INSIDE ensure start]', new Date().toISOString());
   const c = getRedisClient();
   
   // Already connected?
@@ -32,6 +33,8 @@ export async function ensureRedisConnected(): Promise<RedisClientType> {
     connectPromise = null;
     throw err;
   }
-  
+
+  console.log('[REDIS INSIDE ensure done]', new Date().toISOString());
+
   return c;
 };
