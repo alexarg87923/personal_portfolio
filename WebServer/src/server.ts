@@ -4,9 +4,9 @@ import { dirname, join } from 'node:path';
 import session from 'express-session';
 import cors from 'cors';
 import { RedisStore } from 'connect-redis';
-import { environment } from './server/environments/environment';
-import { initialize_database } from './server/databases/pg';
-import { ensureRedisConnected } from './server/databases/redis';
+import { environment } from './server/environments/Environment';
+import { initializeDatabase } from './server/services/PostgresInitializationService';
+import { ensureRedisConnected } from './server/services/RedisInitializationService';
 import MainRoute from './server/routes/MainRoute';
 import { createNodeRequestHandler, isMainModule, AngularNodeAppEngine, writeResponseToNodeResponse } from '@angular/ssr/node';
 
@@ -41,7 +41,7 @@ const serverObj = (async () => {
   await setupSession(server);
   
   // Database
-  await initialize_database();
+  await initializeDatabase();
 
   // API routes
   server.use('/api', (req, res, next) => {

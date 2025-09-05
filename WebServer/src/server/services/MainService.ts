@@ -1,11 +1,11 @@
 
 import { type IFormData, type IAbout, type IExperience, type IProject, type ISkill } from '../../shared/interfaces/IFormData';
-import { pool } from '../databases/pg';
+import { getPgPool } from '../providers/ProvidesPgPool';
 
 export class MainService {
 
   async getAboutData(): Promise<IFormData<IAbout>> {
-    const pgclient = await pool.connect();
+    const pgclient = await getPgPool().connect();
     try {
       var res = await pgclient.query('SELECT id, summary FROM personal_portfolio_schema.about WHERE active = true');
       if (res.rowCount === 0 || res.rowCount === null) {
@@ -22,7 +22,7 @@ export class MainService {
   };
 
   async getExperienceData(): Promise<IFormData<Array<IExperience>>> {
-    const pgclient = await pool.connect();
+    const pgclient = await getPgPool().connect();
     try {
       var res = await pgclient.query(`SELECT id, logo_path, to_char(start_date, 'YYYY-MM') AS start_date, to_char(end_date, 'YYYY-MM') AS end_date, working_here_right_now, title, description FROM personal_portfolio_schema.experience WHERE active = true`);
       if (res.rowCount === 0) {
@@ -40,7 +40,7 @@ export class MainService {
 
 
   async getProjectData(): Promise<IFormData<Array<IProject>>> {
-    const pgclient = await pool.connect();
+    const pgclient = await getPgPool().connect();
     try {
       var projectsRows = await pgclient.query('SELECT id, title, description, project_img_path, host_status, github_url, web_url FROM personal_portfolio_schema.projects WHERE active = true');
 
@@ -78,7 +78,7 @@ export class MainService {
   };
 
   async getSkillData(): Promise<IFormData<Array<ISkill>>> {
-    const pgclient = await pool.connect();
+    const pgclient = await getPgPool().connect();
     try {
       var res = await pgclient.query('SELECT id, skill FROM personal_portfolio_schema.skills');
       if (res.rowCount === 0) {

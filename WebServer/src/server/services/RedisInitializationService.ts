@@ -1,18 +1,7 @@
-import { createClient, type RedisClientType } from 'redis';
-import { environment } from '../environments/environment';
+import { type RedisClientType } from 'redis';
+import { getRedisClient } from '../providers/ProvidesRedisClient';
 
-let client: RedisClientType | null = null;
 let connectPromise: Promise<RedisClientType> | null = null;
-
-export function getRedisClient(): RedisClientType {
-  if (!client) {
-    client = createClient({
-      url: `redis://${environment.REDIS_DB_USER}:${environment.REDIS_DB_PASSWORD}@${environment.MODE === 'development' ? 'localhost' : environment.REDIS_DB_HOST}:${environment.REDIS_DB_PORT}`
-    });
-    client.on('error', (err) => console.error('Redis Client Error:', err));
-  }
-  return client;
-}
 
 export async function ensureRedisConnected(): Promise<RedisClientType> {
   console.log('[REDIS INSIDE ensure start]', new Date().toISOString());

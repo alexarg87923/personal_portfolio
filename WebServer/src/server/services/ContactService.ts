@@ -1,11 +1,11 @@
 
 import { type IContact } from '../../shared/interfaces/IContact';
 import { type IFormData } from '../../shared/interfaces/IFormData';
-import { pool } from '../databases/pg';
+import { getPgPool } from '../providers/ProvidesPgPool';
 
 export class ContactService {
   async addFormInput(formData: IContact): Promise<IFormData<string>> {
-    const pgclient = await pool.connect();
+    const pgclient = await getPgPool().connect();
     try {
       console.log(formData);
       await pgclient.query('INSERT INTO personal_portfolio_schema.contact (name, email, message) VALUES ($1, $2, $3)', [formData.name, formData.email, formData.message]);
