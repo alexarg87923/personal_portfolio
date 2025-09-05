@@ -3,15 +3,17 @@
 import { type IAbout, type IExperience, type IProject, type ISkill, type IFormData } from '../../shared/interfaces/IFormData';
 import { type ILoginCred } from '../../shared/interfaces/ILoginCred';
 import * as bcrypt from 'bcryptjs';
-import { modules } from '../modules/Modules';
+import pg from 'pg';
 
 function escapeIdentifier(str: string) {
   return '"' + str.replace(/"/g, '""') + '"';
 }
 
 export class AdminService {
+  constructor(private dbPool: pg.Pool) {};
+
   async verifyUser(userID: string): Promise<Number> {
-    const client = await modules.getPool().connect();
+    const client = await this.dbPool.connect();
     try {
       var res = await client.query('SELECT user_id FROM personal_portfolio_schema.users WHERE user_id = $1', [userID]);
 
@@ -29,7 +31,7 @@ export class AdminService {
   };
 
   async login(formData: ILoginCred): Promise<IFormData<string>> {
-    const client = await modules.getPool().connect();
+    const client = await this.dbPool.connect();
     try {
       var res = await client.query('SELECT user_id, hashed_password FROM personal_portfolio_schema.users WHERE username = $1', [formData.username]);
       if (res.rowCount === 0 || res.rowCount === null) {
@@ -52,7 +54,7 @@ export class AdminService {
   };
 
   async getAboutData(): Promise<IFormData<IAbout>> {
-    const pgclient = await modules.getPool().connect();
+    const pgclient = await this.dbPool.connect();
     try {
       var res = await pgclient.query('SELECT id, summary FROM personal_portfolio_schema.about WHERE active = true');
       if (res.rowCount === 0 || res.rowCount === null) {
@@ -69,7 +71,7 @@ export class AdminService {
   }
 
   async saveAboutData(inputData: IAbout): Promise<number> {
-    const pgclient = await modules.getPool().connect();
+    const pgclient = await this.dbPool.connect();
 
     try {
       var res = await pgclient.query('UPDATE personal_portfolio_schema.about SET summary = $1 WHERE id = $2', [inputData.summary, inputData.id]);
@@ -87,7 +89,7 @@ export class AdminService {
   };
 
   async getExperienceData(): Promise<IFormData<IExperience>> {
-    const pgclient = await modules.getPool().connect();
+    const pgclient = await this.dbPool.connect();
     try {
       var res = await pgclient.query('SELECT id, logo_path, start_date, end_date, working_here_right_now, title, description FROM personal_portfolio_schema.experience WHERE active = true');
       if (res.rowCount === 0) {
@@ -104,7 +106,7 @@ export class AdminService {
   };
 
   async saveExperienceData(inputData: IExperience): Promise<number> {
-    const pgclient = await modules.getPool().connect();
+    const pgclient = await this.dbPool.connect();
     try {
       if (!inputData || typeof inputData !== 'object') {
         throw new Error('Invalid input data: inputData must be a non-null object.');
@@ -136,7 +138,7 @@ export class AdminService {
   };
 
   async getProjectData(): Promise<IFormData<IProject>> {
-    const pgclient = await modules.getPool().connect();
+    const pgclient = await this.dbPool.connect();
     try {
       const projectRows = await pgclient.query(`
         SELECT
@@ -196,7 +198,7 @@ export class AdminService {
 
 
   async saveProjectData(inputData: IProject): Promise<number> {
-    const pgclient = await modules.getPool().connect();
+    const pgclient = await this.dbPool.connect();
     try {
       if (!inputData || typeof inputData !== 'object') {
         throw new Error('Invalid input data: inputData must be a non-null object.');
@@ -244,7 +246,7 @@ export class AdminService {
   };
 
   async getSkillData(): Promise<IFormData<ISkill>> {
-    const pgclient = await modules.getPool().connect();
+    const pgclient = await this.dbPool.connect();
     try {
       var res = await pgclient.query('SELECT id, skill FROM personal_portfolio_schema.skills');
       if (res.rowCount === 0) {
@@ -261,7 +263,7 @@ export class AdminService {
   };
 
   async saveSkillData(inputData: ISkill): Promise<number> {
-    const pgclient = await modules.getPool().connect();
+    const pgclient = await this.dbPool.connect();
     try {
       if (!inputData || typeof inputData !== 'object') {
         throw new Error('Invalid input data: inputData must be a non-null object.');

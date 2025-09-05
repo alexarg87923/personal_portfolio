@@ -96,12 +96,6 @@ export class AdminController {
           console.log("before")
           req.session.user = { user_id: result.body[0] };
           console.log("after session save")
-          // req.session.save((err2) => {
-          //   if (err2) {
-          //     console.log(err2);
-          //   }
-          //   console.log('Saved SID:', req.sessionID);
-          // });
           res.status(200).json({ message: 'Success!' });
         };
       } else if (result.status === 1) {

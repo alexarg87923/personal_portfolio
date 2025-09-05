@@ -38,7 +38,7 @@ const serverObj = (async () => {
   await initializeDatabase();
 
   // API routes
-  server.use('/api', (req, res, next) => {
+  server.use('/api/v1', (req, res, next) => {
     req.log.info({file: 'server.ts', 'action': '/api'}, 'API route call...');
     return MainRoute(req, res, next)
   });

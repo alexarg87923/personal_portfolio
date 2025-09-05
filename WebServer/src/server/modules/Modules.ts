@@ -1,4 +1,3 @@
-import pg from 'pg';
 import { getPinoConfig, getPostgresConfig } from '../config/Config';
 import { createAndConnectRedis } from '../utils/Utils';
 import { type createClient } from 'redis';
@@ -8,8 +7,8 @@ import { ContactService } from '../services/ContactService';
 import { MainService } from '../services/MainService';
 import { ContactController } from '../controllers/ContactController';
 import { MainController } from '../controllers/MainController';
-import { environment } from '../environments/Environment';
 import pino, { Logger } from 'pino';
+import pg from 'pg';
 
 class ModulesClass {
   private clientPromise: Promise<ReturnType<typeof createClient>> | null = null;
@@ -49,15 +48,15 @@ class ModulesClass {
   };
 
   public getAdminService = (): AdminService => {
-    return new AdminService();
+    return new AdminService(this.getPool());
   };
 
   public getContactService = (): ContactService => {
-    return new ContactService();
+    return new ContactService(this.getPool());
   };
 
   public getMainService = (): MainService => {
-    return new MainService();
+    return new MainService(this.getPool());
   };
 
   public getAdminController = (): AdminController => { 
