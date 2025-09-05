@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { AdminController } from '../controllers/AdminController';
+import { modules } from '../modules/Modules';
 
 const router = Router();
-const adminController = new AdminController();
+const adminController = modules.getAdminController();
 
 router.post('/admin/login', (req, res) => adminController.login(req, res));
 router.post('/admin/logout', (req, res) => adminController.logout(req, res));

@@ -2,11 +2,8 @@ import { type Request, type Response } from 'express';
 import { MainService } from '../services/MainService';
 
 export class MainController {
-  private mainService: MainService;
+  constructor(private mainService: MainService) {};
 
-  constructor() {
-    this.mainService = new MainService();
-  }
   async getPortfolioData(req: Request, res: Response): Promise<void> {
     try {
       const [about, experience, project, skill] = await Promise.all([

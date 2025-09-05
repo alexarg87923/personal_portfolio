@@ -1,10 +1,10 @@
 import { Router } from 'express';
-import { MainController } from '../controllers/MainController';
 import ContactRoutes from './ContactRoutes';
 import AdminRoutes from './AdminRoutes';
+import { modules } from '../modules/Modules';
 
 const router = Router();
-const mainController = new MainController();
+const mainController = modules.getMainController();
 
 router.get('/', (req, res) => mainController.getPortfolioData(req, res));
 router.use(ContactRoutes);

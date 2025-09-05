@@ -2,11 +2,7 @@ import { type Request, type Response } from 'express';
 import { ContactService } from '../services/ContactService';
 
 export class ContactController {
-  private contactService: ContactService;
-
-  constructor() {
-    this.contactService = new ContactService();
-  };
+  constructor(private contactService: ContactService) {};
 
   async addFormInput(req: Request, res: Response): Promise<void> {
     try {

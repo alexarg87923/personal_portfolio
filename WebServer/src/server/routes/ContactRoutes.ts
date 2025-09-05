@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { ContactController } from '../controllers/ContactController';
+import { modules } from '../modules/Modules';
 
 const router = Router();
-const contactController = new ContactController();
+const contactController = modules.getContactController();
 
 router.post('/contact', (req, res) => contactController.addFormInput(req, res));
 

@@ -1,6 +1,6 @@
 import fs from 'node:fs';
 import path from 'path';
-import { getPgPool } from '../providers/ProvidesPgPool';
+import { modules } from '../modules/Modules';
 
 interface DatabaseError extends Error {
   code?: string;
@@ -88,7 +88,7 @@ async function getSqlFiles(dirPath: string): Promise<string[]> {
  * Initialize database tables from SQL files
  */
 async function initializeTables(): Promise<void> {
-  const client = await getPgPool().connect();
+  const client = await modules.getPool().connect();
   
   try {
     console.log('INIT PSQL TABLE: Starting table initialization...');
@@ -133,7 +133,7 @@ async function initializeTables(): Promise<void> {
  * Initialize seed data from SQL files
  */
 async function initializeSeedData(): Promise<void> {
-  const client = await pool.connect();
+  const client = await modules.getPool().connect();
   
   try {
     console.log('INIT PSQL DATA: Starting seed data initialization...');

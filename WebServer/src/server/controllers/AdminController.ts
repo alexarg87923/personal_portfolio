@@ -2,25 +2,10 @@ import { type Request, type Response } from 'express';
 import { AdminService } from '../services/AdminService';
 
 export class AdminController {
-  private adminService: AdminService;
-
-  constructor() {
-    this.adminService = new AdminService();
-  };
+  constructor(private adminService: AdminService) {};
 
   async sessionHandler(req: Request, res: Response, next: Function): Promise<void> {
-    // console.log("BODY: ", req.body)
-    // console.log("HEADER: ", req.headers)
-    // console.log("METHOD: ", req.method)
-    // console.log("SESSION: ", req.session)
-    // console.log("user_id: ", req.session.user?.user_id)
     if (!(req.session?.user?.user_id)) {
-      // const ua = req.headers['user-agent'];
-      // if (ua && ua.toLowerCase().includes('node')) {
-      //   console.log('Ignoring node request');
-      //   res.sendStatus(204);
-      //   return;
-      // }
       res.status(401).json({ error: 'Unauthorized' });
       return;
     } else {
