@@ -12,5 +12,6 @@ export const environment = {
   REDIS_DB_USER: 'alexportfolio',
   REDIS_DB_PASSWORD: 'pass',
   REDIS_DB_PREFIX: 'portfolio:',
-  REDIS_DB_PORT: '6379'
+  REDIS_DB_PORT: '6379',
+  LOG_LEVEL: 'info' // trace | debug | info | warn | error | fatal
 };

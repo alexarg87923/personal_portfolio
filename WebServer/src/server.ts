@@ -1,53 +1,57 @@
-import express, { Express } from 'express';
+import express, { type NextFunction, type Request, type Response } from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
-import session from 'express-session';
 import cors from 'cors';
-import { RedisStore } from 'connect-redis';
 import { environment } from './server/environments/Environment';
 import { initializeDatabase } from './server/services/PostgresInitializationService';
-import { ensureRedisConnected } from './server/services/RedisInitializationService';
 import MainRoute from './server/routes/MainRoute';
 import { createNodeRequestHandler, isMainModule, AngularNodeAppEngine, writeResponseToNodeResponse } from '@angular/ssr/node';
+import { modules } from './server/modules/Modules';
+import { setupSession } from './server/utils/Utils';
+import { getCorsConfig, getPinoHttpConfig } from './server/config/Config';
+import pinoHttp from 'pino-http';
 
 // Only define basic constants that are safe to execute
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const BROWSER_DIST = join(__dirname, '../browser');
+const logger = modules.getLogger();
+const { MODE, PORT } = environment;
 
 // Function to create and configure the server
 const serverObj = (async () => {
   const server = express();
   const angularEngine = new AngularNodeAppEngine();
-  
-  // Configure CORS options
-  const corsOptions = environment.MODE === 'development' ? {
-    origin: 'http://localhost:4000',
-    credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: ['Content-Type', 'Authorization', '*']
-  } : {
-    origin: 'http://localhost:4000',
-    credentials: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    allowedHeaders: ['Content-Type', 'Authorization', '*']
-  };
 
-  console.log(`CORS and session set up in ${environment.MODE} mode`);
-  
   // Middleware
+  logger.info({ file: 'server.ts', action: 'InitMiddleWare' }, 'Setting up middleware...');
   server.use(express.json());
   server.use(express.urlencoded({ extended: true }));
-  server.use(cors(corsOptions));
+  server.use(cors(getCorsConfig()));
+  server.use(pinoHttp(getPinoHttpConfig(logger))); 
+
+  // Session for authentication
+  logger.info({ file: 'server.ts', action: 'InitSession' }, 'Setting up session with Redis...');
   await setupSession(server);
   
   // Database
+  logger.info({ file: 'server.ts', action: 'InitDb', db: 'Postgres' }, 'Initializing PostgreSQL DB...');
   await initializeDatabase();
 
   // API routes
   server.use('/api', (req, res, next) => {
-    console.log("[API] " + req.method + " " + req.originalUrl);
+    req.log.info({file: 'server.ts', 'action': '/api'}, 'API route call...');
     return MainRoute(req, res, next)
   });
+
+  server.use((err: Error, req: Request, res: Response, next: NextFunction) => {
+    // Don't send error details in production
+    const message = MODE === 'development'
+      ? err.message
+      : 'Internal server error';
+
+    res.status(500).json({ error: message });
+});
+
 
   // Set view engine and views directory
   server.set('view engine', 'html');
@@ -63,18 +67,18 @@ const serverObj = (async () => {
   );
 
   server.use((req, res, next) => {
-    console.log("[NON-API/ANGULAR] " + req.method + " " + req.originalUrl);
+    req.log.info({file: 'server.ts', 'action': 'angular-hydration'}, 'Angular route call...');
     next();
   });
 
   // Handle all other requests by rendering the Angular application
   server.use('/**', (req, res, next) => {
     const { protocol, originalUrl, headers, cookies } = req;
-    console.log("[ANGULAR RENDER] " + req.method + " " + req.originalUrl);
-    console.log('Protocol: ' + protocol);
-    console.log('Url: ' + originalUrl);
-    console.log('Headers: ' + headers);
-    console.log('Cookies: ' + cookies);
+    req.log.info("[ANGULAR RENDER] " + req.method + " " + req.originalUrl);
+    req.log.info('Protocol: ' + protocol);
+    req.log.info('Url: ' + originalUrl);
+    req.log.info('Headers: ' + headers);
+    req.log.info('Cookies: ' + cookies);
 
     angularEngine
       .handle(req)
@@ -85,39 +89,20 @@ const serverObj = (async () => {
   return server;
 })();
 
-async function setupSession(server: Express) {
-  console.log('[REDIS ensure start]', new Date().toISOString());
-
-  const redisClient = await ensureRedisConnected();
-
-  console.log('[REDIS ensure done]', new Date().toISOString());
-
-  const redisStore = new RedisStore({
-    client: redisClient,
-    prefix: 'portfolio:',
-  });
-
-  server.use(session({
-    store: redisStore,
-    resave: false,
-    saveUninitialized: false,
-    secret: environment.REDIS_SECRET,
-    cookie: environment.MODE === 'development' 
-      ? { secure: false, maxAge: 60000, httpOnly: false }
-      : { secure: true, maxAge: 60000, httpOnly: true }
-  }));
-
-  console.log('Session middleware configured with Redis store');
-};
+// Cleanup deps if program crashes
+process.on('SIGTERM', async () => {
+  await modules.cleanup();
+  process.exit(0);
+});
 
 // Only run when this file is executed directly
 if (isMainModule(import.meta.url)) {
   const server = await serverObj;
-  const port = environment.PORT || 4000;
-  
+  const port = PORT || 4000;
+
   // Initialize database and start server
   server.listen(port, () => {
-    console.log(`Node Express server listening on http://localhost:${port} in ${environment.MODE} mode.`);
+    logger.info(`Node Express server listening on http://localhost:${port} in ${MODE} mode.`);
   });
 }
 

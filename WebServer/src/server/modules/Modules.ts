@@ -1,5 +1,5 @@
 import pg from 'pg';
-import { getPostgresConfig } from '../config/Config';
+import { getPinoConfig, getPostgresConfig } from '../config/Config';
 import { createAndConnectRedis } from '../utils/Utils';
 import { type createClient } from 'redis';
 import { AdminController } from '../controllers/AdminController';
@@ -8,10 +8,13 @@ import { ContactService } from '../services/ContactService';
 import { MainService } from '../services/MainService';
 import { ContactController } from '../controllers/ContactController';
 import { MainController } from '../controllers/MainController';
+import { environment } from '../environments/Environment';
+import pino, { Logger } from 'pino';
 
 class ModulesClass {
   private clientPromise: Promise<ReturnType<typeof createClient>> | null = null;
   private pool: pg.Pool | null = null;
+  private logger: Logger | null = null;
 
   public getPool = (): pg.Pool => {
     if (!this.pool) {
@@ -23,6 +26,14 @@ class ModulesClass {
       }
     }
     return this.pool;
+  };
+
+  public getLogger = () => {
+    if (!this.logger) {
+      return pino(getPinoConfig());
+    } else {
+      return this.logger;
+    }
   };
 
   public getRedisClient = async (): Promise<ReturnType<typeof createClient>> => {
