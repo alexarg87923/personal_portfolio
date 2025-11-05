@@ -5,8 +5,10 @@ Description=My personal portfolio
 WorkingDirectory=/home/alex/personal_portfolio
 ExecStart=/home/alex/personal_portfolio/management/start.sh
 Restart=always
-StandardOutput=journal
-StandardError=journal
+# Log to files (logs persist across restarts and are rotated)
+# systemd journal will also capture these automatically
+StandardOutput=append:/home/alex/personal_portfolio/logs/portfolio.log
+StandardError=append:/home/alex/personal_portfolio/logs/portfolio_error.log
 
 [Install]
 WantedBy=multi-user.target
