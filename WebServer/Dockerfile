@@ -21,7 +21,7 @@ COPY ./public ./public
 COPY ./src ./src
 
 # data is likely to change in production
-COPY ./init_data_scripts ./init_data_scripts
+COPY ./seed_data ./seed_data
 
 RUN npm run build:prod:angular
 
@@ -34,7 +34,7 @@ RUN npm ci --only=production
 
 COPY --from=builder /app/dist ./dist
 COPY --from=builder /app/tables ./tables
-COPY --from=builder /app/init_data_scripts ./init_data_scripts
+COPY --from=builder /app/seed_data ./seed_data
 
 CMD ["npm", "run", "run:prod"]
 

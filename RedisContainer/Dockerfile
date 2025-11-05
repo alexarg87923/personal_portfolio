@@ -1,7 +1,9 @@
 FROM redis:alpine
 
 COPY ./redis.conf /usr/local/etc/redis/redis.conf
-COPY ./users.acl /data/users.acl
+COPY ./entrypoint.sh /entrypoint.sh
 
 EXPOSE 6379
-ENTRYPOINT ["redis-server", "/usr/local/etc/redis/redis.conf"]
+
+RUN chmod +x /entrypoint.sh
+ENTRYPOINT ["/entrypoint.sh"]

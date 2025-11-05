@@ -2,7 +2,7 @@ import { RedisStore } from 'connect-redis';
 import { type Express } from 'express';
 import { getRedisConfig, getSessionConfig } from '../config/Config';
 import { createClient } from 'redis';
-import { modules } from '../modules/Modules';
+import { modulesProvider } from '../modules/ModulesProvider';
 import session from 'express-session';
 
 export const createAndConnectRedis = async (): Promise<ReturnType<typeof createClient>> => {
@@ -15,7 +15,7 @@ export const createAndConnectRedis = async (): Promise<ReturnType<typeof createC
 
 export async function setupSession(server: Express) {
   const redisStore = new RedisStore({
-    client: await modules.getRedisClient(),
+    client: await modulesProvider.getRedisClient(),
     prefix: 'portfolio:',
   });
 

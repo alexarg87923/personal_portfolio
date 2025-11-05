@@ -1,6 +1,7 @@
 import fs from 'node:fs';
 import path from 'path';
-import { modules } from '../modules/Modules';
+import { modulesProvider } from '../modules/ModulesProvider';
+import { environment } from '../environments/Environment';
 
 interface DatabaseError extends Error {
   code?: string;
@@ -10,15 +11,15 @@ interface DatabaseError extends Error {
 /**
  * Check if a table exists in the database
  */
-async function tableExists(client: any, tableName: string): Promise<boolean> {
+async function tableExists(client: any, tableName: string, schema: string = environment.PSQL_SCHEMA): Promise<boolean> {
   try {
     const query = `
       SELECT EXISTS (
         SELECT FROM information_schema.tables 
-        WHERE table_name = $1
+        WHERE table_schema = $1 AND table_name = $2
       );
     `;
-    const result = await client.query(query, [tableName]);
+    const result = await client.query(query, [schema, tableName]);
     return result.rows[0].exists;
   } catch (error) {
     console.error(`Error checking if table ${tableName} exists:`, error);
@@ -29,7 +30,7 @@ async function tableExists(client: any, tableName: string): Promise<boolean> {
 /**
  * Check if a table has data
  */
-async function tableHasData(client: any, tableName: string, schema = 'personal_portfolio_schema'): Promise<boolean> {
+async function tableHasData(client: any, tableName: string, schema: string = environment.PSQL_SCHEMA): Promise<boolean> {
   try {
     const query = `SELECT EXISTS (SELECT 1 FROM ${schema}.${tableName} LIMIT 1);`;
     const result = await client.query(query);
@@ -88,7 +89,7 @@ async function getSqlFiles(dirPath: string): Promise<string[]> {
  * Initialize database tables from SQL files
  */
 async function initializeTables(): Promise<void> {
-  const client = await modules.getPool().connect();
+  const client = await modulesProvider.getPool().connect();
   
   try {
     console.log('INIT PSQL TABLE: Starting table initialization...');
@@ -133,7 +134,7 @@ async function initializeTables(): Promise<void> {
  * Initialize seed data from SQL files
  */
 async function initializeSeedData(): Promise<void> {
-  const client = await modules.getPool().connect();
+  const client = await modulesProvider.getPool().connect();
   
   try {
     console.log('INIT PSQL DATA: Starting seed data initialization...');

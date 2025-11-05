@@ -46,28 +46,28 @@ class ModulesProvider {
     return this.clientPromise;
   };
 
-  public provideAdminService = (): AdminService => {
+  public AdminServiceProvider = (): AdminService => {
     return new AdminService(this.getPool(), this.getLogger());
   };
 
-  public provideContactService = (): ContactService => {
+  public ContactServiceProvider = (): ContactService => {
     return new ContactService(this.getPool(), this.getLogger());
   };
 
-  public provideMainService = (): MainService => {
+  public MainServiceProvider = (): MainService => {
     return new MainService(this.getPool(), this.getLogger());
   };
 
-  public provideAdminController = (): AdminController => { 
-    return new AdminController(this.provideAdminService(), this.getLogger());
+  public AdminControllerProvider = (): AdminController => { 
+    return new AdminController(this.AdminServiceProvider(), this.getLogger());
   };
 
-  public provideContactController = (): ContactController => { 
-    return new ContactController(this.provideContactService(), this.getLogger());
+  public ContactControllerProvider = (): ContactController => { 
+    return new ContactController(this.ContactServiceProvider(), this.getLogger());
   };
 
-  public provideMainController = (): MainController => { 
-    return new MainController(this.provideMainService(), this.getLogger());
+  public MainControllerProvider = (): MainController => { 
+    return new MainController(this.MainServiceProvider(), this.getLogger());
   };
 
   public async cleanup(): Promise<void> {

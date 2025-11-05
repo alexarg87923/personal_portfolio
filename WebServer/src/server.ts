@@ -6,7 +6,7 @@ import { environment } from './server/environments/Environment';
 import { initializeDatabase } from './server/services/PostgresInitializationService';
 import MainRoute from './server/routes/MainRoute';
 import { createNodeRequestHandler, isMainModule, AngularNodeAppEngine, writeResponseToNodeResponse } from '@angular/ssr/node';
-import { modules } from './server/modules/Modules';
+import { modulesProvider } from './server/modules/ModulesProvider';
 import { setupSession } from './server/utils/Utils';
 import { getCorsConfig, getPinoHttpConfig } from './server/config/Config';
 import pinoHttp from 'pino-http';
@@ -14,7 +14,7 @@ import pinoHttp from 'pino-http';
 // Only define basic constants that are safe to execute
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const BROWSER_DIST = join(__dirname, '../browser');
-const logger = modules.getLogger();
+const logger = modulesProvider.getLogger();
 const { MODE, PORT } = environment;
 
 // Function to create and configure the server
