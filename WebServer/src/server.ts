@@ -91,7 +91,7 @@ const serverObj = (async () => {
 
 // Cleanup deps if program crashes
 process.on('SIGTERM', async () => {
-  await modules.cleanup();
+  await modulesProvider.cleanup();
   process.exit(0);
 });
 
