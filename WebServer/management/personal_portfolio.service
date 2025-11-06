@@ -3,7 +3,7 @@ Description=My personal portfolio
 
 [Service]
 WorkingDirectory=/home/alex/personal_portfolio
-ExecStart=/home/alex/personal_portfolio/management/start.sh
+ExecStart=/home/alex/personal_portfolio/docker_start.sh
 Restart=always
 # Log to files (logs persist across restarts and are rotated)
 # systemd journal will also capture these automatically
