@@ -1,1 +1,0 @@
-CREATE SCHEMA IF NOT EXISTS personal_portfolio_schema;

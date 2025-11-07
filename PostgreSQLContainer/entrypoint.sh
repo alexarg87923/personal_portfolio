@@ -28,7 +28,7 @@ fi
 if [ -n "$POSTGRES_DB" ]; then
     SCHEMA_NAME="${PSQL_SCHEMA:-personal_portfolio_schema}"
     
-    # Create schema and grant permissions
+    # Ensure schema exists (idempotent - safe to run multiple times)
     psql -U "${POSTGRES_USER:-postgres}" -d "$POSTGRES_DB" <<EOF
 CREATE SCHEMA IF NOT EXISTS $SCHEMA_NAME;
 EOF
