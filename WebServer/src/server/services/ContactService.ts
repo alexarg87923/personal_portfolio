@@ -3,6 +3,7 @@ import { type IContact } from '../../shared/interfaces/IContact';
 import { type IFormData } from '../../shared/interfaces/IFormData';
 import pg from 'pg';
 import { type Logger } from 'pino';
+import { environment } from '../environments/Environment';
 
 export class ContactService {
   constructor(private dbPool: pg.Pool, private logger: Logger) {};
@@ -17,7 +18,7 @@ export class ContactService {
       
       this.logger.debug('[ContactService] Executing database insert query');
       await pgclient.query(
-        'INSERT INTO personal_portfolio_schema.contact (name, email, message) VALUES ($1, $2, $3)',
+        `INSERT INTO ${environment.PSQL_SCHEMA}.contact (name, email, message) VALUES ($1, $2, $3)`,
         [formData.name, formData.email, formData.message]
       );
       this.logger.debug('[ContactService] Contact form submission inserted successfully');

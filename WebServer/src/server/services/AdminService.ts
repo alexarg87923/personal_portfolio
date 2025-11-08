@@ -5,6 +5,7 @@ import { type ILoginCred } from '../../shared/interfaces/ILoginCred';
 import * as bcrypt from 'bcryptjs';
 import pg from 'pg';
 import { type Logger } from 'pino';
+import { environment } from '../environments/Environment';
 
 function escapeIdentifier(str: string) {
   return '"' + str.replace(/"/g, '""') + '"';
@@ -16,10 +17,10 @@ export class AdminService {
   async verifyUser(userID: string): Promise<Number> {
     this.logger.trace('[AdminService] Entering verifyUser');
     const client = await this.dbPool.connect();
-    
+
     try {
       this.logger.debug({ userID }, '[AdminService] Executing query to verify user');
-      var res = await client.query('SELECT user_id FROM personal_portfolio_schema.users WHERE user_id = $1', [userID]);
+      var res = await client.query(`SELECT user_id FROM ${environment.PSQL_SCHEMA}.users WHERE user_id = $1`, [userID]);
 
       if (res.rowCount === 0 || res.rowCount === null) {
         this.logger.warn({ userID }, '[AdminService] User not found');
@@ -46,7 +47,7 @@ export class AdminService {
     
     try {
       this.logger.debug({ username: formData.username }, '[AdminService] Executing query to fetch user credentials');
-      var res = await client.query('SELECT user_id, hashed_password FROM personal_portfolio_schema.users WHERE username = $1', [formData.username]);
+      var res = await client.query(`SELECT user_id, hashed_password FROM ${environment.PSQL_SCHEMA}.users WHERE username = $1`, [formData.username]);
       
       if (res.rowCount === 0 || res.rowCount === null) {
         this.logger.warn({ username: formData.username }, '[AdminService] User not found');
@@ -82,7 +83,7 @@ export class AdminService {
     
     try {
       this.logger.debug('[AdminService] Executing query to fetch about data');
-      var res = await pgclient.query('SELECT id, summary FROM personal_portfolio_schema.about WHERE active = true');
+      var res = await pgclient.query(`SELECT id, summary FROM ${environment.PSQL_SCHEMA}.about WHERE active = true`);
       
       if (res.rowCount === 0 || res.rowCount === null) {
         this.logger.warn('[AdminService] No about data found');
@@ -109,7 +110,7 @@ export class AdminService {
 
     try {
       this.logger.debug({ aboutId: inputData.id }, '[AdminService] Executing update query for about data');
-      var res = await pgclient.query('UPDATE personal_portfolio_schema.about SET summary = $1 WHERE id = $2', [inputData.summary, inputData.id]);
+      var res = await pgclient.query(`UPDATE ${environment.PSQL_SCHEMA}.about SET summary = $1 WHERE id = $2`, [inputData.summary, inputData.id]);
       
       if (res.rowCount === 0 || res?.rowCount === null) {
         this.logger.warn({ aboutId: inputData.id }, '[AdminService] No rows updated for about data');
@@ -136,7 +137,7 @@ export class AdminService {
     
     try {
       this.logger.debug('[AdminService] Executing query to fetch experience data');
-      var res = await pgclient.query('SELECT id, logo_path, start_date, end_date, working_here_right_now, title, description FROM personal_portfolio_schema.experience WHERE active = true');
+      var res = await pgclient.query(`SELECT id, logo_path, start_date, end_date, working_here_right_now, title, description FROM ${environment.PSQL_SCHEMA}.experience WHERE active = true`);
       
       if (res.rowCount === 0) {
         this.logger.warn('[AdminService] No experience data found');
@@ -181,7 +182,7 @@ export class AdminService {
       const setClauses = colms.map((colName: string, idx: number) => `${colName} = $${idx + 1}`);
 
       this.logger.debug('[AdminService] Executing update query for experience data');
-      var res = await pgclient.query(`UPDATE personal_portfolio_schema.experience SET ${setClauses.join(', ')} WHERE id = $${colms.length + 1}`, [...Object.values(fieldsToUpdate), id ]);
+      var res = await pgclient.query(`UPDATE ${environment.PSQL_SCHEMA}.experience SET ${setClauses.join(', ')} WHERE id = $${colms.length + 1}`, [...Object.values(fieldsToUpdate), id ]);
       
       if (res.rowCount === 0) {
         this.logger.warn({ experienceId: id }, '[AdminService] No rows updated for experience data');
@@ -219,7 +220,7 @@ export class AdminService {
           p.web_url,
           COALESCE(collabs.collaborators, '[]'::json)   AS collaborators,
           COALESCE(skills.skills,        '[]'::json)    AS skills
-        FROM personal_portfolio_schema.projects AS p
+        FROM ${environment.PSQL_SCHEMA}.projects AS p
         LEFT JOIN LATERAL (
           SELECT json_agg(
                   json_build_object(
@@ -229,8 +230,8 @@ export class AdminService {
                   )
                   ORDER BY c.name
                 ) AS collaborators
-          FROM personal_portfolio_schema.project_collaborators AS pc
-          JOIN personal_portfolio_schema.collaborator AS c
+          FROM ${environment.PSQL_SCHEMA}.project_collaborators AS pc
+          JOIN ${environment.PSQL_SCHEMA}.collaborator AS c
             ON c.id = pc.collaborator_id
           WHERE pc.project_id = p.id
         ) AS collabs ON TRUE
@@ -242,8 +243,8 @@ export class AdminService {
                   )
                   ORDER BY s.skill
                 ) AS skills
-          FROM personal_portfolio_schema.project_skills AS ps
-          JOIN personal_portfolio_schema.skills AS s
+          FROM ${environment.PSQL_SCHEMA}.project_skills AS ps
+          JOIN ${environment.PSQL_SCHEMA}.skills AS s
             ON s.id = ps.skill_id
           WHERE ps.project_id = p.id
         ) AS skills ON TRUE
@@ -304,7 +305,7 @@ export class AdminService {
       const whereIndex = colms.length + 1;
 
       const query =
-        `UPDATE ${escapeIdentifier('personal_portfolio_schema')}.` +
+        `UPDATE ${escapeIdentifier(environment.PSQL_SCHEMA)}.` +
         `${escapeIdentifier('projects')} ` +
         `SET ${setClause} WHERE ${escapeIdentifier('id')} = $${whereIndex} RETURNING *`;
 
@@ -336,7 +337,7 @@ export class AdminService {
     
     try {
       this.logger.debug('[AdminService] Executing query to fetch skill data');
-      var res = await pgclient.query('SELECT id, skill FROM personal_portfolio_schema.skills');
+      var res = await pgclient.query(`SELECT id, skill FROM ${environment.PSQL_SCHEMA}.skills`);
       
       if (res.rowCount === 0) {
         this.logger.warn('[AdminService] No skill data found');
@@ -390,7 +391,7 @@ export class AdminService {
       const whereIndex = colms.length + 1;
 
       const query =
-        `UPDATE ${escapeIdentifier('personal_portfolio_schema')}.` +
+        `UPDATE ${escapeIdentifier(environment.PSQL_SCHEMA)}.` +
         `${escapeIdentifier('skills')} ` +
         `SET ${setClause} WHERE ${escapeIdentifier('id')} = $${whereIndex} RETURNING *`;
 

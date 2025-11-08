@@ -1,4 +1,4 @@
-CREATE TABLE personal_portfolio_schema.projects (
+CREATE TABLE {{SCHEMA}}.projects (
   id SERIAL PRIMARY KEY,
   title VARCHAR(100),
   description TEXT,

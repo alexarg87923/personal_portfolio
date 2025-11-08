@@ -6,6 +6,8 @@ REDIS_USER="${REDIS_USER:-alexportfolio}"
 REDIS_PASSWORD="${REDIS_PASSWORD:-pass}"
 REDIS_PREFIX="${REDIS_PREFIX:-portfolio:}"
 
+mkdir -p /data
+
 # Create users.acl file dynamically
 cat > /data/users.acl <<EOF
 user ${REDIS_USER} on >${REDIS_PASSWORD} ~${REDIS_PREFIX}* +@all

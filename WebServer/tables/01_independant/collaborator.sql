@@ -1,7 +1,6 @@
-CREATE TABLE personal_portfolio_schema.contact (
+CREATE TABLE {{SCHEMA}}.collaborator (
   id SERIAL PRIMARY KEY,
   name VARCHAR(100),
-  email VARCHAR(100),
-  message TEXT,
+  portfolio_url VARCHAR(100),
   timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );

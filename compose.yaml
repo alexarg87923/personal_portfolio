@@ -1,7 +1,6 @@
 name: portfolio
 services:
   rediscontainer:
-    image: redis:alpine
     volumes:
      - ./RedisContainer/redis.conf:/usr/local/etc/redis/redis.conf
      - redis_data:/data
@@ -34,8 +33,6 @@ services:
       - POSTGRES_PASSWORD=${PSQL_PASS}
       - POSTGRES_DB=${PSQL_DB_NAME}
       - PSQL_SCHEMA=${PSQL_SCHEMA:-personal_portfolio_schema}
-      - PSQL_DB_ADMIN_USER=${PSQL_DB_USER}
-      - PSQL_DB_ADMIN_PASSWORD=${PSQL_DB_PASS}
     healthcheck:
       test: ["CMD", "pg_isready", "-h", "localhost", "-p", "5432", "-U", "${PSQL_USER:-postgres}"]
       interval: 5s
@@ -51,17 +48,18 @@ services:
      - '${PORT:-4000}:4000'
     environment:
       - PSQL_DB_HOST=psqlcontainer
-      - PSQL_DB_USER=${PSQL_DB_USER}
+      - PSQL_DB_USER=${PSQL_USER}
       - PSQL_DB_NAME=${PSQL_DB_NAME}
-      - PSQL_DB_PASSWORD=${PSQL_DB_PASS}
+      - PSQL_DB_PASSWORD=${PSQL_PASS}
       - PSQL_DB_PORT=${PSQL_DB_PORT:-5432}
+      - PSQL_SCHEMA=${PSQL_SCHEMA:-personal_portfolio_schema}
       - PORT=${PORT:-4000}
       - MODE=${MODE:-production}
       - SALT=${SALT:-15}
       - REDIS_DB_HOST=rediscontainer
       - REDIS_SECRET=${REDIS_SECRET}
-      - REDIS_DB_USER=${REDIS_DB_USER}
-      - REDIS_DB_PASSWORD=${REDIS_DB_PASSWORD}
+      - REDIS_DB_USER=${REDIS_USER}
+      - REDIS_DB_PASSWORD=${REDIS_PASSWORD}
       - REDIS_DB_PREFIX=${REDIS_PREFIX:-portfolio:}
       - REDIS_DB_PORT=${REDIS_DB_PORT:-6379}
       - LOG_LEVEL=${LOG_LEVEL:-info}

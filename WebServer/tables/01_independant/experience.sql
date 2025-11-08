@@ -1,4 +1,4 @@
-CREATE TABLE personal_portfolio_schema.experience (
+CREATE TABLE {{SCHEMA}}.experience (
   id SERIAL PRIMARY KEY,
   logo_path VARCHAR(100),
   start_date DATE,

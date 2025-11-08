@@ -23,10 +23,22 @@ export const getPostgresConfig = () => {
     ? 'localhost'
     : environment.PSQL_DB_HOST;
 
+  // Ensure database name is never empty (PostgreSQL defaults to username if empty)
+  const database = environment.PSQL_DB_NAME && environment.PSQL_DB_NAME.trim() !== '' 
+    ? environment.PSQL_DB_NAME.trim() 
+    : 'portfolio_db';
+
+  if (!database || database.trim() === '') {
+    console.error('ERROR: Database name is empty! PSQL_DB_NAME:', environment.PSQL_DB_NAME);
+    throw new Error('Database name cannot be empty. Please set PSQL_DB_NAME environment variable.');
+  }
+
+  console.log('PostgreSQL Config:', { user: environment.PSQL_DB_USER, database, host });
+
   return {
     user: environment.PSQL_DB_USER,
     host: host,
-    database: environment.PSQL_DB_NAME,
+    database: database,
     password: environment.PSQL_DB_PASSWORD,
     port: parseInt(environment.PSQL_DB_PORT || '5432'),
   };

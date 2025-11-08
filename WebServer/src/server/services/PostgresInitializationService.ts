@@ -46,12 +46,15 @@ async function tableHasData(client: any, tableName: string, schema: string = env
  */
 async function executeSqlFile(client: any, filePath: string, description: string): Promise<void> {
   try {
-    const sqlContent = await fs.promises.readFile(filePath, 'utf8');
+    let sqlContent = await fs.promises.readFile(filePath, 'utf8');
 
     if (!sqlContent.trim()) {
       console.warn(`Warning: SQL file ${filePath} is empty, skipping...`);
       return;
     }
+
+    // Replace {{SCHEMA}} placeholder with environment variable
+    sqlContent = sqlContent.replace(/\{\{SCHEMA\}\}/g, environment.PSQL_SCHEMA);
 
     console.log(description);
     await client.query(sqlContent);
@@ -62,14 +65,27 @@ async function executeSqlFile(client: any, filePath: string, description: string
 }
 
 /**
- * Get SQL files from directory with validation
+ * Get SQL files from directory with validation (recursive)
  */
 async function getSqlFiles(dirPath: string): Promise<string[]> {
   try {
-    const files = await fs.promises.readdir(dirPath);
-    const sqlFiles = files
-      .filter(file => path.extname(file).toLowerCase() === '.sql')
-      .map(file => path.join(dirPath, file));
+    const sqlFiles: string[] = [];
+    
+    async function scanDirectory(currentPath: string): Promise<void> {
+      const entries = await fs.promises.readdir(currentPath, { withFileTypes: true });
+      
+      for (const entry of entries) {
+        const fullPath = path.join(currentPath, entry.name);
+        
+        if (entry.isDirectory()) {
+          await scanDirectory(fullPath);
+        } else if (entry.isFile() && path.extname(entry.name).toLowerCase() === '.sql') {
+          sqlFiles.push(fullPath);
+        }
+      }
+    }
+    
+    await scanDirectory(dirPath);
 
     if (sqlFiles.length === 0) {
       console.warn(`No SQL files found in ${dirPath}`);
