@@ -17,7 +17,6 @@ export class ExperienceComponent implements OnInit {
     this.experienceData.sort((a: IExperience, b: IExperience) => {
       return Date.parse(b.start_date) - Date.parse(a.start_date);
     });
-    console.log(this.experienceData);
   };
 
   ngOnInit() {

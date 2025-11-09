@@ -46,6 +46,13 @@ services:
       dockerfile: Dockerfile
     ports:
      - '${PORT:-4000}:4000'
+    volumes:
+     - ./logs:/app/logs
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
     environment:
       - PSQL_DB_HOST=psqlcontainer
       - PSQL_DB_USER=${PSQL_USER}

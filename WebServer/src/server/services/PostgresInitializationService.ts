@@ -3,6 +3,8 @@ import path from 'path';
 import { modulesProvider } from '../modules/ModulesProvider';
 import { environment } from '../environments/Environment';
 
+const logger = modulesProvider.getLogger();
+
 interface DatabaseError extends Error {
   code?: string;
   detail?: string;
@@ -22,7 +24,7 @@ async function tableExists(client: any, tableName: string, schema: string = envi
     const result = await client.query(query, [schema, tableName]);
     return result.rows[0].exists;
   } catch (error) {
-    console.error(`Error checking if table ${tableName} exists:`, error);
+    logger.error({ table: tableName, error }, `Error checking if table ${tableName} exists`);
     throw error;
   }
 }
@@ -36,7 +38,7 @@ async function tableHasData(client: any, tableName: string, schema: string = env
     const result = await client.query(query);
     return result.rows[0].exists;
   } catch (error) {
-    console.error(`Error checking if table ${tableName} has data:`, error);
+    logger.error({ table: tableName, error }, `Error checking if table ${tableName} has data`);
     throw error;
   }
 }
@@ -49,17 +51,17 @@ async function executeSqlFile(client: any, filePath: string, description: string
     let sqlContent = await fs.promises.readFile(filePath, 'utf8');
 
     if (!sqlContent.trim()) {
-      console.warn(`Warning: SQL file ${filePath} is empty, skipping...`);
+      logger.warn({ file: filePath }, `Warning: SQL file ${filePath} is empty, skipping...`);
       return;
     }
 
     // Replace {{SCHEMA}} placeholder with environment variable
     sqlContent = sqlContent.replace(/\{\{SCHEMA\}\}/g, environment.PSQL_SCHEMA);
 
-    console.log(description);
+    logger.info({ file: filePath }, description);
     await client.query(sqlContent);
   } catch (error) {
-    console.error(`Error executing SQL file ${filePath}:`, error);
+    logger.error({ file: filePath, error }, `Error executing SQL file ${filePath}`);
     throw error;
   }
 }
@@ -88,13 +90,13 @@ async function getSqlFiles(dirPath: string): Promise<string[]> {
     await scanDirectory(dirPath);
 
     if (sqlFiles.length === 0) {
-      console.warn(`No SQL files found in ${dirPath}`);
+      logger.warn({ directory: dirPath }, `No SQL files found in ${dirPath}`);
     }
 
     return sqlFiles;
   } catch (error) {
     if ((error as DatabaseError).code === 'ENOENT') {
-      console.warn(`Directory ${dirPath} does not exist, skipping...`);
+      logger.warn({ directory: dirPath }, `Directory ${dirPath} does not exist, skipping...`);
       return [];
     }
     throw error;
@@ -108,11 +110,11 @@ async function initializeTables(): Promise<void> {
   const client = await modulesProvider.getPool().connect();
   
   try {
-    console.log('INIT PSQL TABLE: Starting table initialization...');
+    logger.info({ action: 'InitTables' }, 'INIT PSQL TABLE: Starting table initialization...');
     const tableFiles = await getSqlFiles('./tables/');
 
     if (tableFiles.length === 0) {
-      console.log('INIT PSQL TABLE: No table files to process');
+      logger.info({ action: 'InitTables' }, 'INIT PSQL TABLE: No table files to process');
       return;
     }
 
@@ -120,7 +122,7 @@ async function initializeTables(): Promise<void> {
     for (const filePath of tableFiles) {
       const tableName = path.parse(filePath).name;
 
-      console.log(`INIT PSQL TABLE: Checking if ${tableName} table exists...`);
+      logger.info({ action: 'InitTables', table: tableName }, `INIT PSQL TABLE: Checking if ${tableName} table exists...`);
 
       const exists = await tableExists(client, tableName);
 
@@ -130,16 +132,16 @@ async function initializeTables(): Promise<void> {
           filePath, 
           `INIT PSQL TABLE: Creating ${tableName} table...`
         );
-        console.log(`INIT PSQL TABLE: ${tableName} table created successfully`);
+        logger.info({ action: 'InitTables', table: tableName }, `INIT PSQL TABLE: ${tableName} table created successfully`);
       } else {
-        console.log(`INIT PSQL TABLE: ${tableName} exists, skipping...`);
+        logger.info({ action: 'InitTables', table: tableName }, `INIT PSQL TABLE: ${tableName} exists, skipping...`);
       }
     }
     
-    console.log('INIT PSQL TABLE: Table initialization completed');
+    logger.info({ action: 'InitTables' }, 'INIT PSQL TABLE: Table initialization completed');
     
   } catch (error) {
-    console.error('INIT PSQL TABLE: Error during table initialization:', error);
+    logger.error({ action: 'InitTables', error }, 'INIT PSQL TABLE: Error during table initialization');
     throw error;
   } finally {
     client.release();
@@ -153,11 +155,11 @@ async function initializeSeedData(): Promise<void> {
   const client = await modulesProvider.getPool().connect();
   
   try {
-    console.log('INIT PSQL DATA: Starting seed data initialization...');
+    logger.info({ action: 'InitSeedData' }, 'INIT PSQL DATA: Starting seed data initialization...');
     const seedFiles = await getSqlFiles('./seed_data/');
 
     if (seedFiles.length === 0) {
-      console.log('INIT PSQL DATA: No seed data files to process');
+      logger.info({ action: 'InitSeedData' }, 'INIT PSQL DATA: No seed data files to process');
       return;
     }
 
@@ -165,7 +167,7 @@ async function initializeSeedData(): Promise<void> {
     for (const filePath of seedFiles) {
       const tableName = path.parse(filePath).name;
 
-      console.log(`INIT PSQL DATA: Checking if ${tableName} has data...`);
+      logger.info({ action: 'InitSeedData', table: tableName }, `INIT PSQL DATA: Checking if ${tableName} has data...`);
 
       const hasData = await tableHasData(client, tableName);
 
@@ -175,16 +177,16 @@ async function initializeSeedData(): Promise<void> {
           filePath,
           `INIT PSQL DATA: Inserting data into ${tableName}...`
         );
-        console.log(`INIT PSQL DATA: Data inserted into ${tableName} successfully`);
+        logger.info({ action: 'InitSeedData', table: tableName }, `INIT PSQL DATA: Data inserted into ${tableName} successfully`);
       } else {
-        console.log(`INIT PSQL DATA: Data exists in ${tableName}, skipping...`);
+        logger.info({ action: 'InitSeedData', table: tableName }, `INIT PSQL DATA: Data exists in ${tableName}, skipping...`);
       }
     }
     
-    console.log('INIT PSQL DATA: Seed data initialization completed');
+    logger.info({ action: 'InitSeedData' }, 'INIT PSQL DATA: Seed data initialization completed');
     
   } catch (error) {
-    console.error('INIT PSQL DATA: Error during seed data initialization:', error);
+    logger.error({ action: 'InitSeedData', error }, 'INIT PSQL DATA: Error during seed data initialization');
     throw error;
   } finally {
     client.release();
@@ -196,15 +198,15 @@ async function initializeSeedData(): Promise<void> {
  */
 export async function initializeDatabase(): Promise<void> {
   try {
-    console.log('DATABASE INIT: Starting database initialization...');
+    logger.info({ action: 'DatabaseInit' }, 'DATABASE INIT: Starting database initialization...');
 
     await initializeTables();
     await initializeSeedData();
 
-    console.log('DATABASE INIT: Database initialization completed successfully');
+    logger.info({ action: 'DatabaseInit' }, 'DATABASE INIT: Database initialization completed successfully');
 
   } catch (error) {
-    console.error('DATABASE INIT: Fatal error during database initialization:', error);
+    logger.error({ action: 'DatabaseInit', error }, 'DATABASE INIT: Fatal error during database initialization');
     throw error; // Re-throw so calling code can handle it
   }
 }

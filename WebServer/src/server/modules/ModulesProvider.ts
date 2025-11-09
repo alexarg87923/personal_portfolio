@@ -1,4 +1,4 @@
-import { getPinoConfig, getPostgresConfig } from '../config/Config';
+import { getPostgresConfig, createPinoLogger } from '../config/Config';
 import { createAndConnectRedis } from '../utils/Utils';
 import { type createClient } from 'redis';
 import { AdminController } from '../controllers/AdminController';
@@ -7,7 +7,7 @@ import { ContactService } from '../services/ContactService';
 import { MainService } from '../services/MainService';
 import { ContactController } from '../controllers/ContactController';
 import { MainController } from '../controllers/MainController';
-import pino, { Logger } from 'pino';
+import { Logger } from 'pino';
 import pg from 'pg';
 
 class ModulesProvider {
@@ -20,7 +20,7 @@ class ModulesProvider {
       try {
         this.pool = new pg.Pool(getPostgresConfig());
       } catch (error) {
-        console.error('Failed to create PostgreSQL pool:', error);
+        this.getLogger().error({ error }, 'Failed to create PostgreSQL pool');
         throw error;
       }
     }
@@ -29,7 +29,7 @@ class ModulesProvider {
 
   public getLogger = (): Logger => {
     if (!this.logger) {
-      this.logger = pino(getPinoConfig());
+      this.logger = createPinoLogger();
     }
     return this.logger;
   };
@@ -39,7 +39,7 @@ class ModulesProvider {
       this.clientPromise = createAndConnectRedis().catch(error => {
         // Reset promise so we can retry on next call
         this.clientPromise = null;
-        console.error('Failed to connect to Redis:', error);
+        this.getLogger().error({ error }, 'Failed to connect to Redis');
         throw error;
       });
     }
@@ -82,7 +82,7 @@ class ModulesProvider {
         this.clientPromise = null;
       }
     } catch (error) {
-      console.error('Error during cleanup:', error);
+      this.getLogger().error({ error }, 'Error during cleanup');
     }
   }
 }

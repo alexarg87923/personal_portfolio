@@ -25,7 +25,6 @@ export class AdminLoginComponent {
       this.http.post('/api/admin/login', this.form.value, { observe: 'response' })
       .subscribe({
         next: (response: HttpResponse<any>) => {
-          console.log(response);
           if (response.status === 200) {
             this.router.navigate(['/admin']);
           };
@@ -34,11 +33,11 @@ export class AdminLoginComponent {
           };
         },
         error: error => {
-          console.log('Error doing POST request', error);
+          console.error('Error doing POST request', error);
         }
       });
     } else {
-      console.log('Invalid form...');
+      // Form validation failed
     }
   }
 }

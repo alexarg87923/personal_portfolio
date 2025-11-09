@@ -26,7 +26,7 @@ export class ContactComponent {
       .post('/api/contact', this.form.value)
       .subscribe({
         next: response => {
-          console.log('Form submitted successfully', response);
+          // Form submitted successfully
         },
         error: error => {
           console.error('Error submitting form', error);

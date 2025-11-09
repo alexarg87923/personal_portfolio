@@ -1,7 +1,10 @@
 import { type RedisStore } from 'connect-redis';
 import { environment } from '../environments/Environment';
 import { randomUUID } from 'crypto';
-import { Logger, stdTimeFunctions } from 'pino';
+import pino, { Logger, stdTimeFunctions } from 'pino';
+import { join } from 'node:path';
+import { createWriteStream } from 'node:fs';
+import { mkdirSync } from 'node:fs';
 
 export const getRedisConfig = () => {
   const host = environment.MODE === 'development' 
@@ -29,11 +32,10 @@ export const getPostgresConfig = () => {
     : 'portfolio_db';
 
   if (!database || database.trim() === '') {
+    // Critical error during config initialization - logger not yet available
     console.error('ERROR: Database name is empty! PSQL_DB_NAME:', environment.PSQL_DB_NAME);
     throw new Error('Database name cannot be empty. Please set PSQL_DB_NAME environment variable.');
   }
-
-  console.log('PostgreSQL Config:', { user: environment.PSQL_DB_USER, database, host });
 
   return {
     user: environment.PSQL_DB_USER,
@@ -47,14 +49,45 @@ export const getPostgresConfig = () => {
 export const getPinoConfig = () => {
   const { MODE, LOG_LEVEL } = environment;
 
-  return {
-    transport: MODE === 'development'
-      ? { target: 'pino-pretty' }
-      : undefined,
+  const config: any = {
     base: null,
     timestamp: stdTimeFunctions.isoTime,
     level: LOG_LEVEL || 'info'
   };
+
+  if (MODE === 'development') {
+    config.transport = { target: 'pino-pretty' };
+  }
+
+  return config;
+};
+
+export const createPinoLogger = (): Logger => {
+  const { MODE, LOG_LEVEL } = environment;
+  const config = getPinoConfig();
+
+  if (MODE === 'production') {
+    // In production, write to both stdout and file
+    const logsDir = '/app/logs';
+    try {
+      mkdirSync(logsDir, { recursive: true });
+      const logFile = join(logsDir, 'app.log');
+      const fileStream = createWriteStream(logFile, { flags: 'a' });
+      
+      // Use pino.multistream to write to both stdout and file
+      return pino(config, pino.multistream([
+        { stream: process.stdout },
+        { stream: fileStream }
+      ]));
+    } catch (error) {
+      // If we can't create the log file, just use stdout
+      // Cannot use logger here as we're in the process of creating it
+      console.error('Failed to create log file, using stdout only:', error);
+      return pino(config);
+    }
+  }
+
+  return pino(config);
 };
 
 export const getPinoHttpConfig = (logger: Logger) => {
@@ -72,9 +105,10 @@ export const getSessionConfig = (redisStore: RedisStore) => {
     resave: false,
     saveUninitialized: false,
     secret: environment.REDIS_SECRET,
+    name: 'connect.sid',
     cookie: MODE === 'development' 
-      ? { secure: false, maxAge: 60000, httpOnly: false }
-      : { secure: true, maxAge: 60000, httpOnly: true }
+      ? { secure: false, maxAge: 60000, httpOnly: false, sameSite: 'lax' as const }
+      : { secure: true, maxAge: 60000, httpOnly: true, sameSite: 'lax' as const }
   };
 };
 

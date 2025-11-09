@@ -77,11 +77,9 @@ export class AdminDashboardComponent implements OnInit {
 
   onSubmit(): void {
     if (Object.keys(this.changed).length > 0) {
-      console.log('Saving changes:', this.changed);
       this.http.post('/api/admin', this.changed, { withCredentials: true })
         .subscribe({
           next: response => {
-            console.log('Changes saved successfully:', response);
             this.original = JSON.parse(JSON.stringify(this.fetchedData));
             this.changed = { about: [], experience: [], project: [], skill: [] };
           },
@@ -89,8 +87,6 @@ export class AdminDashboardComponent implements OnInit {
             console.error('Error saving changes:', error);
           }
         });
-    } else {
-      console.log('No changes to save.');
     }
   }
 }

@@ -7,8 +7,9 @@ import session from 'express-session';
 
 export const createAndConnectRedis = async (): Promise<ReturnType<typeof createClient>> => {
   const client = createClient(getRedisConfig());
+  const logger = modulesProvider.getLogger();
 
-  client.on('error', (err) => console.error('Redis Client Error:', err));
+  client.on('error', (err) => logger.error({ error: err }, 'Redis Client Error'));
   await client.connect();
   return client;
 };

@@ -20,7 +20,7 @@ class ModulesProvider {
       try {
         this.pool = new pg.Pool(getPostgresConfig());
       } catch (error) {
-        console.error('Failed to create PostgreSQL pool:', error);
+        this.getLogger().error({ error }, 'Failed to create PostgreSQL pool');
         throw error;
       }
     }
@@ -39,7 +39,7 @@ class ModulesProvider {
       this.clientPromise = createAndConnectRedis().catch(error => {
         // Reset promise so we can retry on next call
         this.clientPromise = null;
-        console.error('Failed to connect to Redis:', error);
+        this.getLogger().error({ error }, 'Failed to connect to Redis');
         throw error;
       });
     }
@@ -82,7 +82,7 @@ class ModulesProvider {
         this.clientPromise = null;
       }
     } catch (error) {
-      console.error('Error during cleanup:', error);
+      this.getLogger().error({ error }, 'Error during cleanup');
     }
   }
 }
