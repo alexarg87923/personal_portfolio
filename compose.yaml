@@ -22,7 +22,7 @@ services:
 
   psqlcontainer:
     volumes:
-     - postgres_data:/var/lib/postgresql/data
+     - postgres_data:/var/lib/postgresql
     build: 
       context: ./PostgreSQLContainer
       dockerfile: Dockerfile
