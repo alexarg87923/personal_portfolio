@@ -27,7 +27,7 @@ services:
       context: ./PostgreSQLContainer
       dockerfile: Dockerfile
     ports:
-      - '${PSQL_DB_PORT:-5432}:5432'
+      - '127.0.0.1:${PSQL_DB_PORT:-5432}:5432'
     environment:
       - POSTGRES_USER=${PSQL_USER:-postgres}
       - POSTGRES_PASSWORD=${PSQL_PASS}
